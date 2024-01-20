@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Mario</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src="./scripts/script.js" type="module"></script>
+	<center>
+	<img src="img/logo.png" alt="Puppy" style="width:15%; display:block;">
+	<p id="virusPosition"><h1>hello: </p>
+	
+</head>
+<body>
+
+<p id="randomNumberDisplay">Random Number: </p>
+
+
+
+
+
+
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
+
+<script>
+  const socket = io('http://localhost:3000');
+  socket.on('randomNumber', (randomNumber) => {
+    document.getElementById('randomNumberDisplay').textContent = 'Random Number: ' + randomNumber;
+  });
+</script>
+
+
+<!--
+<style>
+body {
+    background-image: url('img/tiles.png');
+    background-repeat: repeat;
+    background-size: 6% 4%; /* Adjust the percentage as needed */
+}
+</style>
+-->
+<div id="roomControls">
+        <button id="createRoom">Create Room</button>
+        <input type="number" id="roomId" placeholder="Room Number">
+        <button id="joinRoom">Join Room</button>
+        <p id="roomNumberDisplay">Your room number is: </p>
+    </div>
+	
+	<script>
+       // const socket = io('http://localhost:3000');
+
+        document.getElementById('createRoom').addEventListener('click', () => {
+		socket.emit('create room');
+		});
+
+        document.getElementById('joinRoom').addEventListener('click', () => {
+        const roomId = document.getElementById('roomId').value;
+        socket.emit('join room', roomId);
+		});
+
+		socket.on('joinedRoomSuccessfully', () => {
+		alert("Congrats! You've successfully joined the room.");
+		});
+
+		socket.on('roomDoesNotExist', () => {
+        alert("That room doesn't exist.");
+		});
+
+
+        socket.on('room created', (roomId) => {
+		document.getElementById('roomNumberDisplay').textContent = 'Your room number is: ' + roomId;
+		});
+		
+		socket.on('joined created', (roomId) => {
+		document.getElementById('roomNumberDisplay').textContent = 'hello: ' + roomId;
+		});
+
+        // Add other necessary socket event listeners
+    </script>
+
+
+
+	
+	<center>
+	
+    <div class="game-container-player1" id="game1">
+        <div id="top-player1"></div>
+        <div id="score-player1"></div>
+        <div id="virusCount-player1"></div>
+        <!-- Add other necessary elements for Player 1 -->
+    </div>
+	
+	<br><br>
+    <div class="game-container-player2" id="game2">
+        <div id="top-player2"></div>
+        <div id="score-player2"></div>
+        <div id="virusCount-player2"></div>
+        <!-- Add other necessary elements for Player 2 -->
+    </div>
+</body>
+</html>

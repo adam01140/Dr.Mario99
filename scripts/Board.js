@@ -733,8 +733,8 @@ class Field extends HTMLElement {
 		
 		this.style.backgroundImage = "url('./img/" + this.color + "_" + element + ".png')"
 		
-		console.log(this.color)
-		console.log(element)
+		//console.log(this.color)
+		//console.log(element)
 		
 		
     }

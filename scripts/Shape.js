@@ -4,22 +4,35 @@ import { Color, Direction, Rotation } from "./components.js"
 
 var pill = 0;
 
+var pillpos = 1;
+
 function randomColor() {
 	
-	if(pill == 0){	
-	pill = pill + 1;
-    return Color.FIRST
-	}
+
+socket.emit('requestServerPill', { pillpos });
+
+
+socket.on('receiveServerPill', (data) => {
+
+    const serverpill = data.serverpill;
+	pill = serverpill
+	console.log("serverpill " + serverpill);
+	console.log("pillpos " + pillpos);
+	console.log("-------------------"  );
 	
-	if(pill == 1){	
-	pill = pill + 1;
-    return Color.SECOND
-	}
+    pillpos = pillpos + 1
+});
+
+	if (pill == 0) return Color.FIRST
+    if (pill == 1) return Color.SECOND
+    if (pill == 2) return Color.THIRD
 	
-	if(pill == 2){	
-	pill = 0;
-    return Color.THIRD
-	}
+	
+if(pillpos > 7){
+	pillpos = 0;
+}
+
+	
 	
 	
 	

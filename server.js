@@ -22,8 +22,29 @@ function generateVirusPositions() {
 
 const virusPositions = generateVirusPositions();
 
+
+// Define the sequence
+const sequence = [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0,  1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0];
+
+// Function to get serverpill based on pillpos
+function getServerPill(pillpos) {
+    return sequence[pillpos];
+}
+
+
 io.on('connection', (socket) => {
     console.log('A user connected');
+	
+	socket.on('requestServerPill', (data) => {
+        const pillpos = data.pillpos;
+        const serverpill = getServerPill(pillpos);
+		console.log("pillposs: " + pillpos)
+		console.log("serverpill: " + serverpill)
+		console.log("------------")
+        socket.emit('receiveServerPill', { serverpill });
+    });
+	
+	
 
     // Send the pre-generated virus positions to the connected client
     socket.emit('virusPositions', virusPositions);

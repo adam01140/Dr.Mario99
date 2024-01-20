@@ -8,9 +8,6 @@ const io = socketIo(server, {
     },
 });
 
-const rooms = {};
-
-
 // Function to generate random virus positions
 function generateVirusPositions() {
     const positions = [];
@@ -26,46 +23,6 @@ function generateVirusPositions() {
 const virusPositions = generateVirusPositions();
 
 io.on('connection', (socket) => {
-	
-	
-	
-	
-
-		socket.on('join room', (roomId) => {
-		console.log(roomId);
-		
-        if (rooms[roomId] && rooms[roomId].length < 2) {
-            rooms[roomId].push(socket.id);
-            socket.join(roomId);
-            socket.emit('joined room', roomId);
-			socket.emit('joinedRoomSuccessfully');
-            if (rooms[roomId].length === 2) {
-                io.to(roomId).emit('start game');
-            }
-        } else {
-			
-            socket.emit('roomDoesNotExist');
-        }
-    });
-	
-	
-	
-	
-	
-	
-	socket.on('create room', () => {
-        const roomId = Math.floor(Math.random() * 10) + 1;
-        rooms[roomId] = [socket.id];
-        socket.join(roomId);
-        socket.emit('room created', roomId);
-		//console.log(roomId);
-    });
-	
-	
-	
-	
-	
-	
     console.log('A user connected');
 
     // Send the pre-generated virus positions to the connected client

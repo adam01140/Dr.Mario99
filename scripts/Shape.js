@@ -21,6 +21,9 @@ function randomColor() {
     return Color.THIRD
 	}
 	
+	
+	
+	
 }
 
 class Shape {

@@ -11,6 +11,3 @@ Dr. Mario clone in vanilla JavaScript
 ![screenshot04](screenshots/screenshot04.png)
 ![screenshot05](screenshots/screenshot05.png)
 ![screenshot06](screenshots/screenshot06.png)
-# Dr.Mario99
-# Dr.Mario99
-# Dr.Mario99

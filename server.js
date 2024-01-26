@@ -1,5 +1,6 @@
 const http = require('http');
 const socketIo = require('socket.io');
+const randomList = [2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 2, 1, 1, 1, 2, 0, 0, 2, 2, 0];
 
 const server = http.createServer();
 const io = socketIo(server, {
@@ -7,6 +8,12 @@ const io = socketIo(server, {
         origin: "*", // Adjust as per your client-side setup
     },
 });
+
+
+function generateRandomList() {
+    return Array.from({ length: 20 }, () => Math.floor(Math.random() * 3));
+}
+
 
 // Function to generate random virus positions
 function generateVirusPositions() {
@@ -23,27 +30,17 @@ function generateVirusPositions() {
 const virusPositions = generateVirusPositions();
 
 
-// Define the sequence
-const sequence = [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0,  1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0];
 
-// Function to get serverpill based on pillpos
-function getServerPill(pillpos) {
-    return sequence[pillpos];
-}
 
 
 io.on('connection', (socket) => {
     console.log('A user connected');
 	
-	socket.on('requestServerPill', (data) => {
-        const pillpos = data.pillpos;
-        const serverpill = getServerPill(pillpos);
-		console.log("pillposs: " + pillpos)
-		console.log("serverpill: " + serverpill)
-		console.log("------------")
-        socket.emit('receiveServerPill', { serverpill });
-    });
+	const randomList = generateRandomList();
 	
+	socket.on('requestRandomList', () => {
+        socket.emit('receiveRandomList', randomList);
+    });
 	
 
     // Send the pre-generated virus positions to the connected client

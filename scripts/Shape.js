@@ -4,35 +4,73 @@ import { Color, Direction, Rotation } from "./components.js"
 
 var pill = 0;
 
-var pillpos = 1;
+
+
+let numberPosition = 1;
+let number;
+let myRandomList = [2, 2, 0, 1, 1, 0, 2, 2, 0, 1, 2, 1, 1, 1, 2, 0, 0, 2, 2, 0];
+
+
+
+
+
+socket.emit('requestRandomList');
+socket.on('receiveRandomList', (receivedList) => {
+    myRandomList = receivedList;
+	//alert(myRandomList);
+	console.log("myRandomList: " + myRandomList);
+	
+});
+
+
+
+
+
+
+function updateNumber() {
+    
+    if (numberPosition > 0 && numberPosition <= myRandomList.length) {
+        number = myRandomList[numberPosition - 1];
+		numberPosition = numberPosition + 1;
+		if(numberPosition > 20){
+			numberPosition = 0;
+		}
+		
+    } else {
+        
+        //number = undefined; 
+    }
+}
+
+updateNumber(); 
+
+
+
 
 function randomColor() {
 	
-
-socket.emit('requestServerPill', { pillpos });
-
-
-socket.on('receiveServerPill', (data) => {
-
-    const serverpill = data.serverpill;
-	pill = serverpill
-	console.log("serverpill " + serverpill);
-	console.log("pillpos " + pillpos);
-	console.log("-------------------"  );
 	
-    pillpos = pillpos + 1
-});
+	updateNumber(); 
+	console.log("numberPosition: " + numberPosition);
+	console.log("myRandomList: " + myRandomList);
+	console.log("myRandomList.lengthn: " + myRandomList.length);
+	pill = number;
 
-	if (pill == 0) return Color.FIRST
-    if (pill == 1) return Color.SECOND
-    if (pill == 2) return Color.THIRD
-	
-	
-if(pillpos > 7){
-	pillpos = 0;
-}
 
+	if(pill == 0){	
+	//pill = pill + 1;
+    return Color.FIRST
+	}
 	
+	if(pill == 1){	
+	//pill = pill + 1;
+    return Color.SECOND
+	}
+	
+	if(pill == 2){	
+	//pill = 0;
+    return Color.THIRD
+	}
 	
 	
 	
@@ -269,3 +307,5 @@ class ShapePiece {
         return this.canMoveTo(x, y)
     }
 }
+
+

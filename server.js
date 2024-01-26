@@ -1,6 +1,6 @@
 const http = require('http');
 const socketIo = require('socket.io');
-const randomList = [2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 2, 1, 1, 1, 2, 0, 0, 2, 2, 0];
+//const randomList = [2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 2, 1, 1, 1, 2, 0, 0, 2, 2, 0];
 
 const server = http.createServer();
 const io = socketIo(server, {
@@ -31,12 +31,13 @@ const virusPositions = generateVirusPositions();
 
 
 
-
+const randomList = generateRandomList();
+console.log(randomList);
 
 io.on('connection', (socket) => {
     console.log('A user connected');
 	
-	const randomList = generateRandomList();
+	
 	
 	socket.on('requestRandomList', () => {
         socket.emit('receiveRandomList', randomList);

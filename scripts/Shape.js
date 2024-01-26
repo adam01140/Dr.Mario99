@@ -33,7 +33,7 @@ function updateNumber() {
         number = myRandomList[numberPosition - 1];
 		numberPosition = numberPosition + 1;
 		if(numberPosition > 20){
-			numberPosition = 0;
+			numberPosition = 1;
 		}
 		
     } else {

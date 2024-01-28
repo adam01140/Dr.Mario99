@@ -1,6 +1,6 @@
 "use strict"
-import { PlayingBoard } from "./Board.js"
-import { Color, Direction, Rotation } from "./components.js"
+import { PlayingBoard } from "./Board2.js"
+import { Color, Direction, Rotation } from "./components2.js"
 
 var pill = 0;
 
@@ -14,7 +14,10 @@ let myRandomList = [2, 2, 0, 1, 1, 0, 2, 2, 0, 1, 2, 1, 1, 1, 2, 0, 0, 2, 2, 0];
 
 
 
-
+socket.emit('requestRandomList');
+socket.on('receiveRandomList', (receivedList) => {
+	myRandomList = receivedList;
+});
 
 
 

@@ -34,22 +34,44 @@ const virusPositions = generateVirusPositions();
 const randomList = generateRandomList();
 console.log(randomList);
 
+
+
+
+
+
+
+const playersInLobby = { count: 0 };
+
+
+
+
+
+
 io.on('connection', (socket) => {
     console.log('A user connected');
 	
-	
-	
+
 	socket.on('requestRandomList', () => {
         socket.emit('receiveRandomList', randomList);
     });
 	
-
-    // Send the pre-generated virus positions to the connected client
     socket.emit('virusPositions', virusPositions);
+
+    
+    playersInLobby.count += 1;
+	
+    const playerNumber = playersInLobby.count;
+	
+    
+    socket.emit('assignPlayerNumber', playerNumber);
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
+        playersInLobby.count -= 1;
     });
+	
+	
+	
 });
 
 const PORT = 3000;

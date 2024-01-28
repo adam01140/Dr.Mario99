@@ -1,6 +1,6 @@
 "use strict"
-import { Pill, Virus } from "./Shape.js"
-import { Color, Direction, Rotation, DELAY } from "./components.js"
+import { Pill, Virus } from "./Shape2.js"
+import { Color, Direction, Rotation, DELAY } from "./components2.js"
 
 
 var pillnum = 1;

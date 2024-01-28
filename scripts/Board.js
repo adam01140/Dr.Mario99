@@ -6,7 +6,8 @@ import { Color, Direction, Rotation, DELAY } from "./components.js"
 var pillnum = 1;
 var second = 0;
 
-
+var point = 0;
+var enemy = 0;
 
 //import { io } from 'socket.io-client';
 const socket = io('http://localhost:3000');
@@ -93,6 +94,10 @@ class ThrowingBoard extends Board {
             {
                 action: function (pill) {
                     pill.rotate(Direction.LEFT)
+					
+					
+					
+					console.log('new pill');
                 }
             },
             {
@@ -229,6 +234,8 @@ class ThrowingBoard extends Board {
     }
 
     setArmPosition(dir) {
+		
+		
         for (let x = 10; x <= 11; x++)
             for (let y = 0; y <= 3; y++)
                 this.fields[x][y].style.backgroundImage = ''
@@ -643,8 +650,9 @@ class Field extends HTMLElement {
     if (x)
         this.style.backgroundImage = "url('./img/" + color + "_x.png')";
     if (o)
+		
         this.style.backgroundImage = "url('./img/" + color + "_o.png')";
-		console.log('h');
+		console.log('point aquired');
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);

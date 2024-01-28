@@ -8,7 +8,6 @@ var second = 0;
 
 
 
-
 //import { io } from 'socket.io-client';
 const socket = io('http://localhost:3000');
 
@@ -84,6 +83,7 @@ class ThrowingBoard extends Board {
         this.createGrid()
         this.setStyles()
         this.spawnPill()
+		
     }
 	
 	
@@ -292,6 +292,7 @@ export class PlayingBoard extends Board {
         this.createKeyboardListeners()
         this.spawnViruses()
         this.initImageCounters()
+		
     }
 
     nextLevel() {
@@ -375,6 +376,9 @@ export class PlayingBoard extends Board {
     }
 
     destroy() {
+		
+		console.log('hello');
+		
         this.topElement.remove()
         this.scoreElement.remove()
         this.virusCountElement.remove()
@@ -386,6 +390,7 @@ export class PlayingBoard extends Board {
         for (let row of this.throwingBoard.fields) {
             for (let field of row) {
                 field.remove()
+				
             }
         }
         this.remove()
@@ -548,6 +553,7 @@ export class PlayingBoard extends Board {
     }
 
     clearIfNeeded() {
+		
         let fieldsToClear = []
         for (let line of this.fields) {
             for (let field of line) {
@@ -597,6 +603,7 @@ export class PlayingBoard extends Board {
                         if (field.shouldBeCleared())
                             return
                 this.spawnPill()
+				
             }
         }, DELAY.gravitation)
     }
@@ -637,6 +644,7 @@ class Field extends HTMLElement {
         this.style.backgroundImage = "url('./img/" + color + "_x.png')";
     if (o)
         this.style.backgroundImage = "url('./img/" + color + "_o.png')";
+		console.log('h');
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);

@@ -6,7 +6,7 @@ import { Color, Direction, Rotation, DELAY } from "./components.js"
 var pillnum = 1;
 var second = 0;
 
-var point = 0;
+var localpoints = 0;
 var enemy = 0;
 var player = 1;
 //import { io } from 'socket.io-client';
@@ -85,6 +85,14 @@ class ThrowingBoard extends Board {
         this.setStyles()
         this.spawnPill()
 		
+		
+		if (!this.isDamageListenerAdded) {
+            socket.on('p1damage', (data) => {
+                console.log(`Damage received: ${data.p1damage}`);
+            });
+            this.isDamageListenerAdded = true;
+        }
+		
     }
 	
 	
@@ -98,6 +106,8 @@ class ThrowingBoard extends Board {
 					
 					
 					console.log('new pill');
+					
+					
                 }
             },
             {
@@ -261,6 +271,10 @@ class ThrowingBoard extends Board {
     
 
     nextFrame() {
+		
+		
+
+
         if (this.currentFrame >= this.frames.length - 1) {
             this.game.board.movePillFromThrowingBoard()
             this.game.board.blockInput = false
@@ -620,6 +634,9 @@ customElements.define("game-board", PlayingBoard)
 class Field extends HTMLElement {
     constructor(board, x, y) {
         super()
+		
+		this.isDamageListenerAdded = false;
+		
         this.board = board
         this.x = x
         this.y = y

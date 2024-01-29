@@ -6,7 +6,7 @@ import { Color, Direction, Rotation, DELAY } from "./components2.js"
 var pillnum = 1;
 var second = 0;
 
-var point = 0;
+var localpoints = 0;
 var enemy = 0;
 var player = 1;
 //import { io } from 'socket.io-client';
@@ -98,6 +98,7 @@ class ThrowingBoard extends Board {
 					
 					
 					console.log('new pill');
+					socket.emit('updatePoints', { player2points: localpoints });
                 }
             },
             {
@@ -653,6 +654,8 @@ class Field extends HTMLElement {
 		
         this.style.backgroundImage = "url('./img/" + color + "_o.png')";
 		console.log('point aquired');
+		localpoints = localpoints + 1;
+		
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);

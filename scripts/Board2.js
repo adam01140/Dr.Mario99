@@ -8,7 +8,7 @@ var second = 0;
 
 var localpoints = 0;
 var enemy = 0;
-var player = 1;
+
 //import { io } from 'socket.io-client';
 const socket = io('http://localhost:3000');
 
@@ -84,6 +84,14 @@ class ThrowingBoard extends Board {
         this.createGrid()
         this.setStyles()
         this.spawnPill()
+		
+		
+		if (!this.isDamageListenerAdded) {
+            socket.on('p2damage', (data) => {
+                console.log(`Damage received: ${data.p2damage}`);
+            });
+            this.isDamageListenerAdded = true;
+        }
 		
     }
 	
@@ -621,6 +629,7 @@ customElements.define("game-board", PlayingBoard)
 class Field extends HTMLElement {
     constructor(board, x, y) {
         super()
+		this.isDamageListenerAdded = false;
         this.board = board
         this.x = x
         this.y = y

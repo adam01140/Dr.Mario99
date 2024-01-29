@@ -106,7 +106,7 @@ class ThrowingBoard extends Board {
 					
 					
 					console.log('new pill');
-					
+					socket.emit('updatePoints2', { player1points: localpoints });
 					
                 }
             },
@@ -670,6 +670,7 @@ class Field extends HTMLElement {
 		
         this.style.backgroundImage = "url('./img/" + color + "_o.png')";
 		console.log('point aquired');
+		localpoints = localpoints + 1;
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);

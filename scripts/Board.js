@@ -5,7 +5,7 @@ import { Color, Direction, Rotation, DELAY } from "./components.js"
 
 var pillnum = 1;
 var second = 0;
-var realdamage = 3;
+var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
 var player = 1;
@@ -332,7 +332,6 @@ export class PlayingBoard extends Board {
             return
         if (key == "ArrowLeft" || key == 'a')
             this.currentPill.move(Direction.LEFT)
-			realdamage = realdamage + 1;
         if (key == "ArrowRight" || key == 'd')
             this.currentPill.move(Direction.RIGHT)
         if (key == "ArrowDown" || key == 's')
@@ -663,13 +662,11 @@ class ThrowingBoard extends Board {
 					socket.emit('updatePoints2', { player1points: localpoints });
 					
 					if(realdamage > 0){
-							this.playingBoard.hurt();
-					
-					
 					for (let i = 0; i < realdamage; i++) {
 						console.log('hurt');
 						this.playingBoard.hurt();
 					}
+					realdamage = 0
 					}
 					
                 }

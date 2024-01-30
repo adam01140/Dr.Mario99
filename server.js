@@ -50,7 +50,7 @@ const playersInLobby = { count: 0 };
 io.on('connection', (socket) => {
 	
 	
-	socket.on('updatePoints', (data) => {
+	socket.on('updatePoints1', (data) => {
         //console.log(`Received points from player 2: ${data.player2points}`);
         io.emit('p1damage', { p1damage: data.player2points });
     });

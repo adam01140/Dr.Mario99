@@ -5,7 +5,7 @@ import { Color, Direction, Rotation, DELAY } from "./components2.js"
 
 var pillnum = 1;
 var second = 0;
-var realdamage = 3;
+var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
 var player = 1;
@@ -332,7 +332,7 @@ export class PlayingBoard extends Board {
             return
         if (key == "ArrowLeft" || key == 'a')
             this.currentPill.move(Direction.LEFT)
-			realdamage = realdamage + 1;
+			//realdamage = realdamage + 1;
         if (key == "ArrowRight" || key == 'd')
             this.currentPill.move(Direction.RIGHT)
         if (key == "ArrowDown" || key == 's')
@@ -641,7 +641,7 @@ class ThrowingBoard extends Board {
             socket.on('p2damage', (data) => {
 				console.log(`Damage received: ${data.p2damage}`);
 				realdamage = Math.floor(data.p2damage / 4);
-			
+				
 			});
         this.isDamageListenerAdded = true;
 
@@ -667,8 +667,9 @@ class ThrowingBoard extends Board {
 					
 					
 					for (let i = 0; i < realdamage; i++) {
-						console.log('hurt');
+						console.log(realdamage);
 						this.playingBoard.hurt();
+						
 					}
 					}
 					

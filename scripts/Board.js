@@ -5,7 +5,7 @@ import { Color, Direction, Rotation, DELAY } from "./components.js"
 
 var pillnum = 1;
 var second = 0;
-
+var realdamage = 1;
 var localpoints = 0;
 var enemy = 0;
 var player = 1;
@@ -85,28 +85,44 @@ class ThrowingBoard extends Board {
         this.setStyles()
         this.spawnPill()
 		
+		console.log('hey there');
+		
 		
 		if (!this.isDamageListenerAdded) {
             socket.on('p1damage', (data) => {
-                console.log(`Damage received: ${data.p1damage}`);
-            });
-            this.isDamageListenerAdded = true;
+				console.log(`Damage received: ${data.p1damage}`);
+				realdamage = Math.floor(data.p1damage / 4);
+				//console.log(realdamage);
+			});
+        this.isDamageListenerAdded = true;
+
         }
 		
     }
+	
+	
 	
 	
     setFrames() {
         this.currentFrame = 0
         this.frames = [
             {
-                action: function (pill) {
+				
+				
+				
+			
+			
+			
+                action: (pill) => {
                     pill.rotate(Direction.LEFT)
-					
-					
-					
 					console.log('new pill');
 					socket.emit('updatePoints2', { player1points: localpoints });
+					
+				for (let i = 0; i < realdamage; i++) {
+					console.log('hurt');
+					this.hurt();
+				}
+					
 					
                 }
             },
@@ -462,6 +478,8 @@ export class PlayingBoard extends Board {
         })
     }
 
+
+	
 	
 	spawnViruses() {
         this.virusCount = this.level * 4 + 4;
@@ -497,6 +515,39 @@ export class PlayingBoard extends Board {
 		
 		
 	
+	
+	
+	
+	
+	
+	
+	
+	hurt() {
+		
+	console.log('hurt');
+        this.virusCount = 1
+        this.maxVirusHeight = 10
+        if (this.level >= 15) this.maxVirusHeight++
+        if (this.level >= 17) this.maxVirusHeight++
+        if (this.level >= 19) this.maxVirusHeight++
+        let color
+        for (let i = 0; i < this.virusCount; i++) {
+            if (this.lastColor == Color.FIRST) color = Color.SECOND
+            else if (this.lastColor == Color.SECOND) color = Color.THIRD
+            else color = Color.FIRST
+            this.spawnVirus(color)
+            this.lastColor = color
+        }
+    }
+
+    spawnVirus(color) {
+        let x, y
+        do {
+            x = Math.floor(Math.random() * 8)
+            y = Math.floor(Math.random() * this.maxVirusHeight)
+        } while (this.fields[x][y].isTaken() || this.fields[x][y].shouldBeCleared(color))
+        this.virusList.push(new Virus(this, x, y, color))
+    }
 	
 	
 	

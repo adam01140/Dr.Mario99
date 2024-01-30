@@ -8,6 +8,8 @@ var second = 0;
 
 var localpoints = 0;
 var enemy = 0;
+var spawn = 0;
+
 
 //import { io } from 'socket.io-client';
 const socket = io('http://localhost:3000');
@@ -88,7 +90,12 @@ class ThrowingBoard extends Board {
 		
 		if (!this.isDamageListenerAdded) {
             socket.on('p2damage', (data) => {
+				
                 console.log(`Damage received: ${data.p2damage}`);
+				
+				spawn = Math.floor(data.p1damage / 4);
+
+				//alert(spawn);
             });
             this.isDamageListenerAdded = true;
         }
@@ -457,6 +464,36 @@ export class PlayingBoard extends Board {
         })
     }
 
+	spawnEnemyViruses() {
+        this.virusCount = this.level * 4 + 4;
+        this.maxVirusHeight = 10
+        if (this.level >= 15) this.maxVirusHeight++
+        if (this.level >= 17) this.maxVirusHeight++
+        if (this.level >= 19) this.maxVirusHeight++
+        let color
+
+        // Use pre-generated virus positions
+        for (let i = 0; i < this.virusCount; i++) {
+			
+			
+			if (this.lastColor == Color.FIRST) color = Color.SECOND
+            else if (this.lastColor == Color.SECOND) color = Color.THIRD
+            else color = Color.FIRST
+            //this.spawnVirus(color)
+            this.lastColor = color
+			
+			
+			
+            const position = this.virusPositions[i];
+            if (position) {
+                const { x, y } = position;
+                //const color = this.lastColor === Color.FIRST ? Color.SECOND : (this.lastColor === Color.SECOND ? Color.THIRD : Color.FIRST);
+                this.virusList.push(new Virus(this, x, y, color));
+            }
+        }
+    }
+	
+	
 	
 	spawnViruses() {
         this.virusCount = this.level * 4 + 4;

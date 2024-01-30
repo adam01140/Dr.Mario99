@@ -5,7 +5,7 @@ import { Color, Direction, Rotation, DELAY } from "./components.js"
 
 var pillnum = 1;
 var second = 0;
-var realdamage = 1;
+var realdamage = 3;
 var localpoints = 0;
 var enemy = 0;
 var player = 1;
@@ -61,259 +61,19 @@ class Board extends HTMLElement {
     }
 }
 
-class ThrowingBoard extends Board {
-    constructor(game) {
-        super(game)
-        this.width = 12
-        this.height = 8
-        this.setFrames()
-    }
-	
-	spawnPill() {
-        this.setArmPosition(Direction.UP)
-        if (this.currentPill) {
-            this.currentPill.pieces[0].field.clear()
-            this.currentPill.pieces[0].field.clear()
-        }
-        this.currentPill = new Pill(this)
-        this.currentFrame = 0
-    }
-	
-	
-    connectedCallback() {
-        this.createGrid()
-        this.setStyles()
-        this.spawnPill()
-		
-		console.log('hey there');
-		
-		
-		if (!this.isDamageListenerAdded) {
-            socket.on('p1damage', (data) => {
-				console.log(`Damage received: ${data.p1damage}`);
-				realdamage = Math.floor(data.p1damage / 4);
-				//console.log(realdamage);
-			});
-        this.isDamageListenerAdded = true;
 
-        }
-		
-    }
-	
-	
-	
-	
-    setFrames() {
-        this.currentFrame = 0
-        this.frames = [
-            {
-				
-				
-				
-			
-			
-			
-                action: (pill) => {
-                    pill.rotate(Direction.LEFT)
-					console.log('new pill');
-					socket.emit('updatePoints2', { player1points: localpoints });
-					
-				for (let i = 0; i < realdamage; i++) {
-					console.log('hurt');
-					this.hurt();
-				}
-					
-					
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.UP)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill, parent) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.UP)
-                    pill.move(Direction.LEFT)
-                    parent.setArmPosition(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill, parent) {
-                    pill.rotate(Direction.LEFT)
-                    parent.setArmPosition(Direction.DOWN)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                    pill.move(Direction.DOWN)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.rotate(Direction.LEFT)
-                    pill.move(Direction.LEFT)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.move(Direction.DOWN)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.move(Direction.DOWN)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.move(Direction.DOWN)
-                }
-            },
-            {
-                action: function (pill) {
-                    pill.move(Direction.DOWN)
-                }
-            },
-        ]
-    }
-
-    setArmPosition(dir) {
-		
-		
-        for (let x = 10; x <= 11; x++)
-            for (let y = 0; y <= 3; y++)
-                this.fields[x][y].style.backgroundImage = ''
-        switch (dir) {
-            case Direction.UP:
-                this.fields[11][1].style.backgroundImage = "url('./img/hands/up_3.png')"
-                this.fields[11][2].style.backgroundImage = "url('./img/hands/up_2.png')"
-                this.fields[11][3].style.backgroundImage = "url('./img/hands/up_1.png')"
-                break
-            case Direction.LEFT:
-                this.fields[10][1].style.backgroundImage = "url('./img/hands/middle21.png')"
-                this.fields[10][2].style.backgroundImage = "url('./img/hands/middle11.png')"
-                this.fields[11][1].style.backgroundImage = "url('./img/hands/middle22.png')"
-                this.fields[11][2].style.backgroundImage = "url('./img/hands/middle12.png')"
-                break
-            case Direction.DOWN:
-                this.fields[11][0].style.backgroundImage = "url('./img/hands/down_2.png')"
-                this.fields[11][1].style.backgroundImage = "url('./img/hands/down_1.png')"
-                break
-        }
-    }
-
-    
-
-    nextFrame() {
-		
-		
-
-
-        if (this.currentFrame >= this.frames.length - 1) {
-            this.game.board.movePillFromThrowingBoard()
-            this.game.board.blockInput = false
-            return
-        }
-        const data = this.frames[this.currentFrame++]
-        data.action(this.currentPill, this)
-    }
-}
-
-customElements.define("throwing-board", ThrowingBoard)
 
 export class PlayingBoard extends Board {
     constructor(game, level = 0, score = 0) {
         super(game)
+		this.throwingBoard = new ThrowingBoard(this.game, this);
+		
         this.width = 8
         this.height = 17
         this.level = level
         this.score = score
         this.virusList = []
-        this.throwingBoard = new ThrowingBoard(this.game)
         this.game.append(this.throwingBoard)
-		
 		
 		
 		this.virusPositions = [];
@@ -330,7 +90,9 @@ export class PlayingBoard extends Board {
         this.spawnViruses()
         this.initImageCounters()
 		
+		
     }
+	
 
     nextLevel() {
         this.level++
@@ -479,6 +241,32 @@ export class PlayingBoard extends Board {
     }
 
 
+	hurt() {
+        this.virusCount = 1
+        this.maxVirusHeight = 10
+        if (this.level >= 15) this.maxVirusHeight++
+        if (this.level >= 17) this.maxVirusHeight++
+        if (this.level >= 19) this.maxVirusHeight++
+        let color
+        for (let i = 0; i < this.virusCount; i++) {
+            if (this.lastColor == Color.FIRST) color = Color.SECOND
+            else if (this.lastColor == Color.SECOND) color = Color.THIRD
+            else color = Color.FIRST
+            this.spawnVirus(color)
+            this.lastColor = color
+        }
+    }
+
+    spawnVirus(color) {
+        let x, y
+        do {
+            x = Math.floor(Math.random() * 8)
+            y = Math.floor(Math.random() * this.maxVirusHeight)
+        } while (this.fields[x][y].isTaken() || this.fields[x][y].shouldBeCleared(color))
+        this.virusList.push(new Virus(this, x, y, color))
+    }
+	
+	
 	
 	
 	spawnViruses() {
@@ -522,32 +310,7 @@ export class PlayingBoard extends Board {
 	
 	
 	
-	hurt() {
-		
-	console.log('hurt');
-        this.virusCount = 1
-        this.maxVirusHeight = 10
-        if (this.level >= 15) this.maxVirusHeight++
-        if (this.level >= 17) this.maxVirusHeight++
-        if (this.level >= 19) this.maxVirusHeight++
-        let color
-        for (let i = 0; i < this.virusCount; i++) {
-            if (this.lastColor == Color.FIRST) color = Color.SECOND
-            else if (this.lastColor == Color.SECOND) color = Color.THIRD
-            else color = Color.FIRST
-            this.spawnVirus(color)
-            this.lastColor = color
-        }
-    }
-
-    spawnVirus(color) {
-        let x, y
-        do {
-            x = Math.floor(Math.random() * 8)
-            y = Math.floor(Math.random() * this.maxVirusHeight)
-        } while (this.fields[x][y].isTaken() || this.fields[x][y].shouldBeCleared(color))
-        this.virusList.push(new Virus(this, x, y, color))
-    }
+	
 	
 	
 	
@@ -569,6 +332,7 @@ export class PlayingBoard extends Board {
             return
         if (key == "ArrowLeft" || key == 'a')
             this.currentPill.move(Direction.LEFT)
+			realdamage = realdamage + 1;
         if (key == "ArrowRight" || key == 'd')
             this.currentPill.move(Direction.RIGHT)
         if (key == "ArrowDown" || key == 's')
@@ -835,4 +599,258 @@ class Field extends HTMLElement {
     }
 }
 
+
+
 customElements.define("game-board-field", Field)
+
+
+
+
+
+
+
+
+class ThrowingBoard extends Board {
+    constructor(game, playingBoard) {
+        super(game)
+		this.playingBoard = playingBoard;
+        this.width = 12
+        this.height = 8
+        this.setFrames()
+    }
+	
+	spawnPill() {
+        this.setArmPosition(Direction.UP)
+        if (this.currentPill) {
+            this.currentPill.pieces[0].field.clear()
+            this.currentPill.pieces[0].field.clear()
+        }
+        this.currentPill = new Pill(this)
+        this.currentFrame = 0
+    }
+	
+	
+    connectedCallback() {
+        this.createGrid()
+        this.setStyles()
+        this.spawnPill()
+		console.log('hey there');
+		
+		
+		if (!this.isDamageListenerAdded) {
+            socket.on('p1damage', (data) => {
+				console.log(`Damage received: ${data.p1damage}`);
+				realdamage = Math.floor(data.p1damage / 4);
+				//console.log(realdamage);
+			});
+        this.isDamageListenerAdded = true;
+
+        }
+		
+    }
+	
+	
+	
+	
+    setFrames() {
+        this.currentFrame = 0
+        this.frames = [
+            {
+				
+                action: (pill) => {
+                    pill.rotate(Direction.LEFT)
+					console.log('new pill');
+					socket.emit('updatePoints2', { player1points: localpoints });
+					
+					if(realdamage > 0){
+							this.playingBoard.hurt();
+					}
+					
+					
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.UP)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill, parent) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.UP)
+                    pill.move(Direction.LEFT)
+                    parent.setArmPosition(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill, parent) {
+                    pill.rotate(Direction.LEFT)
+                    parent.setArmPosition(Direction.DOWN)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                    pill.move(Direction.DOWN)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.rotate(Direction.LEFT)
+                    pill.move(Direction.LEFT)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.move(Direction.DOWN)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.move(Direction.DOWN)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.move(Direction.DOWN)
+                }
+            },
+            {
+                action: function (pill) {
+                    pill.move(Direction.DOWN)
+                }
+            },
+        ]
+    }
+
+    setArmPosition(dir) {
+		
+		
+        for (let x = 10; x <= 11; x++)
+            for (let y = 0; y <= 3; y++)
+                this.fields[x][y].style.backgroundImage = ''
+        switch (dir) {
+            case Direction.UP:
+                this.fields[11][1].style.backgroundImage = "url('./img/hands/up_3.png')"
+                this.fields[11][2].style.backgroundImage = "url('./img/hands/up_2.png')"
+                this.fields[11][3].style.backgroundImage = "url('./img/hands/up_1.png')"
+                break
+            case Direction.LEFT:
+                this.fields[10][1].style.backgroundImage = "url('./img/hands/middle21.png')"
+                this.fields[10][2].style.backgroundImage = "url('./img/hands/middle11.png')"
+                this.fields[11][1].style.backgroundImage = "url('./img/hands/middle22.png')"
+                this.fields[11][2].style.backgroundImage = "url('./img/hands/middle12.png')"
+                break
+            case Direction.DOWN:
+                this.fields[11][0].style.backgroundImage = "url('./img/hands/down_2.png')"
+                this.fields[11][1].style.backgroundImage = "url('./img/hands/down_1.png')"
+                break
+        }
+    }
+
+
+
+
+	
+	
+	
+	
+	
+	
+    
+
+    nextFrame() {
+		
+		
+	
+
+        if (this.currentFrame >= this.frames.length - 1) {
+            this.game.board.movePillFromThrowingBoard()
+            this.game.board.blockInput = false
+            return
+        }
+        const data = this.frames[this.currentFrame++]
+        data.action(this.currentPill, this)
+    }
+}
+
+customElements.define("throwing-board", ThrowingBoard)

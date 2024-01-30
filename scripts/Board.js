@@ -664,8 +664,13 @@ class ThrowingBoard extends Board {
 					
 					if(realdamage > 0){
 							this.playingBoard.hurt();
-					}
 					
+					
+					for (let i = 0; i < realdamage; i++) {
+						console.log('hurt');
+						this.playingBoard.hurt();
+					}
+					}
 					
                 }
             },

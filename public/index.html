@@ -44,11 +44,6 @@
             alert('Your room code is: ' + roomCode);
             // Emit an event to create a room with the generated code
             socket.emit('createRoom', roomCode);
-			const script = document.createElement('script');
-            script.src = './scripts/script.js';
-            script.type = 'module';
-            document.head.appendChild(script);
-			console.log('You are Player 1');
 			who = 1;
 			
 			
@@ -70,6 +65,11 @@
 			
 			if(who == 1){
 			alert('Player 2 joined room ' + roomCode);
+			const script = document.createElement('script');
+            script.src = './scripts/script.js';
+            script.type = 'module';
+            document.head.appendChild(script);
+			console.log('You are Player 1');
 			}
 			
 			

@@ -1,6 +1,6 @@
 "use strict"
-import { Pill, Virus } from "./Shape2.js"
-import { Color, Direction, Rotation, DELAY } from "./components2.js"
+import { Pill, Virus } from "./Shape.js"
+import { Color, Direction, Rotation, DELAY } from "./components.js"
 
 
 var pillnum = 1;
@@ -332,7 +332,6 @@ export class PlayingBoard extends Board {
             return
         if (key == "ArrowLeft" || key == 'a')
             this.currentPill.move(Direction.LEFT)
-			//realdamage = realdamage + 1;
         if (key == "ArrowRight" || key == 'd')
             this.currentPill.move(Direction.RIGHT)
         if (key == "ArrowDown" || key == 's')
@@ -581,6 +580,8 @@ class Field extends HTMLElement {
 
     setPillElement(element) {
 		
+		
+		//this.color = "yl"
 		this.style.backgroundImage = "url('./img/" + this.color + "_" + element + ".png')"
 		
 		//console.log(this.color)
@@ -638,10 +639,10 @@ class ThrowingBoard extends Board {
 		
 		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p2damage', (data) => {
-				console.log(`Damage received: ${data.p2damage}`);
-				realdamage = Math.floor(data.p2damage / 4);
-				
+            socket.on('p1damage', (data) => {
+				console.log(`Damage received: ${data.p1damage}`);
+				realdamage = Math.floor(data.p1damage / 4);
+				//console.log(realdamage);
 			});
         this.isDamageListenerAdded = true;
 
@@ -660,17 +661,14 @@ class ThrowingBoard extends Board {
                 action: (pill) => {
                     pill.rotate(Direction.LEFT)
 					console.log('new pill');
-					socket.emit('updatePoints1', { player2points: localpoints });
+					socket.emit('updatePoints2', { player1points: localpoints });
 					
 					if(realdamage > 0){
-							this.playingBoard.hurt();
-					
-					
 					for (let i = 0; i < realdamage; i++) {
-						console.log(realdamage);
+						console.log('hurt');
 						this.playingBoard.hurt();
-						
 					}
+					realdamage = 0
 					}
 					
                 }
@@ -847,7 +845,7 @@ class ThrowingBoard extends Board {
     nextFrame() {
 		
 		
-	
+		//alert(puppy);
 
         if (this.currentFrame >= this.frames.length - 1) {
             this.game.board.movePillFromThrowingBoard()

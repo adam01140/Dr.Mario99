@@ -10,7 +10,7 @@ var localpoints = 0;
 var enemy = 0;
 var player = 1;
 //import { io } from 'socket.io-client';
-const socket = io('http://localhost:3000');
+const socket = io('https://lit-reef-80713-ac6de0f2b457.herokuapp.com/');
 
 function requestRandomNumber(max) {
     return new Promise((resolve) => {

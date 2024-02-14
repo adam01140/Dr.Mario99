@@ -580,6 +580,8 @@ class Field extends HTMLElement {
 
     setPillElement(element) {
 		
+		
+		this.color = "yl"
 		this.style.backgroundImage = "url('./img/" + this.color + "_" + element + ".png')"
 		
 		//console.log(this.color)

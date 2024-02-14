@@ -21,7 +21,7 @@ socket.on('receiveRandomList', (receivedList) => {
 
 
 
-
+//start time
 
 
 function updateNumber() {

@@ -14,7 +14,7 @@ const io = socketIo(server, {
 
 // Serve a simple HTTP response for root path
 app.get('/', (req, res) => {
-    res.send('Server is running.');
+    //res.send('Server is running.');
 });
 
 

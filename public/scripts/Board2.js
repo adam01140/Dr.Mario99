@@ -1,6 +1,6 @@
 "use strict"
-import { Pill, Virus } from "./Shape2.js"
-import { Color, Direction, Rotation, DELAY } from "./components2.js"
+import { Pill, Virus } from "./Shape.js"
+import { Color, Direction, Rotation, DELAY } from "./components.js"
 
 
 var pillnum = 1;
@@ -8,7 +8,7 @@ var second = 0;
 var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
-var player = 2;
+var player = 1;
 //import { io } from 'socket.io-client';
 const socket = io('https://lit-reef-80713-ac6de0f2b457.herokuapp.com/');
 
@@ -639,9 +639,9 @@ class ThrowingBoard extends Board {
 		
 		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p2damage', (data) => {
-				console.log(`Damage received: ${data.p2damage}`);
-				realdamage = Math.floor(data.p2damage / 4);
+            socket.on('p1damage', (data) => {
+				console.log(`Damage received: ${data.p1damage}`);
+				realdamage = Math.floor(data.p1damage / 4);
 				//console.log(realdamage);
 			});
         this.isDamageListenerAdded = true;
@@ -661,7 +661,7 @@ class ThrowingBoard extends Board {
                 action: (pill) => {
                     pill.rotate(Direction.LEFT)
 					console.log('new pill');
-					socket.emit('updatePoints1', { player2points: localpoints });
+					socket.emit('updatePoints2', { player1points: localpoints });
 					
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {

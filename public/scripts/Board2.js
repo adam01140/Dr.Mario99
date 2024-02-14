@@ -8,7 +8,7 @@ var second = 0;
 var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
-var player = 1;
+var player = 2;
 //import { io } from 'socket.io-client';
 const socket = io('https://lit-reef-80713-ac6de0f2b457.herokuapp.com/');
 

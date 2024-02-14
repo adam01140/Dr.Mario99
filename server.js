@@ -2,12 +2,23 @@ const http = require('http');
 const socketIo = require('socket.io');
 //const randomList = [2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 2, 1, 1, 1, 2, 0, 0, 2, 2, 0];
 
-const server = http.createServer();
+
+
+const express = require('express');
+
+const app = express();
+const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: {
-        origin: "*", // Adjust as per your client-side setup
-    },
+    cors: { origin: "*", },
 });
+
+// Serve a simple HTTP response for root path
+app.get('/', (req, res) => {
+    res.send('Server is running.');
+});
+
+
+
 
 
 function generateRandomList() {

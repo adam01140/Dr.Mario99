@@ -1,10 +1,7 @@
+const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-//const randomList = [2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 2, 1, 1, 1, 2, 0, 0, 2, 2, 0];
-
-
-
-const express = require('express');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
@@ -12,10 +9,11 @@ const io = socketIo(server, {
     cors: { origin: "*", },
 });
 
-// Serve a simple HTTP response for root path
-app.get('/', (req, res) => {
-    res.send('Server is running.');
-});
+// New line: Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 
 
 

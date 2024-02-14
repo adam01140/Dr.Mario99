@@ -33,7 +33,7 @@
 
 
 	
-
+	var who = 0;
 
 
 
@@ -44,13 +44,12 @@
             alert('Your room code is: ' + roomCode);
             // Emit an event to create a room with the generated code
             socket.emit('createRoom', roomCode);
-			
-			
 			const script = document.createElement('script');
             script.src = './scripts/script.js';
             script.type = 'module';
             document.head.appendChild(script);
 			console.log('You are Player 1');
+			who = 1;
 			
 			
         };
@@ -59,12 +58,20 @@
 		
 		socket.on('roomJoined', (roomCode) => {
             // This event indicates that the room join was successful
-            alert('Joined room ' + roomCode);
-            const script = document.createElement('script');
+            
+			if(who == 2){
+			alert('Joined room ' + roomCode);
+			const script = document.createElement('script');
             script.src = './scripts/script2.js'; // Or dynamically choose script based on player number
             script.type = 'module';
             document.head.appendChild(script);
 			console.log('Room Joined ');
+			}
+			
+			if(who == 1){
+			alert('Player 2 joined room ' + roomCode);
+			}
+			
 			
         });
 
@@ -80,13 +87,8 @@
             if (roomCode) {
                 // Emit an event to join the room with the specified code
                 socket.emit('joinRoom', roomCode);
-				const script = document.createElement('script');
-            script.src = './scripts/script2.js';
-            script.type = 'module';
-            document.head.appendChild(script);
+			who = 2;
 			console.log('You are Player 2 ');
-			
-			
             }
         };
 

@@ -45,9 +45,31 @@ const playersInLobby = { count: 0 };
 
 
 
-
+const activeRooms = {};
 
 io.on('connection', (socket) => {
+	
+	
+	socket.on('createRoom', (roomCode) => {
+        // Create room only if it doesn't already exist
+        if (!activeRooms[roomCode]) {
+            activeRooms[roomCode] = { players: [socket.id] }; // Store creator's socket ID
+            socket.join(roomCode); // Socket joins the room
+            // Wait for player 2 to join...
+        }
+    });
+
+    socket.on('joinRoom', (roomCode) => {
+        // Check if room exists
+        if (activeRooms[roomCode]) {
+            activeRooms[roomCode].players.push(socket.id); // Add player 2's socket ID
+            socket.join(roomCode);
+            io.to(roomCode).emit('roomJoined', roomCode); // Notify both players in the room
+        } else {
+            socket.emit('error', 'Room does not exist.'); // Notify player 2 if room code is invalid
+        }
+    });
+	
 	
 	
 	socket.on('updatePoints1', (data) => {

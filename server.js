@@ -69,8 +69,7 @@ io.on('connection', (socket) => {
             socket.emit('error', 'Room does not exist.'); // Notify player 2 if room code is invalid
         }
     });
-	
-	
+
 	
 	socket.on('updatePoints1', (data) => {
         //console.log(`Received points from player 2: ${data.player2points}`);

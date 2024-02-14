@@ -639,9 +639,9 @@ class ThrowingBoard extends Board {
 		
 		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p1damage', (data) => {
-				console.log(`Damage received: ${data.p1damage}`);
-				realdamage = Math.floor(data.p1damage / 4);
+            socket.on('p2damage', (data) => {
+				console.log(`Damage received: ${data.p2damage}`);
+				realdamage = Math.floor(data.p2damage / 4);
 				//console.log(realdamage);
 			});
         this.isDamageListenerAdded = true;
@@ -661,7 +661,7 @@ class ThrowingBoard extends Board {
                 action: (pill) => {
                     pill.rotate(Direction.LEFT)
 					console.log('new pill');
-					socket.emit('updatePoints2', { player1points: localpoints });
+					socket.emit('updatePoints1', { player2points: localpoints });
 					
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {

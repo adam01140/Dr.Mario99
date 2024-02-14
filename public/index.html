@@ -25,8 +25,9 @@
 <!-- Add this script tag to the head section -->
 <script>
     const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-    const socket = io(protocol + '10.0.0.106:3000/');
-	
+    
+	const socket = io('https://lit-reef-80713-ac6de0f2b457.herokuapp.com/');
+
 	
     let player = 0; // Default player number
 

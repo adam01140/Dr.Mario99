@@ -700,6 +700,7 @@ class ThrowingBoard extends Board {
 						this.playingBoard.hurt();
 					}
 					realdamage = 0
+					console.log('reset real damage');
 					}
 					
                 }

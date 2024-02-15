@@ -692,7 +692,7 @@ class ThrowingBoard extends Board {
                     pill.rotate(Direction.LEFT)
 					console.log('new pill');
 					socket.emit('updatePoints2', { player1points: localpoints });
-					
+					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {
 						console.log('hurt');

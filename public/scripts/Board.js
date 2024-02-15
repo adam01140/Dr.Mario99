@@ -681,7 +681,7 @@ class ThrowingBoard extends Board {
     }
 	
 	
-	
+	//balls drop
 	
     setFrames() {
         this.currentFrame = 0

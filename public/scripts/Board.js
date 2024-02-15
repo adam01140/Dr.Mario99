@@ -89,7 +89,7 @@ export class PlayingBoard extends Board {
         this.createKeyboardListeners()
         this.spawnViruses()
         this.initImageCounters()
-		
+		this.spawnYellowDot();
 		
     }
 	
@@ -349,7 +349,7 @@ export class PlayingBoard extends Board {
         const y = 0; // Top row of the board.
         const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         
-		alert('x = ' + x + 'y = ' + y);
+		//alert('x = ' + x + 'y = ' + y);
         // Check if the position is not already taken.
         if (!this.fields[x][y].isTaken()) {
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
@@ -378,7 +378,6 @@ export class PlayingBoard extends Board {
     }
 
     spawnPill() {
-		this.spawnYellowDot();
         if (this.stageCompleted())
             setTimeout(() => {
                 this.game.nextStage()

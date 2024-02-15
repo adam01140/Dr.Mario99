@@ -21,7 +21,7 @@
 <button id="joinRoom">Join Room</button>
 
 <center>	
-<h1 id="roomCodeDisplay" style="text-align: center; display: none;">Room Code: <span id="roomCode"></span></h1>
+<h1 id="roomCodeDisplay" style="text-align: center; display: none;">Waiting for player 2, your room code is: <span id="roomCode"></span></h1>
 </center>
 		
 <!-- Add this script tag to the head section -->
@@ -49,9 +49,7 @@
 			who = 1;
 			
 			// Create paragraph element
-    const para = document.createElement("p");
-    const node = document.createTextNode("Waiting for player 2, your room code is: " + roomCode);
-	
+  
 	document.getElementById('roomCode').textContent = roomCode;
     document.getElementById('roomCodeDisplay').style.display = 'block'; 
 	

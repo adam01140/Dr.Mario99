@@ -359,7 +359,7 @@ export class PlayingBoard extends Board {
         if (!this.fields[x][y].isTaken()) {
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
             //this.useGravitation()
-			//this.clearIfNeeded()
+			this.clearIfNeeded()
         }
 		
 		

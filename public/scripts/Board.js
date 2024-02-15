@@ -342,7 +342,7 @@ export class PlayingBoard extends Board {
             this.currentPill.rotate(Direction.RIGHT)
     }
 	
-	this.spawnYellowDot();
+	
 	
 	spawnYellowDot() {  
         const x = 2 // Calculate the center position on the x-axis.
@@ -378,6 +378,7 @@ export class PlayingBoard extends Board {
     }
 
     spawnPill() {
+		this.spawnYellowDot();
         if (this.stageCompleted())
             setTimeout(() => {
                 this.game.nextStage()

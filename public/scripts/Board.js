@@ -358,7 +358,11 @@ export class PlayingBoard extends Board {
         // Check if the position is not already taken.
         if (!this.fields[x][y].isTaken()) {
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
-			alert(this.fields[x][(y-1)].color);
+			
+			if((this.fields[x][(y-1)].color) == Color.NONE){
+			//alert(this.fields[x][(y-1)].color);
+			alert('hello love');
+			}
             this.useGravitation()
 			this.clearIfNeeded()
         }

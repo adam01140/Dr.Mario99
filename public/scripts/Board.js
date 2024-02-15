@@ -359,20 +359,10 @@ export class PlayingBoard extends Board {
         if (!this.fields[x][y].isTaken()) {
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
             //this.useGravitation()
+			this.clearIfNeeded()
         }
 		
 		
-		if (this.fields[x][y]) {
-            let movedyellow = this.fields[x][y].move(Direction.DOWN)
-            if (!movedyellow) {
-                this.blockInput = true
-                this.fields[x][y].place()
-                this.clearIfNeeded()
-                this.useGravitation()
-                if (this.gameOver()) return
-                if (this.stageCompleted()) return
-            }
-        }
 		
 		
     }

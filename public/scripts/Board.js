@@ -696,6 +696,7 @@ class ThrowingBoard extends Board {
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {
 						console.log('hurt');
+						console.log('i = ' + i);
 						this.playingBoard.hurt();
 					}
 					realdamage = 0

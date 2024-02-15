@@ -531,7 +531,7 @@ class Field extends HTMLElement {
         }
         if (selfColor == Color.NONE)
             return false
-        else if (vertical >= 3 || horizontal >= 3)
+        else if (vertical >= 5 || horizontal >= 5)
             return true
         else
             return false

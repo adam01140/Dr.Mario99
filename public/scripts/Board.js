@@ -656,8 +656,8 @@ class ThrowingBoard extends Board {
 	
 	spawnYellowDot() {
         
-        const x = Math.floor(this.width / 2); // Calculate the center position on the x-axis.
-        const y = this.height - 1; // Top row of the board.
+        const x = Math.floor(Math.random() * 8) // Calculate the center position on the x-axis.
+        const y = Math.floor(Math.random() * 10); // Top row of the board.
         const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         
 		alert('yellow');

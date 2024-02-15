@@ -663,7 +663,7 @@ class ThrowingBoard extends Board {
 		alert('yellow');
         // Check if the position is not already taken.
         if (!this.fields[x][y].isTaken()) {
-			alert('yellow set');
+			alert('x = ' + x + 'y = ' + y);
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
             // Additional logic to mark the field as taken or to associate it with a shape, if necessary.
         }

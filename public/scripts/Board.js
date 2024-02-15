@@ -467,22 +467,10 @@ class Field extends HTMLElement {
 
     connectedCallback() {
         this.setStyles()
-		this.spawnYellowDot();
     }
 
 
-	spawnYellowDot() {
-        
-        const x = Math.floor(this.width / 2); // Calculate the center position on the x-axis.
-        const y = this.height - 1; // Top row of the board.
-        const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
-        
-        // Check if the position is not already taken.
-        if (!this.fields[x][y].isTaken()) {
-            this.fields[x][y].setColor(color); // Set the color of the field to yellow.
-            // Additional logic to mark the field as taken or to associate it with a shape, if necessary.
-        }
-    }
+	
 	
 	
     setStyles() {
@@ -651,7 +639,7 @@ class ThrowingBoard extends Board {
         this.setStyles()
         this.spawnPill()
 		console.log('hey there');
-		
+		this.spawnYellowDot();
 		
 		if (!this.isDamageListenerAdded) {
             socket.on('p1damage', (data) => {
@@ -666,7 +654,18 @@ class ThrowingBoard extends Board {
     }
 	
 	
-	
+	spawnYellowDot() {
+        
+        const x = Math.floor(this.width / 2); // Calculate the center position on the x-axis.
+        const y = this.height - 1; // Top row of the board.
+        const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
+        
+        // Check if the position is not already taken.
+        if (!this.fields[x][y].isTaken()) {
+            this.fields[x][y].setColor(color); // Set the color of the field to yellow.
+            // Additional logic to mark the field as taken or to associate it with a shape, if necessary.
+        }
+    }
 	
     setFrames() {
         this.currentFrame = 0

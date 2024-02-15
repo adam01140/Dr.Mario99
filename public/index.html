@@ -59,8 +59,13 @@
             socket.emit('createRoom', roomCode);
 			who = 1;
 			
+			const script = document.createElement('script');
+            script.src = './scripts/script.js'; // Or dynamically choose script based on player number
+            script.type = 'module';
+            document.head.appendChild(script);
+			
 		const roomCodeDisplay = document.getElementById('roomCodeDisplay');
-            roomCodeDisplay.textContent = 'Waiting for Player 2, room code: \n' + roomCode;
+            roomCodeDisplay.textContent = 'Waiting for Player 2, room code is: \n' + roomCode;
 			
 			
         };

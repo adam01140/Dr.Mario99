@@ -481,7 +481,6 @@ class Field extends HTMLElement {
     if (x)
         this.style.backgroundImage = "url('./img/" + color + "_x.png')";
     if (o)
-		
         this.style.backgroundImage = "url('./img/" + color + "_o.png')";
 		console.log('point aquired');
 		localpoints = localpoints + 1;

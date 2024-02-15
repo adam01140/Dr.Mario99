@@ -467,8 +467,24 @@ class Field extends HTMLElement {
 
     connectedCallback() {
         this.setStyles()
+		this.spawnYellowDot();
     }
 
+
+	spawnYellowDot() {
+        
+        const x = Math.floor(this.width / 2); // Calculate the center position on the x-axis.
+        const y = this.height - 1; // Top row of the board.
+        const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
+        
+        // Check if the position is not already taken.
+        if (!this.fields[x][y].isTaken()) {
+            this.fields[x][y].setColor(color); // Set the color of the field to yellow.
+            // Additional logic to mark the field as taken or to associate it with a shape, if necessary.
+        }
+    }
+	
+	
     setStyles() {
         this.style.left = this.x * this.board.fieldSize + "px"
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'

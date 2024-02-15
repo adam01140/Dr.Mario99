@@ -12,7 +12,15 @@
 	
 </head>
 <body>
-
+<head>
+    <!-- ... other head elements ... -->
+    <style>
+        .room-code-container {
+            text-align: center;
+            font-size: 3em;
+        }
+    </style>
+</head>
 
 <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
@@ -20,9 +28,14 @@
 <button id="createRoom">Create Room</button>
 <button id="joinRoom">Join Room</button>
 
+<div id="roomCodeContainer" class="room-code-container">
+        <p>Room Code:</p>
+        <p id="roomCodeDisplay"></p>
+    </div>
+	
+	
 <center>	
-		
-<!-- Add this script tag to the head section -->
+
 <script>
     const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     
@@ -46,11 +59,8 @@
             socket.emit('createRoom', roomCode);
 			who = 1;
 			
-		const roomCodeDisplay = document.createElement('h1');
-    roomCodeDisplay.textContent = roomCode;
-    roomCodeDisplay.style.textAlign = 'center'; // Center the text
-    roomCodeDisplay.style.fontSize = '3em'; // Make it bigger, you can adjust as needed
-    document.body.appendChild(roomCodeDisplay);
+		const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+            roomCodeDisplay.textContent = roomCode;
 			
 			
         };
@@ -68,6 +78,7 @@
             document.head.appendChild(script);
 			console.log('Room Joined ');
 			}
+			
 			
 			if(who == 1){
 			alert('Player 2 joined room ' + roomCode);

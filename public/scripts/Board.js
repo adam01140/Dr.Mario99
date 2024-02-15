@@ -351,12 +351,30 @@ export class PlayingBoard extends Board {
         const y = 0; // Top row of the board.
         const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         
+		
+		
+		
 		//alert('x = ' + x + 'y = ' + y);
         // Check if the position is not already taken.
         if (!this.fields[x][y].isTaken()) {
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
             this.useGravitation()
         }
+		
+		
+		if (this.fields[x][y]) {
+            let movedyellow = this.fields[x][y].move(Direction.DOWN)
+            if (!movedyellow) {
+                this.blockInput = true
+                this.fields[x][y].place()
+                this.clearIfNeeded()
+                this.useGravitation()
+                if (this.gameOver()) return
+                if (this.stageCompleted()) return
+            }
+        }
+		
+		
     }
 	
 

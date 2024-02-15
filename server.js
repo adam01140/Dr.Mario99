@@ -29,8 +29,8 @@ function generateVirusPositions() {
     const positions = [];
     for (let i = 0; i < 10; i++) { // Generate 4 virus positions
         positions.push({
-            x: Math.floor(Math.random() * 8), // Assuming width is 8
-            y: Math.floor(Math.random() * 10) // Assuming max height is 10
+            x: Math.floor(Math.random() * 1), // Assuming width is 8
+            y: Math.floor(Math.random() * 1) // Assuming max height is 10
         });
     }
     return positions;

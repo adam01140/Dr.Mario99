@@ -331,7 +331,6 @@ export class PlayingBoard extends Board {
         if (!this.currentPill || this.currentPill.placed)
             return
         if (key == "ArrowLeft" || key == 'a')
-			this.spawnYellowDot();
             this.currentPill.move(Direction.LEFT)
         if (key == "ArrowRight" || key == 'd')
             this.currentPill.move(Direction.RIGHT)
@@ -343,6 +342,7 @@ export class PlayingBoard extends Board {
             this.currentPill.rotate(Direction.RIGHT)
     }
 	
+	this.spawnYellowDot();
 	
 	spawnYellowDot() {  
         const x = 2 // Calculate the center position on the x-axis.

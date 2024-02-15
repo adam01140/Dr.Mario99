@@ -660,8 +660,10 @@ class ThrowingBoard extends Board {
         const y = this.height - 1; // Top row of the board.
         const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         
+		alert('yellow');
         // Check if the position is not already taken.
         if (!this.fields[x][y].isTaken()) {
+			alert('yellow set');
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
             // Additional logic to mark the field as taken or to associate it with a shape, if necessary.
         }

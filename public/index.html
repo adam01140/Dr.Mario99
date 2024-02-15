@@ -21,7 +21,6 @@
 <button id="joinRoom">Join Room</button>
 
 <center>	
-<h1 id="roomCodeDisplay" style="text-align: center; display: none; font-size: 3em;">Room Code: <span id="roomCode"></span></h1>
 		
 <!-- Add this script tag to the head section -->
 <script>
@@ -47,16 +46,12 @@
             socket.emit('createRoom', roomCode);
 			who = 1;
 			
-			// Create paragraph element
-  
-	document.getElementById('roomCode').textContent = roomCode;
-    //document.getElementById('roomCodeDisplay').style.display = 'block'; 
-	
-	
+			var roomCodeDisplay = document.createElement('h1');
+        roomCodeDisplay.textContent = 'Room Code: ' + roomCode;
+        roomCodeDisplay.style.textAlign = 'center'; // Center the text
+        roomCodeDisplay.style.fontSize = '2em'; // Make it bigger, adjust as needed
+        document.body.appendChild(roomCodeDisplay); // Append it to the body or another element of your choice
 
-
-    // Append paragraph to the body or a specific div
-    //document.body.appendChild(para); 
 			
 			
         };

@@ -348,7 +348,7 @@ export class PlayingBoard extends Board {
 	
 	spawnYellowDot() {  
         const x = 3; // Calculate the center position on the x-axis.
-        const y = 3; // Top row of the board.
+        const y = 7; // Top row of the board.
         const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         
 		
@@ -560,9 +560,12 @@ class Field extends HTMLElement {
             if (selfColor != this.board.fields[this.x][this.y - i].getColor()) break
             vertical++
         }
+		
+		//lines needed to clear
+		
         if (selfColor == Color.NONE)
             return false
-        else if (vertical >= 5 || horizontal >= 5)
+        else if (vertical >= 3 || horizontal >= 3)
             return true
         else
             return false

@@ -89,7 +89,7 @@ export class PlayingBoard extends Board {
         this.createKeyboardListeners()
         this.spawnViruses()
         this.initImageCounters()
-		this.spawnYellowDot();
+		//this.spawnYellowDot();
 		
     }
 	
@@ -242,6 +242,8 @@ export class PlayingBoard extends Board {
 
 
 	hurt() {
+		
+		this.spawnYellowDot();
         this.virusCount = 1
         this.maxVirusHeight = 10
         if (this.level >= 15) this.maxVirusHeight++

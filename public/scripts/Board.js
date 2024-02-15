@@ -331,6 +331,7 @@ export class PlayingBoard extends Board {
         if (!this.currentPill || this.currentPill.placed)
             return
         if (key == "ArrowLeft" || key == 'a')
+			this.spawnYellowDot();
             this.currentPill.move(Direction.LEFT)
         if (key == "ArrowRight" || key == 'd')
             this.currentPill.move(Direction.RIGHT)
@@ -655,7 +656,7 @@ class ThrowingBoard extends Board {
         this.setStyles()
         this.spawnPill()
 		console.log('hey there');
-		this.spawnYellowDot();
+		
 		
 		if (!this.isDamageListenerAdded) {
             socket.on('p1damage', (data) => {

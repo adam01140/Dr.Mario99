@@ -341,8 +341,24 @@ export class PlayingBoard extends Board {
         if (key == "Shift")
             this.currentPill.rotate(Direction.RIGHT)
     }
+	
+	
+	spawnYellowDot() {  
+        const x = 2 // Calculate the center position on the x-axis.
+        const y = 0; // Top row of the board.
+        const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
+        
+		alert('x = ' + x + 'y = ' + y);
+        // Check if the position is not already taken.
+        if (!this.fields[x][y].isTaken()) {
+            this.fields[x][y].setColor(color); // Set the color of the field to yellow.
+            this.useGravitation()
+        }
+    }
+	
 
     nextFrame() {
+		
         if (this.currentPill) {
             let moved = this.currentPill.move(Direction.DOWN)
             if (!moved) {
@@ -654,19 +670,7 @@ class ThrowingBoard extends Board {
     }
 	
 	
-	spawnYellowDot() {
-        
-        const x = 2 // Calculate the center position on the x-axis.
-        const y = 0; // Top row of the board.
-        const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
-        
-		alert('x = ' + x + 'y = ' + y);
-        // Check if the position is not already taken.
-        if (!this.fields[x][y].isTaken()) {
-            this.fields[x][y].setColor(color); // Set the color of the field to yellow.
-            this.useGravitation()
-        }
-    }
+	
 	
     setFrames() {
         this.currentFrame = 0

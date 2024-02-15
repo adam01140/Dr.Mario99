@@ -46,6 +46,14 @@
             socket.emit('createRoom', roomCode);
 			who = 1;
 			
+			// Create paragraph element
+    const para = document.createElement("p");
+    const node = document.createTextNode("Room Code: " + roomCode);
+    para.appendChild(node);
+
+    // Append paragraph to the body or a specific div
+    document.body.appendChild(para); 
+			
 			
         };
 		

@@ -46,12 +46,11 @@
             socket.emit('createRoom', roomCode);
 			who = 1;
 			
-			var roomCodeDisplay = document.createElement('h1');
-        roomCodeDisplay.textContent = 'Room Code: ' + roomCode;
-        roomCodeDisplay.style.textAlign = 'center'; // Center the text
-        roomCodeDisplay.style.fontSize = '2em'; // Make it bigger, adjust as needed
-        document.body.appendChild(roomCodeDisplay); // Append it to the body or another element of your choice
-
+		const roomCodeDisplay = document.createElement('h1');
+    roomCodeDisplay.textContent = roomCode;
+    roomCodeDisplay.style.textAlign = 'center'; // Center the text
+    roomCodeDisplay.style.fontSize = '3em'; // Make it bigger, you can adjust as needed
+    document.body.appendChild(roomCodeDisplay);
 			
 			
         };

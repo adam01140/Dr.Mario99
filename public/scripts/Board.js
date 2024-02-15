@@ -345,7 +345,7 @@ export class PlayingBoard extends Board {
 	
 	
 	spawnYellowDot() {  
-        const x = 2 // Calculate the center position on the x-axis.
+        const x = 1 // Calculate the center position on the x-axis.
         const y = 0; // Top row of the board.
         const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         

@@ -347,8 +347,8 @@ export class PlayingBoard extends Board {
 	
 	
 	spawnYellowDot() {  
-        const x = 1 // Calculate the center position on the x-axis.
-        const y = 0; // Top row of the board.
+        const x = 3; // Calculate the center position on the x-axis.
+        const y = 3; // Top row of the board.
         const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         
 		
@@ -359,7 +359,7 @@ export class PlayingBoard extends Board {
         if (!this.fields[x][y].isTaken()) {
             this.fields[x][y].setColor(color); // Set the color of the field to yellow.
             //this.useGravitation()
-			this.clearIfNeeded()
+			//this.clearIfNeeded()
         }
 		
 		

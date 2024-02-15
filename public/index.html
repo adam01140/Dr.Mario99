@@ -29,8 +29,8 @@
 <button id="joinRoom">Join Room</button>
 
 <div id="roomCodeContainer" class="room-code-container">
-        <p>Room Code:</p>
-        <p id="roomCodeDisplay"></p>
+
+       <h1> <p id="roomCodeDisplay"></p>
     </div>
 	
 	
@@ -60,7 +60,7 @@
 			who = 1;
 			
 		const roomCodeDisplay = document.getElementById('roomCodeDisplay');
-            roomCodeDisplay.textContent = 'Waiting' + roomCode;
+            roomCodeDisplay.textContent = 'Waiting for Player 2, room code: ' + roomCode;
 			
 			
         };

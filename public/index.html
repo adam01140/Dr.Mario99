@@ -19,8 +19,10 @@
 
 <button id="createRoom">Create Room</button>
 <button id="joinRoom">Join Room</button>
-		
-		
+
+<center>	
+<h1 id="roomCodeDisplay" style="text-align: center; display: none;">Room Code: <span id="roomCode"></span></h1>
+</center>
 		
 <!-- Add this script tag to the head section -->
 <script>
@@ -49,6 +51,11 @@
 			// Create paragraph element
     const para = document.createElement("p");
     const node = document.createTextNode("Room Code: " + roomCode);
+	
+	document.getElementById('roomCode').textContent = roomCode;
+    document.getElementById('roomCodeDisplay').style.display = 'block'; 
+	
+	
     para.appendChild(node);
 
     // Append paragraph to the body or a specific div

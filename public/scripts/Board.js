@@ -12,7 +12,7 @@ var player = 1;
 
 
 var randx = 3;
-var randy = 7;
+var randy = 14;
 
 const randcolor = 'yl';
 //import { io } from 'socket.io-client';

@@ -887,13 +887,26 @@ class ThrowingBoard extends Board {
 		
 		//alert(puppy);
 		
+		console.log('-----------------');
+		console.log('randx: ' + randx);
+		console.log('randy: ' + randy);
+		console.log('-----------------');
+		
+		console.log('-----------------');
+		console.log('colorxy: ' + this.fields[randx][randy].color);
+		console.log('colorxy-1: ' + this.fields[randx][randy-1].color);
+		console.log('-----------------');
+		
+		
+		
+		
 		if (this.fields[randx][randy].color == randcolor && randy != 0) {
 
 			console.log('gravity1');
 			
 			if((this.fields[randx][(randy-1)].color) == Color.NONE){
 			
-			console.log('gravity1');
+			console.log('gravity2');
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			

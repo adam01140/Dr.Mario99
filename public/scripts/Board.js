@@ -386,7 +386,7 @@ export class PlayingBoard extends Board {
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			
-			alert(randy);
+			//alert(randy);
 			randy = randy - 1;
 			}
             //this.useGravitation()

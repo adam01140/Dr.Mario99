@@ -13,8 +13,9 @@ var player = 1;
 
 var randx = 3;
 var randy = 7;
+var undery = 6;
 
-const randcolor = 'yl';
+var randcolor = 'yl';
 //import { io } from 'socket.io-client';
 const socket = io('https://lit-reef-80713-ac6de0f2b457.herokuapp.com/');
 
@@ -371,15 +372,14 @@ export class PlayingBoard extends Board {
 		//console.log('hereatleast');
 		
 		//alert(puppy);
-		
+		undery = randy - 1;
 		console.log('-----------------');
-		console.log('randx: ' + randx);
+		console.log('randcolor: ' + randcolor);
+		console.log('randx: ' + randy);
 		console.log('randy: ' + randy);
-		console.log('-----------------');
-		
-		console.log('-----------------');
+		console.log('undery: ' + undery);
 		console.log('colorxy: ' + this.fields[randx][randy].color);
-		//console.log('colorxy-1: ' + this.fields[randx][(randy-1)].color);
+		console.log('colorxy-1: ' + this.fields[randx][(undery)].color);
 		console.log('-----------------');
 		
 		
@@ -388,7 +388,7 @@ export class PlayingBoard extends Board {
 		if (this.fields[randx][randy].color == randcolor && randy != 0) {
 
 			console.log('gravity1');
-			const undery = randy - 1;
+
 			if((this.fields[randx][(undery)].color) == Color.NONE){
 			
 			console.log('gravity2');

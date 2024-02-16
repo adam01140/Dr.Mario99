@@ -25,7 +25,7 @@ function requestRandomNumber(max) {
         });
     });
 }
-
+//flawless exc
 function digitToImg(digit) {
     digit = parseInt(digit)
     const img = document.createElement("img")

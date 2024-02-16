@@ -249,7 +249,7 @@ export class PlayingBoard extends Board {
 
 	hurt() {
 		
-		//this.spawnYellowDot();
+		this.spawnYellowDot();
         this.virusCount = 1
         this.maxVirusHeight = 10
         if (this.level >= 15) this.maxVirusHeight++
@@ -353,17 +353,20 @@ export class PlayingBoard extends Board {
 	
 	
 	spawnYellowDot() {  
-
+        const x = 3; // Calculate the center position on the x-axis.
+        const y = 7; // Top row of the board.
+        const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
+        
 		
 		
-		alert('yellow');
+		
+		//alert('x = ' + x + 'y = ' + y);
         // Check if the position is not already taken.
         if (!this.fields[randx][randy].isTaken()) {
-            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.
+            this.fields[randx][randy].setColor(color); // Set the color of the field to yellow.
 			
-        }else{
-		alert('i cant');
-		}
+			
+        }  
 		
 		
 		
@@ -383,7 +386,7 @@ export class PlayingBoard extends Board {
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			
-			//alert(randy);
+			alert(randy);
 			randy = randy - 1;
 			}
             //this.useGravitation()
@@ -721,12 +724,9 @@ class ThrowingBoard extends Board {
 					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {
-						
-						this.spawnYellowDot();
 						console.log('hurt');
 						console.log('i = ' + i);
 						this.playingBoard.hurt();
-						
 					}
 					realdamage = 0
 					console.log('reset real damage');

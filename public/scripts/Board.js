@@ -249,7 +249,9 @@ export class PlayingBoard extends Board {
 
 	hurt() {
 		
+		alert('yup');
 		this.spawnYellowDot();
+		alert('did it');
         this.virusCount = 1
         this.maxVirusHeight = 10
         if (this.level >= 15) this.maxVirusHeight++
@@ -724,8 +726,6 @@ class ThrowingBoard extends Board {
 					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {
-						
-						this.spawnYellowDot();
 						console.log('hurt');
 						console.log('i = ' + i);
 						this.playingBoard.hurt();

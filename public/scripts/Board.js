@@ -379,7 +379,7 @@ export class PlayingBoard extends Board {
 		
 		console.log('-----------------');
 		console.log('colorxy: ' + this.fields[randx][randy].color);
-		console.log('colorxy-1: ' + this.fields[randx][randy-1].color);
+		console.log('colorxy-1: ' + this.fields[randx][(randy-1)].color);
 		console.log('-----------------');
 		
 		

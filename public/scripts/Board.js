@@ -368,6 +368,24 @@ export class PlayingBoard extends Board {
     nextFrame() {
 		
 		
+		console.log('hereatleast');
+		
+		if (this.fields[randx][randy].color == randcolor && randy != 0) {
+
+			console.log('gravity1');
+			
+			if((this.fields[randx][(randy-1)].color) == Color.NONE){
+			
+			console.log('gravity1');
+			this.fields[randx][(randy)].setColor(Color.NONE);
+			this.fields[randx][(randy-1)].setColor(randcolor);	
+			
+			//alert(randy);
+			randy = randy - 1;
+			}
+            //this.useGravitation()
+			//this.clearIfNeeded()
+        } 
 		
 		
 		
@@ -614,27 +632,6 @@ class Field extends HTMLElement {
 	
 
     setPillElement(element) {
-		
-		console.log('hereatleast');
-		
-		if (this.fields[randx][randy].color == randcolor && randy != 0) {
-
-			console.log('gravity1');
-			
-			if((this.fields[randx][(randy-1)].color) == Color.NONE){
-			
-			console.log('gravity1');
-			this.fields[randx][(randy)].setColor(Color.NONE);
-			this.fields[randx][(randy-1)].setColor(randcolor);	
-			
-			//alert(randy);
-			randy = randy - 1;
-			}
-            //this.useGravitation()
-			//this.clearIfNeeded()
-        } 
-		
-		
 		
 		
 		//this.color = "yl"
@@ -903,7 +900,7 @@ class ThrowingBoard extends Board {
     nextFrame() {
 		
 		
-		//alert(puppy);
+		alert(puppy);
 
         if (this.currentFrame >= this.frames.length - 1) {
             this.game.board.movePillFromThrowingBoard()

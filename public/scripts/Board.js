@@ -358,15 +358,10 @@ export class PlayingBoard extends Board {
 	
 	spawnYellowDot() {  
      
-		
-		
-		//alert('x = ' + x + 'y = ' + y);
-        // Check if the position is not already taken.
-        if (!this.fields[randx][randy].isTaken()) {
             this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.
 			
 			console.log('dot yeah');
-        }  
+          
 		
 		
 		

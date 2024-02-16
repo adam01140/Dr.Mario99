@@ -379,7 +379,7 @@ export class PlayingBoard extends Board {
 		console.log('randy: ' + randy);
 		console.log('undery: ' + undery);
 		console.log('colorxy: ' + this.fields[randx][randy].color);
-		console.log('colorxy-1: ' + this.fields[randx][(undery)].color);
+		console.log('colorxundery: ' + this.fields[randx][(undery)].color);
 		console.log('-----------------');
 		
 		
@@ -389,7 +389,7 @@ export class PlayingBoard extends Board {
 
 			console.log('gravity1');
 
-			if((this.fields[randx][(undery)].color) == Color.NONE){
+			if((this.fields[randx][(undery)].color) == Color.NONE && undery != 0){
 			
 			console.log('gravity2');
 			this.fields[randx][(randy)].setColor(Color.NONE);

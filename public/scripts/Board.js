@@ -378,14 +378,15 @@ export class PlayingBoard extends Board {
 		
 		
 		
-		if (this.fields[randx][randy].color == randcolor) {
+		if (this.fields[randx][randy].color == randcolor && randy != 0) {
+
 
 			if((this.fields[randx][(randy-1)].color) == Color.NONE){
 			
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			
-			//alert('operation complete');
+			alert(randy);
 			randy = randy - 1;
 			}
             //this.useGravitation()

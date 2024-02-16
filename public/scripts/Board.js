@@ -251,6 +251,8 @@ export class PlayingBoard extends Board {
 		
 
 		this.spawnYellowDot();
+		
+		/*
         this.virusCount = 1
         this.maxVirusHeight = 10
         if (this.level >= 15) this.maxVirusHeight++
@@ -264,6 +266,7 @@ export class PlayingBoard extends Board {
             this.spawnVirus(color)
             this.lastColor = color
         }
+		*/
     }
 
     spawnVirus(color) {

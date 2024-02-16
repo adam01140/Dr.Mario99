@@ -12,7 +12,7 @@ var player = 1;
 
 
 var randx = 3;
-var randy = 14;
+var randy = 20;
 
 const randcolor = 'yl';
 //import { io } from 'socket.io-client';
@@ -727,7 +727,7 @@ class ThrowingBoard extends Board {
 					for (let i = 0; i < realdamage; i++) {
 						console.log('hurt');
 						console.log('i = ' + i);
-						this.playingBoard.hurt();
+						//this.playingBoard.hurt();
 					}
 					realdamage = 0
 					console.log('reset real damage');

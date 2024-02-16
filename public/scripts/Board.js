@@ -362,10 +362,6 @@ export class PlayingBoard extends Board {
 			
 			console.log('dot yeah');
           
-		
-		
-		
-		
     }
 	
 
@@ -378,6 +374,7 @@ export class PlayingBoard extends Board {
 
 			if((this.fields[randx][(randy-1)].color) == Color.NONE){
 			
+			console.log('gravity');
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			

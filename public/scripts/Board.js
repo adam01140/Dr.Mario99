@@ -25,7 +25,7 @@ function requestRandomNumber(max) {
         });
     });
 }
-
+//flawless exc
 function digitToImg(digit) {
     digit = parseInt(digit)
     const img = document.createElement("img")
@@ -251,8 +251,6 @@ export class PlayingBoard extends Board {
 		
 
 		this.spawnYellowDot();
-		
-		/*
         this.virusCount = 1
         this.maxVirusHeight = 10
         if (this.level >= 15) this.maxVirusHeight++
@@ -266,7 +264,6 @@ export class PlayingBoard extends Board {
             this.spawnVirus(color)
             this.lastColor = color
         }
-		*/
     }
 
     spawnVirus(color) {
@@ -357,13 +354,20 @@ export class PlayingBoard extends Board {
 	
 	
 	spawnYellowDot() {  
+        const x = 3; // Calculate the center position on the x-axis.
+        const y = 7; // Top row of the board.
+        const color = 'yl'; // Assuming you have a Color enum or similar with a YELLOW value.
         
-		console.log('yellow');
-        
-            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.
+		
+		
+		
+		//alert('x = ' + x + 'y = ' + y);
+        // Check if the position is not already taken.
+        if (!this.fields[randx][randy].isTaken()) {
+            this.fields[randx][randy].setColor(color); // Set the color of the field to yellow.
 			
 			
-        
+        }  
 		
 		
 		

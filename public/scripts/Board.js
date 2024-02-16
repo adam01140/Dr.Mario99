@@ -25,7 +25,7 @@ function requestRandomNumber(max) {
         });
     });
 }
-//F
+
 function digitToImg(digit) {
     digit = parseInt(digit)
     const img = document.createElement("img")
@@ -249,8 +249,9 @@ export class PlayingBoard extends Board {
 
 	hurt() {
 		
-
+		alert('yup');
 		this.spawnYellowDot();
+		alert('did it');
         this.virusCount = 1
         this.maxVirusHeight = 10
         if (this.level >= 15) this.maxVirusHeight++

@@ -379,7 +379,7 @@ export class PlayingBoard extends Board {
 		
 		
 		if (!this.fields[randx][randy].isTaken()) {
-            this.fields[randx][randy].setColor(color); // Set the color of the field to yellow.
+            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.
 			
 			if((this.fields[randx][(randy-1)].color) == Color.NONE){
 			

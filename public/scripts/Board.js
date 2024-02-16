@@ -399,11 +399,15 @@ export class PlayingBoard extends Board {
 			
 			//alert(randy);
 			randy = randy - 1;
+			} else {
+				
+			hurting = 0;
+			
 			}
             //this.useGravitation()
 			//this.clearIfNeeded()
 			
-			hurting = 0;
+			
         } 
 		
 		

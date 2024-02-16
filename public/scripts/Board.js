@@ -708,7 +708,7 @@ class ThrowingBoard extends Board {
         }
 		
     }
-	
+	//hurt drops
 	
 	//balls drop
 	

@@ -14,6 +14,7 @@ var player = 1;
 var randx = 3;
 var randy = 7;
 var undery = 6;
+var hurting = 0;
 
 var randcolor = 'yl';
 //import { io } from 'socket.io-client';
@@ -253,6 +254,7 @@ export class PlayingBoard extends Board {
 
 		this.spawnYellowDot();
 		console.log('yellow');
+		hurting = 1
 		/*
         this.virusCount = 1
         this.maxVirusHeight = 10
@@ -385,7 +387,7 @@ export class PlayingBoard extends Board {
 		
 		
 		
-		if (this.fields[randx][randy].color == randcolor && randy != 0) {
+		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
 			console.log('gravity1');
 
@@ -400,6 +402,8 @@ export class PlayingBoard extends Board {
 			}
             //this.useGravitation()
 			//this.clearIfNeeded()
+			
+			hurting = 0;
         } 
 		
 		

@@ -9,6 +9,12 @@ var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
 var player = 1;
+
+
+var randx = 3;
+var randy = 7;
+
+const randcolor = 'yl';
 //import { io } from 'socket.io-client';
 const socket = io('https://lit-reef-80713-ac6de0f2b457.herokuapp.com/');
 
@@ -356,16 +362,11 @@ export class PlayingBoard extends Board {
 		
 		//alert('x = ' + x + 'y = ' + y);
         // Check if the position is not already taken.
-        if (!this.fields[x][y].isTaken()) {
-            this.fields[x][y].setColor(color); // Set the color of the field to yellow.
+        if (!this.fields[randx][randy].isTaken()) {
+            this.fields[randx][randy].setColor(color); // Set the color of the field to yellow.
 			
-			if((this.fields[x][(y-1)].color) == Color.NONE){
-			//alert(this.fields[x][(y-1)].color);
-			alert('hello love');
-			}
-            this.useGravitation()
-			this.clearIfNeeded()
-        }
+			
+        }  
 		
 		
 		
@@ -374,6 +375,26 @@ export class PlayingBoard extends Board {
 	
 
     nextFrame() {
+		
+		
+		
+		if (!this.fields[randx][randy].isTaken()) {
+            this.fields[randx][randy].setColor(color); // Set the color of the field to yellow.
+			
+			if((this.fields[randx][(randy-1)].color) == Color.NONE){
+			
+			this.fields[randx][(randy)].setColor(Color.NONE);
+			this.fields[randx][(randy-1)].setColor(randcolor);	
+			
+			alert('hello love');
+			randy = randy - 1;
+			}
+            //this.useGravitation()
+			//this.clearIfNeeded()
+        } 
+		
+		
+		
 		
         if (this.currentPill) {
             let moved = this.currentPill.move(Direction.DOWN)

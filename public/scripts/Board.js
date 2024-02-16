@@ -251,7 +251,7 @@ export class PlayingBoard extends Board {
 		
 		alert('yup');
 		this.spawnYellowDot();
-		//alert('did it');
+		alert('did it');
         this.virusCount = 1
         this.maxVirusHeight = 10
         if (this.level >= 15) this.maxVirusHeight++

@@ -364,7 +364,7 @@ export class PlayingBoard extends Board {
 	 
             this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.
 
-			this.fields[randx][randy] instanceof Pill
+			
           
     }
 	
@@ -549,6 +549,8 @@ class Field extends HTMLElement {
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
     clearAnimated() {
+		
+	if(this.shapePiece.shape instanceof Virus || this.shapePiece.shape instanceof Pill)
     const x = this.shapePiece.shape instanceof Virus;
     const o = this.shapePiece.shape instanceof Pill;
     const color = this.shapePiece.color; // Assuming this.shapePiece.color contains values like Color.FIRST, etc.
@@ -562,6 +564,9 @@ class Field extends HTMLElement {
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);
+	} else {
+	alert('hi')
+	}
 }
 
 

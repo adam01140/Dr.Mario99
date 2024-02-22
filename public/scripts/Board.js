@@ -378,15 +378,21 @@ export class PlayingBoard extends Board {
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
 			console.log('undery: ' + undery);
-			if((this.fields[randx][(undery)].color) == Color.NONE && undery != -1){
-
+			
+			console.log('underycolor: ' + this.fields[randx][(undery)].color);
+			
+			
+			if((this.fields[randx][(undery)].color) == Color.NONE){
+				
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			randy = randy - 1;
-			} else {
-				
+			} else if(undery == -1){
 			hurting = 0;
+			console.log('hurting: ' + hurting);			
 			
+			} else {
+			console.log('weird undery: ' + undery);	
 			}
 
         } 

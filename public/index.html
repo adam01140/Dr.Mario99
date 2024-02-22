@@ -53,22 +53,39 @@
 	let roomCode = ''; // Variable to store the room code
 
         document.getElementById('createRoom').onclick = function() {
-            roomCode = generateRoomCode();
-            alert('Your room code is: ' + roomCode);
-            // Emit an event to create a room with the generated code
-            socket.emit('createRoom', roomCode);
-			who = 1;
-			
-			const script = document.createElement('script');
-            script.src = './scripts/script.js'; // Or dynamically choose script based on player number
-            script.type = 'module';
-            document.head.appendChild(script);
-			
-		const roomCodeDisplay = document.getElementById('roomCodeDisplay');
-            roomCodeDisplay.textContent = 'Waiting for Player 2, room code is: \n' + roomCode;
-			
-			
-        };
+    // Generate a new room code
+    let roomCode = generateRoomCode();
+
+    // Update the input field with the room code for visual feedback
+    const roomCodeInput = document.getElementById('roomCodeInput');
+    roomCodeInput.value = roomCode;
+
+    // Use the Clipboard API to copy the room code to the clipboard
+    navigator.clipboard.writeText(roomCodeInput.value)
+        .then(() => {
+            // Success message
+            alert('Room code copied to clipboard: ' + roomCode);
+        })
+        .catch(err => {
+            // Error handling
+            console.error('Failed to copy room code to clipboard', err);
+            alert('Error copying room code to clipboard. Please copy manually.');
+        });
+
+    // Emit an event to create a room with the generated code
+    socket.emit('createRoom', roomCode);
+    who = 1; // Indicate that this user is the room creator
+    
+    // Optionally, update the display message to indicate waiting for Player 2
+    const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+    roomCodeDisplay.textContent = 'Waiting for Player 2, room code is: ' + roomCode;
+
+    // Load the game script dynamically, if necessary
+    const script = document.createElement('script');
+    script.src = './scripts/script.js'; // Adjust the script path as needed
+    script.type = 'module';
+    document.head.appendChild(script);
+};
 		
 		
 		

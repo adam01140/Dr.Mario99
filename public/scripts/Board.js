@@ -374,7 +374,7 @@ export class PlayingBoard extends Board {
 		
 		
 		//god is real
-		
+		//it works
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
 			console.log('undery: ' + undery);
@@ -388,6 +388,7 @@ export class PlayingBoard extends Board {
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			randy = randy - 1;
 			undery = randy - 1;
+			
 			} else if(undery == -1){
 			hurting = 0;
 			console.log('hurting: ' + hurting);			

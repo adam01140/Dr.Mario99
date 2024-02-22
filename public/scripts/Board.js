@@ -550,11 +550,12 @@ class Field extends HTMLElement {
     }
     clearAnimated() {
 		
-	if(this.shapePiece.shape instanceof Virus || this.shapePiece.shape instanceof Pill)
+	if(this.shapePiece.shape instanceof Virus == true || this.shapePiece.shape instanceof Pill == true)
     const x = this.shapePiece.shape instanceof Virus;
     const o = this.shapePiece.shape instanceof Pill;
     const color = this.shapePiece.color; // Assuming this.shapePiece.color contains values like Color.FIRST, etc.
     this.clear();
+	}
     if (x)
         this.style.backgroundImage = "url('./img/" + color + "_x.png')";
     if (o)
@@ -564,9 +565,7 @@ class Field extends HTMLElement {
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);
-	} else {
-	alert('hi')
-	}
+	
 }
 
 

@@ -361,11 +361,7 @@ export class PlayingBoard extends Board {
 	
 	spawnYellowDot() {  
      
-	 
-            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.
-
-			
-          
+            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
     }
 	
 
@@ -549,22 +545,21 @@ class Field extends HTMLElement {
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
     clearAnimated() {
-    // Check if the current shape is a Virus or a Pill.
+    // Before proceeding, check if shapePiece is null.
+    if (!this.shapePiece) {
+        console.warn('Attempted to clearAnimated on a field with no shapePiece.');
+        return; // Exit the function early if there's no shapePiece.
+    }
+
+    // Continue with your existing code.
     const x = this.shapePiece.shape instanceof Virus;
     const o = this.shapePiece.shape instanceof Pill;
-    // Get the color of the current shape.
     const color = this.shapePiece.color;
-    // Clear the current shape.
     this.clear();
-    // If it's a Virus, change its image to a specific one indicating it's been affected.
     if (x) this.style.backgroundImage = "url('./img/" + color + "_x.png')";
-    // If it's a Pill, change its image to a different one indicating it's been affected.
     if (o) this.style.backgroundImage = "url('./img/" + color + "_o.png')";
-    // Log that a point has been acquired.
     console.log('point acquired');
-    // Increase the local points by one.
     localpoints = localpoints + 1;
-    // After a set delay, reset the color to NONE, making it disappear.
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);

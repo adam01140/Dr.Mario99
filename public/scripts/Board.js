@@ -388,7 +388,7 @@ export class PlayingBoard extends Board {
 
 			console.log('gravity1');
 
-			if((this.fields[randx][(undery)].color) == Color.NONE && undery != 0){
+			if((this.fields[randx][(undery)].color) == Color.NONE && undery != -1){
 			
 			console.log('gravity2');
 			this.fields[randx][(randy)].setColor(Color.NONE);

@@ -12,7 +12,7 @@ var player = 1;
 
 
 var randx = 3;
-var randy = 10;
+var randy = 15;
 var undery = 6;
 var hurting = 0;
 
@@ -366,7 +366,7 @@ export class PlayingBoard extends Board {
 	
 
     nextFrame() {
-		
+		spawnYellowDot()
 		
 		//console.log('hereatleast');
 		

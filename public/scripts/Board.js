@@ -382,7 +382,7 @@ export class PlayingBoard extends Board {
 		console.log('-----------------');
 		
 		
-		
+		//god is real
 		
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 

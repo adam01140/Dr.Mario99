@@ -375,27 +375,21 @@ export class PlayingBoard extends Board {
 		
 		//god is real
 		
-		if (this.fields[randx][randy].color == randcolor && randy != -1 && hurting == 1) {
+		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
-			console.log('gravity1');
 
 			if((this.fields[randx][(undery)].color) == Color.NONE && undery != -1){
 			
 			console.log('gravity2');
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
-			
-			//alert(randy);
 			randy = randy - 1;
 			} else {
 				
 			hurting = 0;
 			
 			}
-            //this.useGravitation()
-			//this.clearIfNeeded()
-			
-			
+
         } 
 		
 		

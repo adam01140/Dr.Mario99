@@ -366,7 +366,7 @@ export class PlayingBoard extends Board {
 	
 
     nextFrame() {
-		this.fields[randx][randy].setColor(randcolor);
+		//this.fields[randx][randy].setColor(randcolor);
 		
 		//console.log('hereatleast');
 		

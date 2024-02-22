@@ -12,7 +12,7 @@ var player = 1;
 
 
 var randx = 3;
-var randy = 7;
+var randy = 10;
 var undery = 6;
 var hurting = 0;
 
@@ -375,6 +375,7 @@ export class PlayingBoard extends Board {
 		
 		//god is real
 		//it works
+		
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
 			console.log('undery: ' + undery);

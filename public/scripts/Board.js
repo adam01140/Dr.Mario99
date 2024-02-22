@@ -638,7 +638,7 @@ setColor(color = this.color) {
                         shape.pieces[0].field.setPillElement('down');
                         shape.pieces[1].field.setPillElement('up');
                         break;
-                    case RotationHORIZONTAL_REVERSED:
+                    case Rotation.HORIZONTAL_REVERSED:
                         shape.pieces[1].field.setPillElement('left');
                         shape.pieces[0].field.setPillElement('right');
                         break;

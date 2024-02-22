@@ -545,25 +545,40 @@ class Field extends HTMLElement {
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
     clearAnimated() {
-    // Before proceeding, check if shapePiece is null.
-    if (!this.shapePiece) {
-        console.warn('Attempted to clearAnimated on a field with no shapePiece.');
-        return; // Exit the function early if there's no shapePiece.
+    let isVirus = false;
+    let color = this.color; // Use the field's color since shapePiece might be null.
+
+    // If shapePiece exists and is a Virus, handle it accordingly.
+    if (this.shapePiece) {
+        isVirus = this.shapePiece.shape instanceof Virus;
+        // Continue with your existing code for a non-null shapePiece.
+        this.clear(); // This will handle clearing and score updating for shapes.
+    } else {
+        // Handle the case where shapePiece is null (e.g., for dots).
+        console.log('Clearing a dot as if it was a virus.');
+        // Assume dots are treated similarly to viruses for scoring and clearing.
+        isVirus = true; // Treat the dot as a virus for this context.
+        this.setColor(Color.NONE); // Clear the dot visually.
+        // Directly manipulate score and virus count as needed.
+        // For example, increase score and decrease virus count:
+        // Note: Adjust these as necessary to fit how your game tracks score and virus count.
+        localpoints += 1; // Example of increasing points.
+        this.board.decreaseVirusCount(); // Example of decreasing the virus count.
     }
 
-    // Continue with your existing code.
-    const x = this.shapePiece.shape instanceof Virus;
-    const o = this.shapePiece.shape instanceof Pill;
-    const color = this.shapePiece.color;
-    this.clear();
-    if (x) this.style.backgroundImage = "url('./img/" + color + "_x.png')";
-    if (o) this.style.backgroundImage = "url('./img/" + color + "_o.png')";
-    console.log('point acquired');
-    localpoints = localpoints + 1;
+    // Visual feedback for clearing, adjust as necessary.
+    if (isVirus) {
+        this.style.backgroundImage = "url('./img/" + color + "_x.png')";
+    } else {
+        this.style.backgroundImage = "url('./img/" + color + "_o.png')";
+    }
+
+    // Set a timeout to remove the visual feedback.
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);
 }
+
 
 clear() {
     // Unlock the field and reset its color.

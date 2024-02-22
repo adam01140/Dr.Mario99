@@ -370,16 +370,7 @@ export class PlayingBoard extends Board {
 		
 		//console.log('hereatleast');
 		
-		//alert(puppy);
-		undery = randy - 1;
-		console.log('-----------------');
-		console.log('randcolor: ' + randcolor);
-		console.log('randx: ' + randy);
-		console.log('randy: ' + randy);
-		console.log('undery: ' + undery);
-		console.log('colorxy: ' + this.fields[randx][randy].color);
-		console.log('colorxundery: ' + this.fields[randx][(undery)].color);
-		console.log('-----------------');
+		
 		
 		
 		//god is real

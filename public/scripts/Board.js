@@ -377,7 +377,7 @@ export class PlayingBoard extends Board {
 		
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
-
+			console.log('undery: ' + undery);
 			if((this.fields[randx][(undery)].color) == Color.NONE && undery != -1){
 
 			this.fields[randx][(randy)].setColor(Color.NONE);

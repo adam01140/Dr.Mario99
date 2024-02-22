@@ -387,6 +387,7 @@ export class PlayingBoard extends Board {
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			randy = randy - 1;
+			undery = randy - 1;
 			} else if(undery == -1){
 			hurting = 0;
 			console.log('hurting: ' + hurting);			

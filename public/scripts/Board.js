@@ -361,10 +361,10 @@ export class PlayingBoard extends Board {
 	
 	spawnYellowDot() {  
      
-	
+	 
             this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.
 
-			this.fields[randx][randy].shapePiece.shape instanceof Pill
+			this.fields[randx][randy] instanceof Pill
           
     }
 	

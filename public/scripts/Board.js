@@ -549,107 +549,113 @@ class Field extends HTMLElement {
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
     clearAnimated() {
+    // Check if the current shape is a Virus or a Pill.
     const x = this.shapePiece.shape instanceof Virus;
     const o = this.shapePiece.shape instanceof Pill;
-    const color = this.shapePiece.color; // Assuming this.shapePiece.color contains values like Color.FIRST, etc.
+    // Get the color of the current shape.
+    const color = this.shapePiece.color;
+    // Clear the current shape.
     this.clear();
-    if (x)
-        this.style.backgroundImage = "url('./img/" + color + "_x.png')";
-    if (o)
-        this.style.backgroundImage = "url('./img/" + color + "_o.png')";
-		console.log('point aquired');
-		localpoints = localpoints + 1;
+    // If it's a Virus, change its image to a specific one indicating it's been affected.
+    if (x) this.style.backgroundImage = "url('./img/" + color + "_x.png')";
+    // If it's a Pill, change its image to a different one indicating it's been affected.
+    if (o) this.style.backgroundImage = "url('./img/" + color + "_o.png')";
+    // Log that a point has been acquired.
+    console.log('point acquired');
+    // Increase the local points by one.
+    localpoints = localpoints + 1;
+    // After a set delay, reset the color to NONE, making it disappear.
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);
 }
 
-
-    clear() {
-        this.locked = false
-        this.setColor(Color.NONE)
-        this.shapePiece.shape.pieces = this.shapePiece.shape.pieces.filter(piece => piece != this.shapePiece)
-        for (let piece of this.shapePiece.shape.pieces)
-            piece.field.setColor()
-        if (this.shapePiece.shape instanceof Virus) {
-            this.board.game.dancingViruses.lay(this.shapePiece.color)
-            this.board.increaseScore()
-            this.board.decreaseVirusCount()
-        }
-        this.shapePiece.destroyed = true
-        this.shapePiece.field = true
-        this.shapePiece = null
+clear() {
+    // Unlock the field and reset its color.
+    this.locked = false;
+    this.setColor(Color.NONE);
+    // Remove this shape from its shape group.
+    this.shapePiece.shape.pieces = this.shapePiece.shape.pieces.filter(piece => piece != this.shapePiece);
+    // Reset the color of remaining pieces in the group.
+    for (let piece of this.shapePiece.shape.pieces) piece.field.setColor();
+    // If the shape is a Virus, trigger score increase and decrease the virus count.
+    if (this.shapePiece.shape instanceof Virus) {
+        this.board.game.dancingViruses.lay(this.shapePiece.color);
+        this.board.increaseScore();
+        this.board.decreaseVirusCount();
     }
+    // Mark the shape as destroyed and nullify it.
+    this.shapePiece.destroyed = true;
+    this.shapePiece.field = true;
+    this.shapePiece = null;
+}
 
-    shouldBeCleared(selfColor = this.getColor()) {
-        let horizontal = 0
-        let vertical = 0
-        for (let i = 1; i <= 7; i++) {
-            if (this.x + i >= this.board.width) break
-            if (selfColor != this.board.fields[this.x + i][this.y].getColor()) break
-            horizontal++
-        }
-        for (let i = 1; i <= 7; i++) {
-            if (this.x - i < 0) break
-            if (selfColor != this.board.fields[this.x - i][this.y].getColor()) break
-            horizontal++
-        }
-        for (let i = 1; i <= 15; i++) {
-            if (this.y + i >= this.board.height) break
-            if (selfColor != this.board.fields[this.x][this.y + i].getColor()) break
-            vertical++
-        }
-        for (let i = 1; i <= 15; i++) {
-            if (this.y - i < 0) break
-            if (selfColor != this.board.fields[this.x][this.y - i].getColor()) break
-            vertical++
-        }
-		
-		//lines needed to clear
-		
-        if (selfColor == Color.NONE)
-            return false
-        else if (vertical >= 3 || horizontal >= 3)
-            return true
-        else
-            return false
+shouldBeCleared(selfColor = this.getColor()) {
+    // Check horizontally and vertically if there are enough same-colored shapes to clear.
+    let horizontal = 0, vertical = 0;
+    // Count same-colored shapes to the right.
+    for (let i = 1; i <= 7; i++) {
+        if (this.x + i >= this.board.width || selfColor != this.board.fields[this.x + i][this.y].getColor()) break;
+        horizontal++;
     }
+    // Count same-colored shapes to the left.
+    for (let i = 1; i <= 7; i++) {
+        if (this.x - i < 0 || selfColor != this.board.fields[this.x - i][this.y].getColor()) break;
+        horizontal++;
+    }
+    // Count same-colored shapes upwards.
+    for (let i = 1; i <= 15; i++) {
+        if (this.y + i >= this.board.height || selfColor != this.board.fields[this.x][this.y + i].getColor()) break;
+        vertical++;
+    }
+    // Count same-colored shapes downwards.
+    for (let i = 1; i <= 15; i++) {
+        if (this.y - i < 0 || selfColor != this.board.fields[this.x][this.y - i].getColor()) break;
+        vertical++;
+    }
+    // Determine if the shapes should be cleared based on count.
+    return selfColor != Color.NONE && (vertical >= 3 || horizontal >= 3);
+}
 
-    setColor(color = this.color) {
-        this.color = color
-        if (color == Color.NONE)
-            this.style.backgroundImage = ""
-        else {
-            this.style.backgroundImage = "url('./img/" + color + "_dot.png')"
-            if (this.shapePiece && !(this.shapePiece.shape instanceof Virus)) {
-                const shape = this.shapePiece.shape
-                if (shape.pieces && shape.pieces.length == 2) {
-                    switch (shape.rotation) {
-                        case Rotation.HORIZONTAL:
-                            shape.pieces[0].field.setPillElement('left')
-                            shape.pieces[1].field.setPillElement('right')
-                            break
-                        case Rotation.VERTICAL:
-                            shape.pieces[0].field.setPillElement('down')
-                            shape.pieces[1].field.setPillElement('up')
-                            break
-                        case Rotation.HORIZONTAL_REVERSED:
-                            shape.pieces[1].field.setPillElement('left')
-                            shape.pieces[0].field.setPillElement('right')
-                            break
-                        case Rotation.VERTICAL_REVERSED:
-                            shape.pieces[1].field.setPillElement('down')
-                            shape.pieces[0].field.setPillElement('up')
-                            break
-                    }
+setColor(color = this.color) {
+    // Set the color of the current field.
+    this.color = color;
+    // If the color is NONE, make the field appear empty.
+    if (color == Color.NONE) this.style.backgroundImage = "";
+    else {
+        // Otherwise, set the appropriate image based on the color and shape.
+        this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
+        if (this.shapePiece && !(this.shapePiece.shape instanceof Virus)) {
+            const shape = this.shapePiece.shape;
+            // Adjust the image based on the pill's orientation.
+            if (shape.pieces && shape.pieces.length == 2) {
+                switch (shape.rotation) {
+                    case Rotation.HORIZONTAL:
+                        shape.pieces[0].field.setPillElement('left');
+                        shape.pieces[1].field.setPillElement('right');
+                        break;
+                    case Rotation.VERTICAL:
+                        shape.pieces[0].field.setPillElement('down');
+                        shape.pieces[1].field.setPillElement('up');
+                        break;
+                    case RotationHORIZONTAL_REVERSED:
+                        shape.pieces[1].field.setPillElement('left');
+                        shape.pieces[0].field.setPillElement('right');
+                        break;
+                    case Rotation.VERTICAL_REVERSED:
+                        shape.pieces[1].field.setPillElement('down');
+                        shape.pieces[0].field.setPillElement('up');
+                        break;
                 }
             }
-            if (this.shapePiece) {
-                if (this.shapePiece.shape instanceof Virus)
-                    this.style.backgroundImage = "url('./img/" + color + "_covid.png')"
-            }
+        }
+        // If the shape is a Virus, use a specific image.
+        if (this.shapePiece && this.shapePiece.shape instanceof Virus) {
+            this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
         }
     }
+}
+
 	
 	
 	

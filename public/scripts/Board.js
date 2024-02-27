@@ -14,7 +14,17 @@ var player = 1;
 var randx = 3;
 var randy = 15;
 var undery = 6;
+var undery2 = 5;
 var hurting = 0;
+
+var falling = 0;
+
+
+
+
+var pillx1 = 3;
+var pillx2 = 4;
+var pilly = 15;
 
 var randcolor = 'yl';
 //import { io } from 'socket.io-client';
@@ -341,20 +351,38 @@ export class PlayingBoard extends Board {
 	
 
     movementFromKey(key) {
-        if (this.blockInput)
+        if (this.blockInput){
             return
-        if (!this.currentPill || this.currentPill.placed)
+		}
+		
+        if (!this.currentPill || this.currentPill.placed){
             return
-        if (key == "ArrowLeft" || key == 'a')
+		}
+		
+        if (key == "ArrowLeft" || key == 'a'){
             this.currentPill.move(Direction.LEFT)
-        if (key == "ArrowRight" || key == 'd')
+			pillx1 -= pillx1
+			pillx2 -= pillx2
+		}	
+			
+        if (key == "ArrowRight" || key == 'd'){
             this.currentPill.move(Direction.RIGHT)
-        if (key == "ArrowDown" || key == 's')
+			pillx1 += pillx1
+			pillx2 += pillx2
+		}
+		
+        if (key == "ArrowDown" || key == 's'){
             this.currentPill.moveUntilStopped(Direction.DOWN)
-        if (key == "ArrowUp" || key == 'w')
+			pilly -= pilly
+		}
+		
+        if (key == "ArrowUp" || key == 'w'){
             this.currentPill.rotate(Direction.LEFT)
-        if (key == "Shift")
+		}
+		
+        if (key == "Shift"){
             this.currentPill.rotate(Direction.RIGHT)
+		}
     }
 	
 	
@@ -380,25 +408,26 @@ export class PlayingBoard extends Board {
 		
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
-			//console.log('undery: ' + undery);
-			
-			//console.log('underycolor: ' + this.fields[randx][(undery)].color);
-			
-			
+
+
 			if((this.fields[randx][(undery)].color) == Color.NONE){
-				
+
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			randy = randy - 1;
 			undery = randy - 1;
+			undery2 = undery - 1;
 			
-			} else if(undery == -1){
-			hurting = 0;
-			//console.log('hurting: ' + hurting);			
 			
-			} else {
-			//console.log('weird undery: ' + undery);	
 			}
+			
+			if(undery == -1){
+			hurting = 0;		
+			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
+			hurting = 0;
+			}
+			
+
 
         } 
 		
@@ -406,8 +435,31 @@ export class PlayingBoard extends Board {
 		
 		
         if (this.currentPill) {
+			
+			
             let moved = this.currentPill.move(Direction.DOWN)
+			
+			if(moved){
+			pilly = pilly - 1;
+			}
+			
+
+		
+			if(pilly != randy + 1 && hurting != 0){
+				alert('tried')
+				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
+                this.blockInput = true
+                this.currentPill.place()
+                this.clearIfNeeded()
+                this.useGravitation()
+                if (this.gameOver()) return
+                if (this.stageCompleted()) return
+			}
+			
             if (!moved) {
+				
+				pilly = pilly - 1;
+				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
                 this.blockInput = true
                 this.currentPill.place()
                 this.clearIfNeeded()
@@ -471,18 +523,21 @@ export class PlayingBoard extends Board {
                 for (let x = 0; x < this.width; x++) {
                     const field = this.fields[x][y]
 					
-					console.log('this.fields[x][y]: ' + this.fields[x][y]);
-					console.log('this.fields[randx][randy]: ' + this.fields[randx][randy]);
+					/*
+					console.log('------------------ ');
+					console.log('x: ' + x);
+					console.log('randx: ' + randx);
+					console.log('------------------ ');
+					console.log('y: ' + y);
+					console.log('randy: ' + randy);
+					console.log('------------------ ');
+					*/
 					
 					
-					
-					if(this.fields[x][y] == this.fields[randx][randy]){
-						
-					alert('hello');	
-						
-					}
 					
                     if (field.isTaken()) {
+						
+						//alert('hi');
                         if (field.locked) {
                             let shape = field.shapePiece.shape
                             if (shape instanceof Pill) {
@@ -761,6 +816,12 @@ class ThrowingBoard extends Board {
                 action: (pill) => {
                     pill.rotate(Direction.LEFT)
 					console.log('new pill');
+					
+					pillx1 = 3;
+					pillx2 = 4;
+					pilly = 15;
+
+
 					socket.emit('updatePoints2', { player1points: localpoints });
 					localpoints = 0;
 					if(realdamage > 0){

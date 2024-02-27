@@ -380,9 +380,9 @@ export class PlayingBoard extends Board {
 		
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
-			console.log('undery: ' + undery);
+			//console.log('undery: ' + undery);
 			
-			console.log('underycolor: ' + this.fields[randx][(undery)].color);
+			//console.log('underycolor: ' + this.fields[randx][(undery)].color);
 			
 			
 			if((this.fields[randx][(undery)].color) == Color.NONE){
@@ -394,10 +394,10 @@ export class PlayingBoard extends Board {
 			
 			} else if(undery == -1){
 			hurting = 0;
-			console.log('hurting: ' + hurting);			
+			//console.log('hurting: ' + hurting);			
 			
 			} else {
-			console.log('weird undery: ' + undery);	
+			//console.log('weird undery: ' + undery);	
 			}
 
         } 
@@ -471,8 +471,18 @@ export class PlayingBoard extends Board {
                 for (let x = 0; x < this.width; x++) {
                     const field = this.fields[x][y]
 					
+					console.log('this.fields[x][y]: ' + this.fields[x][y]);
+					console.log('this.fields[randx][randy]: ' + this.fields[randx][randy]);
 					
-                    if (field.isTaken() && this.fields[x][y] != this.fields[randx][randy]) {
+					
+					
+					if(this.fields[x][y] == this.fields[randx][randy]){
+						
+					alert('hello');	
+						
+					}
+					
+                    if (field.isTaken() {
                         if (field.locked) {
                             let shape = field.shapePiece.shape
                             if (shape instanceof Pill) {
@@ -725,14 +735,14 @@ class ThrowingBoard extends Board {
         this.createGrid()
         this.setStyles()
         this.spawnPill()
-		console.log('hey there');
+		
 		
 		
 		if (!this.isDamageListenerAdded) {
             socket.on('p1damage', (data) => {
 				console.log(`Damage received: ${data.p1damage}`);
 				realdamage = Math.floor(data.p1damage / 4);
-				//console.log(realdamage);
+				
 			});
         this.isDamageListenerAdded = true;
 

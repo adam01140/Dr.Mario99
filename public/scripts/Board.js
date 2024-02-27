@@ -462,46 +462,36 @@ export class PlayingBoard extends Board {
     }
 
     useGravitation() {
-        if (this.gravitationInterval) return
-        this.gravitationInterval = setInterval(() => {
-            let moved = false
-            for (let y = 0; y < this.height; y++) {
-                for (let x = 0; x < this.width; x++) {
-                    const field = this.fields[x][y]
-                    if (field.isTaken()) {
-                        if (field.locked) {
-                            let shape = field.shapePiece.shape
-                            if (shape instanceof Pill) {
-                                for (let piece of shape.pieces) {
-                                    piece.field.locked = false
-                                    piece.field.setColor(Color.NONE)
-                                }
-                                if (shape.move(Direction.DOWN)) {
-                                    moved = true
-                                }
-                                for (let piece of shape.pieces) {
-                                    piece.field.locked = true
-                                    piece.field.setColor(piece.color)
-                                }
-                            }
+    if (this.gravitationInterval) return;
+    this.gravitationInterval = setInterval(() => {
+        let moved = false;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const field = this.fields[x][y];
+                if (field.isTaken() && !field.locked) { // Adjust this check to include dots
+                    let belowField = y > 0 ? this.fields[x][y - 1] : null;
+                    if (belowField && !belowField.isTaken()) { // Check if the field below is not taken
+                        // Move dot down if it's a dot
+                        if (field.hasDot) {
+                            belowField.hasDot = true;
+                            belowField.setColor(field.color); // Transfer color to below field
+                            field.hasDot = false;
+                            field.setColor(Color.NONE); // Clear current field
+                            moved = true;
                         }
                     }
                 }
             }
+        }
 
-            if (!moved) {
-                this.clearIfNeeded()
-                clearInterval(this.gravitationInterval)
-                this.gravitationInterval = null
-                for (let line of this.fields)
-                    for (let field of line)
-                        if (field.shouldBeCleared())
-                            return
-                this.spawnPill()
-				
-            }
-        }, DELAY.gravitation)
-    }
+        if (!moved) {
+            this.clearIfNeeded();
+            clearInterval(this.gravitationInterval);
+            this.gravitationInterval = null;
+        }
+    }, DELAY.gravitation);
+}
+
 }
 customElements.define("game-board", PlayingBoard)
 
@@ -509,6 +499,7 @@ class Field extends HTMLElement {
     constructor(board, x, y) {
         super()
 		
+		this.hasDot = false;
 		this.isDamageListenerAdded = false;
 		
         this.board = board
@@ -522,7 +513,7 @@ class Field extends HTMLElement {
     }
 
     isTaken() {
-        return this.shapePiece != null
+        return this.shapePiece != null || this.hasDot; // Now also checks for dots
     }
 
     connectedCallback() {

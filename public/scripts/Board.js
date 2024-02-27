@@ -19,6 +19,7 @@ var hurting = 0;
 
 var falling = 0;
 
+var spawn = 0;
 
 
 
@@ -376,8 +377,12 @@ export class PlayingBoard extends Board {
 			pilly -= pilly
 		}
 		
-        if (key == "ArrowUp" || key == 'w'){
+        if (key == "ArrowUp" && spawn == 0 || key == 'w' && spawn == 0){
             this.currentPill.rotate(Direction.LEFT)
+			alert("spawning pill");
+			this.spawnYellowDot();
+			spawn = 1;
+			hurting = 1;
 		}
 		
         if (key == "Shift"){

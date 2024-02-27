@@ -443,17 +443,19 @@ export class PlayingBoard extends Board {
 			
 			
 			if(pilly == randy + 1 && hurting == 0){
-				alert('tried')
-				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
+				alert('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
                 this.blockInput = true
                 this.currentPill.place()
                 this.clearIfNeeded()
-                this.useGravitation()
+                //this.useGravitation()
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
+				this.spawnPill()
+				
 	
 			} else {
 			
+			console.log('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
             let moved = this.currentPill.move(Direction.DOWN)
 			
 			if(moved){

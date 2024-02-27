@@ -255,7 +255,21 @@ export class PlayingBoard extends Board {
 		this.spawnYellowDot();
 		console.log('yellow');
 		hurting = 1
-
+		/*
+        this.virusCount = 1
+        this.maxVirusHeight = 10
+        if (this.level >= 15) this.maxVirusHeight++
+        if (this.level >= 17) this.maxVirusHeight++
+        if (this.level >= 19) this.maxVirusHeight++
+        let color
+        for (let i = 0; i < this.virusCount; i++) {
+            if (this.lastColor == Color.FIRST) color = Color.SECOND
+            else if (this.lastColor == Color.SECOND) color = Color.THIRD
+            else color = Color.FIRST
+            this.spawnVirus(color)
+            this.lastColor = color
+        }
+		*/
     }
 
     spawnVirus(color) {
@@ -347,12 +361,8 @@ export class PlayingBoard extends Board {
 	
 	spawnYellowDot() {  
      
-            //this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-			let field = this.fields[randx][randy]; // Assuming randx and randy are the coordinates for the dot
-    field.setColor(randcolor); // Set the color of the field to yellow
-    field.locked = true; // Optionally lock the field to prevent other pills from moving through it
-    field.isTaken = true; // Mark the field as taken
-   }
+            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
+    }
 	
 
     nextFrame() {

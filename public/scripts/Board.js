@@ -362,7 +362,9 @@ export class PlayingBoard extends Board {
 	spawnYellowDot() {  
      
             this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-    }
+			
+	
+	}
 	
 
     nextFrame() {
@@ -468,7 +470,9 @@ export class PlayingBoard extends Board {
             for (let y = 0; y < this.height; y++) {
                 for (let x = 0; x < this.width; x++) {
                     const field = this.fields[x][y]
-                    if (field.isTaken()) {
+					
+					
+                    if (field.isTaken() && this.fields[x][y] != this.fields[randx][randy]) {
                         if (field.locked) {
                             let shape = field.shapePiece.shape
                             if (shape instanceof Pill) {

@@ -476,9 +476,13 @@ export class PlayingBoard extends Board {
 					
 					
 					
+					if(this.fields[x][y] == this.fields[randx][randy]){
+						
+					alert('hello');	
+						
+					}
 					
-					
-                    if (field.isTaken() {
+                    if (field.isTaken()) {
                         if (field.locked) {
                             let shape = field.shapePiece.shape
                             if (shape instanceof Pill) {

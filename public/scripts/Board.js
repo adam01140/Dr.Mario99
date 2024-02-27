@@ -437,15 +437,7 @@ export class PlayingBoard extends Board {
         if (this.currentPill) {
 			
 			
-            let moved = this.currentPill.move(Direction.DOWN)
-			
-			if(moved){
-			pilly = pilly - 1;
-			}
-			
-
-		
-			if(pilly != randy + 1 && hurting != 0){
+			if(pilly == randy + 1 && hurting == 0){
 				alert('tried')
 				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
                 this.blockInput = true
@@ -454,10 +446,18 @@ export class PlayingBoard extends Board {
                 this.useGravitation()
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
+	
+			} else {
+			
+            let moved = this.currentPill.move(Direction.DOWN)
+			
+			if(moved){
+			pilly = pilly - 1;
 			}
 			
+
+			
             if (!moved) {
-				
 				pilly = pilly - 1;
 				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
                 this.blockInput = true
@@ -467,6 +467,12 @@ export class PlayingBoard extends Board {
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
             }
+			
+			
+			}
+			
+			
+			
         }
     }
 

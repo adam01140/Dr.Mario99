@@ -255,21 +255,7 @@ export class PlayingBoard extends Board {
 		this.spawnYellowDot();
 		console.log('yellow');
 		hurting = 1
-		/*
-        this.virusCount = 1
-        this.maxVirusHeight = 10
-        if (this.level >= 15) this.maxVirusHeight++
-        if (this.level >= 17) this.maxVirusHeight++
-        if (this.level >= 19) this.maxVirusHeight++
-        let color
-        for (let i = 0; i < this.virusCount; i++) {
-            if (this.lastColor == Color.FIRST) color = Color.SECOND
-            else if (this.lastColor == Color.SECOND) color = Color.THIRD
-            else color = Color.FIRST
-            this.spawnVirus(color)
-            this.lastColor = color
-        }
-		*/
+
     }
 
     spawnVirus(color) {
@@ -361,8 +347,12 @@ export class PlayingBoard extends Board {
 	
 	spawnYellowDot() {  
      
-            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-    }
+            //this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
+			let field = this.fields[randx][randy]; // Assuming randx and randy are the coordinates for the dot
+    field.setColor(randcolor); // Set the color of the field to yellow
+    field.locked = true; // Optionally lock the field to prevent other pills from moving through it
+    field.isTaken = true; // Mark the field as taken
+   }
 	
 
     nextFrame() {
@@ -462,36 +452,46 @@ export class PlayingBoard extends Board {
     }
 
     useGravitation() {
-    if (this.gravitationInterval) return;
-    this.gravitationInterval = setInterval(() => {
-        let moved = false;
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
-                const field = this.fields[x][y];
-                if (field.isTaken() && !field.locked) { // Adjust this check to include dots
-                    let belowField = y > 0 ? this.fields[x][y - 1] : null;
-                    if (belowField && !belowField.isTaken()) { // Check if the field below is not taken
-                        // Move dot down if it's a dot
-                        if (field.hasDot) {
-                            belowField.hasDot = true;
-                            belowField.setColor(field.color); // Transfer color to below field
-                            field.hasDot = false;
-                            field.setColor(Color.NONE); // Clear current field
-                            moved = true;
+        if (this.gravitationInterval) return
+        this.gravitationInterval = setInterval(() => {
+            let moved = false
+            for (let y = 0; y < this.height; y++) {
+                for (let x = 0; x < this.width; x++) {
+                    const field = this.fields[x][y]
+                    if (field.isTaken()) {
+                        if (field.locked) {
+                            let shape = field.shapePiece.shape
+                            if (shape instanceof Pill) {
+                                for (let piece of shape.pieces) {
+                                    piece.field.locked = false
+                                    piece.field.setColor(Color.NONE)
+                                }
+                                if (shape.move(Direction.DOWN)) {
+                                    moved = true
+                                }
+                                for (let piece of shape.pieces) {
+                                    piece.field.locked = true
+                                    piece.field.setColor(piece.color)
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (!moved) {
-            this.clearIfNeeded();
-            clearInterval(this.gravitationInterval);
-            this.gravitationInterval = null;
-        }
-    }, DELAY.gravitation);
-}
-
+            if (!moved) {
+                this.clearIfNeeded()
+                clearInterval(this.gravitationInterval)
+                this.gravitationInterval = null
+                for (let line of this.fields)
+                    for (let field of line)
+                        if (field.shouldBeCleared())
+                            return
+                this.spawnPill()
+				
+            }
+        }, DELAY.gravitation)
+    }
 }
 customElements.define("game-board", PlayingBoard)
 
@@ -499,7 +499,6 @@ class Field extends HTMLElement {
     constructor(board, x, y) {
         super()
 		
-		this.hasDot = false;
 		this.isDamageListenerAdded = false;
 		
         this.board = board
@@ -513,7 +512,7 @@ class Field extends HTMLElement {
     }
 
     isTaken() {
-        return this.shapePiece != null || this.hasDot; // Now also checks for dots
+        return this.shapePiece != null
     }
 
     connectedCallback() {

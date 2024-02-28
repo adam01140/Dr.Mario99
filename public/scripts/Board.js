@@ -266,21 +266,7 @@ export class PlayingBoard extends Board {
 		this.spawnYellowDot();
 		console.log('yellow');
 		hurting = 1
-		/*
-        this.virusCount = 1
-        this.maxVirusHeight = 10
-        if (this.level >= 15) this.maxVirusHeight++
-        if (this.level >= 17) this.maxVirusHeight++
-        if (this.level >= 19) this.maxVirusHeight++
-        let color
-        for (let i = 0; i < this.virusCount; i++) {
-            if (this.lastColor == Color.FIRST) color = Color.SECOND
-            else if (this.lastColor == Color.SECOND) color = Color.THIRD
-            else color = Color.FIRST
-            this.spawnVirus(color)
-            this.lastColor = color
-        }
-		*/
+
     }
 
     spawnVirus(color) {
@@ -395,7 +381,7 @@ export class PlayingBoard extends Board {
 	spawnYellowDot() {  
      
             this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-			
+			//this.virusList.push(new Virus(this, randx, randy, randcolor))
 	
 	}
 	
@@ -427,8 +413,10 @@ export class PlayingBoard extends Board {
 			}
 			
 			if(undery == -1){
-			hurting = 0;		
+			hurting = 0;	
+			this.virusList.push(new Virus(this, randx, randy, randcolor))			
 			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
+			this.virusList.push(new Virus(this, randx, randy, randcolor))
 			hurting = 0;
 			}
 			

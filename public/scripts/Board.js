@@ -381,7 +381,7 @@ export class PlayingBoard extends Board {
 	spawnYellowDot() {  
      
             this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-			//this.virusList.push(new Virus(this, randx, randy, randcolor))
+			
 	
 	}
 	
@@ -413,10 +413,8 @@ export class PlayingBoard extends Board {
 			}
 			
 			if(undery == -1){
-			hurting = 0;	
-			this.virusList.push(new Virus(this, randx, randy, randcolor))			
+			hurting = 0;		
 			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
-			this.virusList.push(new Virus(this, randx, randy, randcolor))
 			hurting = 0;
 			}
 			
@@ -431,14 +429,8 @@ export class PlayingBoard extends Board {
 			
 			
 			if(pilly == randy + 1 && hurting == 0){
-				alert('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
-                this.blockInput = true
-                this.currentPill.place()
-                this.clearIfNeeded()
-                //this.useGravitation()
-                if (this.gameOver()) return
-                if (this.stageCompleted()) return
-				this.spawnPill()
+				//alert('pill should stack on top of dot');
+                this.spawnPill()
 				
 	
 			} else {
@@ -524,18 +516,6 @@ export class PlayingBoard extends Board {
                 for (let x = 0; x < this.width; x++) {
                     const field = this.fields[x][y]
 					
-					/*
-					console.log('------------------ ');
-					console.log('x: ' + x);
-					console.log('randx: ' + randx);
-					console.log('------------------ ');
-					console.log('y: ' + y);
-					console.log('randy: ' + randy);
-					console.log('------------------ ');
-					*/
-					
-					
-					
                     if (field.isTaken()) {
 						
 						//alert('hi');
@@ -592,7 +572,7 @@ class Field extends HTMLElement {
     }
 
     isTaken() {
-        return this.shapePiece != null
+        return this.shapePiece != null || this.color == randcolor;
     }
 
     connectedCallback() {

@@ -46,6 +46,19 @@ function digitToImg(digit) {
     return img
 }
 
+
+class YellowDot {
+    constructor() {
+        this.type = 'YellowDot';
+		this.shapePiece = null
+    }
+	
+	
+}
+
+
+
+
 class Board extends HTMLElement {
     constructor(game) {
         super()
@@ -359,7 +372,7 @@ export class PlayingBoard extends Board {
 		}
 		
         if (key == "ArrowDown" || key == 's'){
-            this.currentPill.move(Direction.DOWN)
+            this.currentPill.moveUntilStopped(Direction.DOWN)
 			pilly -= pilly
 		}
 		
@@ -378,12 +391,26 @@ export class PlayingBoard extends Board {
 	
 	
 	
-	spawnYellowDot() {  
-     
-            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-			
 	
-	}
+	
+
+
+spawnYellowDot() {
+    // Assuming YellowDot doesn't inherently have a 'pieces' property, we'll create a dummy shape.
+    const yellowDotShape = {
+        pieces: [/* dummy pieces data if necessary, or leave it empty */],
+        color: 'yl' // Assuming you have a specific color property requirement.
+    };
+
+    // Create an instance of YellowDot which now includes a dummy 'shape' object
+    const yellowDot = new YellowDot();
+    yellowDot.shape = yellowDotShape; // Assign the dummy shape object to the YellowDot instance.
+
+    // Assuming randx and randy are the coordinates where the dot should be spawned
+    this.fields[randx][randy].shapePiece = yellowDot; // Assign the YellowDot instance to the field.
+    this.fields[randx][randy].setColor('yl'); // Now, setColor will not throw an error.
+}
+
 	
 
     nextFrame() {
@@ -437,9 +464,6 @@ export class PlayingBoard extends Board {
                 this.useGravitation()
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
-				
-				
-                this.spawnPill()
 				
 	
 			} else {
@@ -527,8 +551,21 @@ export class PlayingBoard extends Board {
 					
 					
 					if(this.fields[x][y].color != Color.NONE && y != 0){
-						console.log('we doin it');
-						moved = false
+							
+							let shape = field.shapePiece.shape
+                            if (shape instanceof Pill) {
+                                for (let piece of shape.pieces) {
+                                    piece.field.locked = false
+                                    piece.field.setColor(Color.NONE)
+                                }
+                                if (shape.move(Direction.DOWN)) {
+                                    moved = true
+                                }
+                                for (let piece of shape.pieces) {
+                                    piece.field.locked = true
+                                    piece.field.setColor(piece.color)
+                                }
+                            }
 								
 					} else if (field.isTaken()) {
 						
@@ -582,11 +619,11 @@ class Field extends HTMLElement {
         this.beingPassed = false
         this.shapePiece = null
         this.setColor(Color.NONE)
-        if (this.y == 16 && this.x != 3 && this.x != 4) this.locked = true
+       
     }
 
     isTaken() {
-        return this.shapePiece != null || this.color == randcolor;
+        return this.shapePiece != null
     }
 
 	isDot() {

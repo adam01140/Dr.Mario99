@@ -639,12 +639,13 @@ class Field extends HTMLElement {
     // Visual feedback for clearing, adjust as necessary.
     if (isVirus) {
 		
-		if(this.style.backgroundImage == "url('./img/" + "yl" + "_dot - Copy.png')" ||
-		this.style.backgroundImage == "url('./img/" + "br" + "_dot - Copy.png')"
-		||this.style.backgroundImage == "url('./img/" + "bl" + "_dot - Copy.png')"){
-		alert("hey");
+
+		
+		if(this.x == randx && this.y == randy){
+			alert("hey");
 		} else {
 		localpoints += 4;	
+		alert("points");
         this.style.backgroundImage = "url('./img/" + color + "_x.png')";
 		}
 		

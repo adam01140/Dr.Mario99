@@ -21,16 +21,22 @@ app.use(cors({
 // Function to generate random virus positions
 function generateVirusPositions() {
     const positions = [];
-    for (let i = 0; i < 10; i++) { // Generate 4 virus positions
+    for (let i = 0; i < 10; i++) {
         positions.push({
-            x: Math.floor(Math.random() * 1), // Assuming width is 8
-            y: Math.floor(Math.random() * 1) // Assuming max height is 10
+            x: Math.floor(Math.random() * 1),
+            y: Math.floor(Math.random() * 1)
         });
     }
     return positions;
 }
 
+// Function to generate a random list
+function generateRandomList() {
+    return Array.from({ length: 20 }, () => Math.floor(Math.random() * 3));
+}
+
 const virusPositions = generateVirusPositions();
+const randomList = generateRandomList();
 
 const playersInLobby = { count: 0 };
 const activeRooms = {};
@@ -38,18 +44,18 @@ const activeRooms = {};
 io.on('connection', (socket) => {
     socket.on('createRoom', (roomCode) => {
         if (!activeRooms[roomCode]) {
-            activeRooms[roomCode] = { players: [socket.id] }; // Store creator's socket ID
-            socket.join(roomCode); // Socket joins the room
+            activeRooms[roomCode] = { players: [socket.id] };
+            socket.join(roomCode);
         }
     });
 
     socket.on('joinRoom', (roomCode) => {
         if (activeRooms[roomCode]) {
-            activeRooms[roomCode].players.push(socket.id); // Add player 2's socket ID
+            activeRooms[roomCode].players.push(socket.id);
             socket.join(roomCode);
-            io.to(roomCode).emit('roomJoined', roomCode); // Notify both players in the room
+            io.to(roomCode).emit('roomJoined', roomCode);
         } else {
-            socket.emit('error', 'Room does not exist.'); // Notify player 2 if room code is invalid
+            socket.emit('error', 'Room does not exist.');
         }
     });
 

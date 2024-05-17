@@ -384,10 +384,19 @@ export class PlayingBoard extends Board {
 	
 	spawnRandomDot() {  
      
-			
-            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-			//this.virusList.push(new Virus(this, randx, randy, randcolor))
-	
+			let randx = Math.floor(Math.random() * 7) + 1;
+    
+    // Generate a random number between 1 and 7 for randy (assuming you want a random y-coordinate as well)
+    let randy = Math.floor(Math.random() * 7) + 1;
+
+    // Array of possible colors
+    let colors = ['yl', 'bl', 'br'];
+    
+    // Select a random color from the colors array
+    let randcolor = colors[Math.floor(Math.random() * colors.length)];
+    
+    // Set the color of the random dot
+    this.fields[randx][randy].setColor(randcolor);
 	}
 	
 

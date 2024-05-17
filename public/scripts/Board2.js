@@ -844,9 +844,7 @@ class ThrowingBoard extends Board {
 
     nextFrame() {
 		
-		
-		//alert(puppy);
-
+	
         if (this.currentFrame >= this.frames.length - 1) {
             this.game.board.movePillFromThrowingBoard()
             this.game.board.blockInput = false

@@ -263,9 +263,12 @@ export class PlayingBoard extends Board {
 	hurt() {
 		
 
-		this.spawnYellowDot();
-		console.log('yellow');
-		hurting = 1
+		//alert("spawning pill");
+			this.spawnRandomDot();
+			spawn = 1;
+			hurting = 1;
+			
+	
 
     }
 
@@ -369,10 +372,7 @@ export class PlayingBoard extends Board {
 		
         if (key == "ArrowUp" && spawn == 0 || key == 'w' && spawn == 0){
             this.currentPill.rotate(Direction.LEFT)
-			alert("spawning pill");
-			this.spawnYellowDot();
-			spawn = 1;
-			hurting = 1;
+			
 		}
 		
         if (key == "Shift"){
@@ -382,8 +382,9 @@ export class PlayingBoard extends Board {
 	
 	
 	
-	spawnYellowDot() {  
+	spawnRandomDot() {  
      
+			
             this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
 			//this.virusList.push(new Virus(this, randx, randy, randcolor))
 	

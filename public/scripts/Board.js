@@ -29,7 +29,7 @@ var pilly = 15;
 
 var randcolor = 'yl';
 //import { io } from 'socket.io-client';
-const socket = io('https://lit-reef-80713-ac6de0f2b457.herokuapp.com/');
+const socket = io('https://dr-mario99.onrender.com/');
 
 function requestRandomNumber(max) {
     return new Promise((resolve) => {

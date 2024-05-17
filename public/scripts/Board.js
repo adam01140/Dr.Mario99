@@ -385,10 +385,6 @@ export class PlayingBoard extends Board {
 	spawnRandomDot() {  
      
 			let randx = Math.floor(Math.random() * 7) + 1;
-    
-    // Generate a random number between 1 and 7 for randy (assuming you want a random y-coordinate as well)
-    let randy = Math.floor(Math.random() * 7) + 1;
-
     // Array of possible colors
     let colors = ['yl', 'bl', 'br'];
     
@@ -769,9 +765,7 @@ setColor(color = this.color) {
 	
 
     setPillElement(element) {
-		
-		
-		//this.color = "yl"
+	
 		this.style.backgroundImage = "url('./img/" + this.color + "_" + element + ".png')"
 		
 		//console.log(this.color)

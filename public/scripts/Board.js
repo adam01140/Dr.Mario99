@@ -11,7 +11,7 @@ var enemy = 0;
 var player = 1;
 
 
-var randx = 3;
+var randx = 2;
 var randy = 15;
 var undery = 6;
 var undery2 = 5;
@@ -382,25 +382,34 @@ export class PlayingBoard extends Board {
 	
 	
 	
-	spawnRandomDot() {  
-     
-			
-            this.fields[randx][randy].setColor(randcolor); // Set the color of the field to yellow.   
-			//this.virusList.push(new Virus(this, randx, randy, randcolor))
 	
-	}
+	
+	function spawnRandomDot() {
+    // Generate a random number between 1 and 7 for randx
+    let randx = Math.floor(Math.random() * 7) + 1;
+    // Array of possible colors
+    let colors = ['yl', 'bl', 'br'];
+    // Select a random color from the colors array
+    let randcolor = colors[Math.floor(Math.random() * colors.length)];
+    
+    
+    this.fields[randx][randy].setColor(randcolor);
+	randx = Math.floor(Math.random() * 7) + 1;
+	randcolor = colors[Math.floor(Math.random() * colors.length)];
+
+	
+  
+	
+	
+}
+
+
+
+	
 	
 
     nextFrame() {
-		//this.fields[randx][randy].setColor(randcolor);
 		
-		//console.log('hereatleast');
-		
-		
-		
-		
-		//god is real
-		//it works
 		
 		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 

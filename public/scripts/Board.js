@@ -388,7 +388,7 @@ export class PlayingBoard extends Board {
     // Generate a random number between 1 and 7 for randx
     let randx = Math.floor(Math.random() * 7) + 1;
     // Array of possible colors
-    let colors = ['yl', 'bl', 'br'];
+    let colors = ['bl', 'br'];
     // Select a random color from the colors array
     let randcolor = colors[Math.floor(Math.random() * colors.length)];
     
@@ -402,6 +402,7 @@ export class PlayingBoard extends Board {
 	
 	
 }
+//huh
 
 
 

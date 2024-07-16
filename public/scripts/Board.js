@@ -11,10 +11,8 @@ var enemy = 0;
 var player = 1;
 
 
-var randx = 2;
-var randy = 15;
+
 var undery = 6;
-var undery2 = 5;
 var hurting = 0;
 
 var falling = 0;
@@ -27,9 +25,24 @@ var pillx1 = 3;
 var pillx2 = 4;
 var pilly = 15;
 
-var randcolor = 'yl';
+var randy = 15;
+var randy2 = 15;
+var randy3 = 15;
+var randy4 = 15;
+
+var randx = 2;
+var randx2 = 2;
+var randx3 = 2;
+var randx4 = 2;
+
+var randcolor = 'bl';
+var randcolor2 = 'bl';
+var randcolor3 = 'bl';
+var randcolor4 = 'bl';
+
+
 //import { io } from 'socket.io-client';
-const socket = io('https://dr-mario99.onrender.com/');
+const socket = io('localhost:3000/');
 
 function requestRandomNumber(max) {
     return new Promise((resolve) => {
@@ -383,88 +396,74 @@ export class PlayingBoard extends Board {
 	
 	
 	spawnRandomDot() {  
-     
-			let randx = Math.floor(Math.random() * 7) + 1;
-    // Array of possible colors
     let colors = ['yl', 'bl', 'br'];
+    let availableX = [1, 2, 3, 4, 5, 6, 7];
     
-    // Select a random color from the colors array
-    let randcolor = colors[Math.floor(Math.random() * colors.length)];
+    function getRandomX() {
+        let randomIndex = Math.floor(Math.random() * availableX.length);
+        return availableX.splice(randomIndex, 1)[0];
+    }
     
-    // Set the color of the random dot
-    this.fields[randx][randy].setColor(randcolor);
-	}
+    let randx = getRandomX();
+    let randcolor1 = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx][randy].setColor(randcolor1);
+    
+    let randx2 = getRandomX();
+    let randcolor2 = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx2][randy2].setColor(randcolor2);
+    
+    let randx3 = getRandomX();
+    let randcolor3 = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx3][randy3].setColor(randcolor3);
+    
+    let randx4 = getRandomX();
+    let randcolor4 = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx4][randy4].setColor(randcolor4);
+}
+
 	
 
     nextFrame() {
-		//this.fields[randx][randy].setColor(randcolor);
-		
-		//console.log('hereatleast');
-		
-		
-		
-		
-		//god is real
-		//it works
-		
-		if (this.fields[randx][randy].color == randcolor && randy != 0 && hurting == 1) {
 
-
-
+		if (randy != 0 && hurting == 1) {
 			if((this.fields[randx][(undery)].color) == Color.NONE){
-
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
 			randy = randy - 1;
 			undery = randy - 1;
-			undery2 = undery - 1;
-			
-			
 			}
 			
 			if(undery == -1){
 			hurting = 0;
-			
 			this.virusList.push(new Virus(this, randx, randy, randcolor))
-
 			
 			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
 			this.virusList.push(new Virus(this, randx, randy, randcolor))
 			hurting = 0;
 			}
 			
-
-
         } 
 		
 		
 		
 		
         if (this.currentPill) {
-			
-			
 			if(pilly == randy + 1 && hurting == 0){
-				alert('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
+				//alert('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
                 this.blockInput = true
                 this.currentPill.place()
                 this.clearIfNeeded()
-                //this.useGravitation()
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
 				this.spawnPill()
-				
-	
 			} else {
 			
-			console.log('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
+			//console.log('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
             let moved = this.currentPill.move(Direction.DOWN)
-			
 			if(moved){
 			pilly = pilly - 1;
 			}
-			
-
-			
+				
             if (!moved) {
 				pilly = pilly - 1;
 				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
@@ -475,8 +474,6 @@ export class PlayingBoard extends Board {
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
             }
-			
-			
 			}
 			
 			
@@ -751,7 +748,7 @@ setColor(color = this.color) {
 			
 			if(this.x == randx && this.y == randy){
 			console.log("x position of virus: " + this.x);
-			this.style.backgroundImage = "url('./img/" + color + "_dot - Copy.png')";
+			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
 			} else {
             this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
 			}

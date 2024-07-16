@@ -12,8 +12,6 @@ var player = 1;
 
 
 
-var undery = 6;
-var hurting = 0;
 
 var falling = 0;
 
@@ -23,7 +21,23 @@ var spawn = 0;
 
 var pillx1 = 3;
 var pillx2 = 4;
+
+
+var hurting1 = 0;
+var hurting2 = 0;
+var hurting3 = 0;
+var hurting4 = 0;
+
+
 var pilly = 15;
+var pilly2 = 15;
+var pilly3 = 15;
+var pilly4 = 15;
+
+var undery = 6;
+var undery2 = 6;
+var undery3 = 6;
+var undery4 = 6;
 
 var randy = 15;
 var randy2 = 15;
@@ -279,8 +293,12 @@ export class PlayingBoard extends Board {
 		//alert("spawning pill");
 			this.spawnRandomDot();
 			spawn = 1;
-			hurting = 1;
 			
+			
+			hurting1 = 1;
+			hurting2 = 1;
+			hurting3 = 1;
+			hurting4 = 1;
 	
 
     }
@@ -381,9 +399,10 @@ export class PlayingBoard extends Board {
         if (key == "ArrowDown" || key == 's'){
             this.currentPill.moveUntilStopped(Direction.DOWN)
 			pilly -= pilly
+			pilly2 -= pilly2
 		}
 		
-        if (key == "ArrowUp" && spawn == 0 || key == 'w' && spawn == 0){
+        if (key == "ArrowUp" || key == 'w'){
             this.currentPill.rotate(Direction.LEFT)
 			
 		}
@@ -404,28 +423,30 @@ export class PlayingBoard extends Board {
         return availableX.splice(randomIndex, 1)[0];
     }
     
-    let randx = getRandomX();
-    let randcolor1 = colors[Math.floor(Math.random() * colors.length)];
-    this.fields[randx][randy].setColor(randcolor1);
+    randx = getRandomX();
+    randcolor = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx][randy].setColor(randcolor);
     
-    let randx2 = getRandomX();
-    let randcolor2 = colors[Math.floor(Math.random() * colors.length)];
+    randx2 = getRandomX();
+    randcolor2 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx2][randy2].setColor(randcolor2);
     
-    let randx3 = getRandomX();
-    let randcolor3 = colors[Math.floor(Math.random() * colors.length)];
+    randx3 = getRandomX();
+    randcolor3 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx3][randy3].setColor(randcolor3);
     
-    let randx4 = getRandomX();
-    let randcolor4 = colors[Math.floor(Math.random() * colors.length)];
+    randx4 = getRandomX();
+    randcolor4 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx4][randy4].setColor(randcolor4);
 }
 
 	
 
     nextFrame() {
-
-		if (randy != 0 && hurting == 1) {
+		
+		//where the magic happens
+		
+		if (randy != 0 && hurting1 == 1) {
 			if((this.fields[randx][(undery)].color) == Color.NONE){
 			this.fields[randx][(randy)].setColor(Color.NONE);
 			this.fields[randx][(randy-1)].setColor(randcolor);	
@@ -434,12 +455,32 @@ export class PlayingBoard extends Board {
 			}
 			
 			if(undery == -1){
-			hurting = 0;
+			hurting1 = 0;
 			this.virusList.push(new Virus(this, randx, randy, randcolor))
 			
 			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
 			this.virusList.push(new Virus(this, randx, randy, randcolor))
-			hurting = 0;
+			hurting1 = 0;
+			}
+			
+        } 
+		
+		
+		if (randy2 != 0 && hurting2 == 1) {
+			if((this.fields[randx2][(undery2)].color) == Color.NONE){
+			this.fields[randx2][(randy2)].setColor(Color.NONE);
+			this.fields[randx2][(randy2-1)].setColor(randcolor2);	
+			randy2 = randy2 - 1;
+			undery2 = randy2 - 1;
+			}
+			
+			if(undery2 == -1){
+			hurting2 = 0;
+			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
+			
+			} else if((this.fields[randx2][(undery2)].color) != Color.NONE) {
+			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
+			hurting2 = 0;
 			}
 			
         } 
@@ -447,8 +488,11 @@ export class PlayingBoard extends Board {
 		
 		
 		
+		
+		
         if (this.currentPill) {
-			if(pilly == randy + 1 && hurting == 0){
+			if(pilly == randy + 1 && hurting1 == 0 
+			|| pilly2 == randy2 + 1 && hurting2 == 0){
 				//alert('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
                 this.blockInput = true
                 this.currentPill.place()
@@ -462,10 +506,12 @@ export class PlayingBoard extends Board {
             let moved = this.currentPill.move(Direction.DOWN)
 			if(moved){
 			pilly = pilly - 1;
+			pilly2 = pilly2 - 1;
 			}
 				
             if (!moved) {
 				pilly = pilly - 1;
+				pilly2 = pilly2 - 1;
 				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
                 this.blockInput = true
                 this.currentPill.place()
@@ -475,10 +521,15 @@ export class PlayingBoard extends Board {
                 if (this.stageCompleted()) return
             }
 			}
-			
-			
-			
         }
+		
+		
+		
+		
+		
+		
+		
+		
     }
 
     stageCompleted() {
@@ -548,7 +599,7 @@ export class PlayingBoard extends Board {
 					
                     if (field.isTaken()) {
 						
-						//alert('hi');
+						
                         if (field.locked) {
                             let shape = field.shapePiece.shape
                             if (shape instanceof Pill) {
@@ -570,6 +621,8 @@ export class PlayingBoard extends Board {
             }
 
             if (!moved) {
+				
+				
                 this.clearIfNeeded()
                 clearInterval(this.gravitationInterval)
                 this.gravitationInterval = null
@@ -644,8 +697,9 @@ class Field extends HTMLElement {
 		
 
 		
-		if(this.x == randx && this.y == randy){
-			alert("hey");
+		if(this.x == randx && this.y == randy 
+		|| this.x == randx2 && this.y == randy2){
+			//alert("hey");
 		} else {
 		localpoints += 4;	
 		alert("points");
@@ -745,13 +799,22 @@ setColor(color = this.color) {
         // If the shape is a Virus, use a specific image.
         if (this.shapePiece && this.shapePiece.shape instanceof Virus) {			
 			
-			
+			//turns fallen pills into pills instead of viruses
 			if(this.x == randx && this.y == randy){
 			console.log("x position of virus: " + this.x);
 			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
+			//alert("got the first");
+			} else if(this.x == randx2 && this.y == randy2){
+			console.log("x position of virus: " + this.x);
+			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
+			//alert("got the second");
 			} else {
             this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
 			}
+			
+			
+			
+			
         }
     }
 }
@@ -764,9 +827,6 @@ setColor(color = this.color) {
     setPillElement(element) {
 	
 		this.style.backgroundImage = "url('./img/" + this.color + "_" + element + ".png')"
-		
-		//console.log(this.color)
-		//console.log(element)
 		
 		
     }
@@ -846,7 +906,7 @@ class ThrowingBoard extends Board {
 					pillx1 = 3;
 					pillx2 = 4;
 					pilly = 15;
-
+					pilly2 = 15;
 
 					socket.emit('updatePoints2', { player1points: localpoints });
 					localpoints = 0;

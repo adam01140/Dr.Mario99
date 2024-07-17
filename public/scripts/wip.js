@@ -691,6 +691,9 @@ class Field extends HTMLElement {
 	
 	
     clearAnimated() {
+		
+		
+		
     let isVirus = false;
     let color = this.color; // Use the field's color since shapePiece might be null.
 

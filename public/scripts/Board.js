@@ -34,10 +34,10 @@ var pilly2 = 15;
 var pilly3 = 15;
 var pilly4 = 15;
 
-var undery = 6;
-var undery2 = 6;
-var undery3 = 6;
-var undery4 = 6;
+var undery = 14;
+var undery2 = 14;
+var undery3 = 14;
+var undery4 = 14;
 
 var randy = 15;
 var randy2 = 15;
@@ -299,6 +299,8 @@ export class PlayingBoard extends Board {
 			hurting2 = 1;
 			hurting3 = 1;
 			hurting4 = 1;
+			
+			
 	
 
     }
@@ -422,7 +424,21 @@ export class PlayingBoard extends Board {
         let randomIndex = Math.floor(Math.random() * availableX.length);
         return availableX.splice(randomIndex, 1)[0];
     }
-    
+	
+	randy = 15;
+	undery = 14;
+	
+	randy2 = 15;
+	undery2 = 14;
+	
+	randy3 = 15;
+	undery3 = 14;
+	
+	randy4 = 15;
+	undery4 = 14;
+	
+   
+
     randx = getRandomX();
     randcolor = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx][randy].setColor(randcolor);
@@ -444,6 +460,9 @@ export class PlayingBoard extends Board {
 
     nextFrame() {
 		
+		
+		
+		
 		//where the magic happens
 		
 		if (randy != 0 && hurting1 == 1) {
@@ -456,6 +475,7 @@ export class PlayingBoard extends Board {
 			
 			if(undery == -1){
 			hurting1 = 0;
+			
 			this.virusList.push(new Virus(this, randx, randy, randcolor))
 			
 			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
@@ -679,50 +699,36 @@ class Field extends HTMLElement {
         this.style.left = this.x * this.board.fieldSize + "px"
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
-    clearAnimated() {
-    let isVirus = false;
-    let color = this.color; // Use the field's color since shapePiece might be null.
-
-    // If shapePiece exists and is a Virus, handle it accordingly.
-    if (this.shapePiece) {
-        isVirus = this.shapePiece.shape instanceof Virus;
-        // Continue with your existing code for a non-null shapePiece.
-        this.clear(); // This will handle clearing and score updating for shapes.
-    } else {
-        // Handle the case where shapePiece is null (e.g., for dots).
-        console.log('Clearing a dot as if it was a virus.');
-        // Assume dots are treated similarly to viruses for scoring and clearing.
-        isVirus = true; // Treat the dot as a virus for this context.
-        this.setColor(Color.NONE); // Clear the dot visually.
-        // Directly manipulate score and virus count as needed.
-        // For example, increase score and decrease virus count:
-        // Note: Adjust these as necessary to fit how your game tracks score and virus count.
-         // Example of increasing points.
-        this.board.decreaseVirusCount(); // Example of decreasing the virus count.
-    }
-
-    // Visual feedback for clearing, adjust as necessary.
-    if (isVirus) {
+   clearAnimated() {
 		
-
 		
-		if(this.x == randx && this.y == randy 
-		|| this.x == randx2 && this.y == randy2){
-			//alert("hey");
-		} else {
-		localpoints += 4;	
-		alert("points");
+	
+    const x = this.shapePiece.shape instanceof Virus;
+    const o = this.shapePiece.shape instanceof Pill;
+    const color = this.shapePiece.color; // Assuming this.shapePiece.color contains values like Color.FIRST, etc.
+    this.clear();
+    if (x)
+		
+		localpoints += 1;	
+		//alert("points");
         this.style.backgroundImage = "url('./img/" + color + "_x.png')";
-		}
-		
-    } else {
+    if (o)
+		localpoints += 1;
         this.style.backgroundImage = "url('./img/" + color + "_o.png')";
-    }
-
-    // Set a timeout to remove the visual feedback.
+		
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 
@@ -810,13 +816,13 @@ setColor(color = this.color) {
 			
 			//turns fallen pills into pills instead of viruses
 			if(this.x == randx && this.y == randy){
-			console.log("x position of virus: " + this.x);
 			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
-			//alert("got the first");
 			} else if(this.x == randx2 && this.y == randy2){
-			console.log("x position of virus: " + this.x);
 			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
-			//alert("got the second");
+			} else if(this.x == randx3 && this.y == randy3){
+			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
+			} else if(this.x == randx4 && this.y == randy4){
+			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
 			} else {
             this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
 			}

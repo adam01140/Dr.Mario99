@@ -1,6 +1,6 @@
 "use strict"
-import { Pill, Virus } from "./Shape.js"
-import { Color, Direction, Rotation, DELAY } from "./components.js"
+import { Pill, Virus } from "./Shape2.js"
+import { Color, Direction, Rotation, DELAY } from "./components2.js"
 
 
 var pillnum = 1;
@@ -8,7 +8,10 @@ var second = 0;
 var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
-var player = 1;
+var player = 2;
+
+
+
 
 
 
@@ -53,6 +56,10 @@ var randcolor = 'bl';
 var randcolor2 = 'bl';
 var randcolor3 = 'bl';
 var randcolor4 = 'bl';
+
+
+
+
 
 
 //import { io } from 'socket.io-client';
@@ -375,7 +382,7 @@ export class PlayingBoard extends Board {
 	
 	
 
-    movementFromKey(key) {
+   movementFromKey(key) {
         if (this.blockInput){
             return
 		}
@@ -440,7 +447,10 @@ export class PlayingBoard extends Board {
     this.fields[randx4][randy4].setColor(randcolor4);
 }
 
-	
+
+
+
+
 
     nextFrame() {
 		
@@ -558,7 +568,7 @@ if (randy4 != 0 && hurting4 == 1) {
 		
     }
 
-    stageCompleted() {
+   stageCompleted() {
         return this.virusCount <= 0
     }
 
@@ -582,7 +592,7 @@ if (randy4 != 0 && hurting4 == 1) {
         }
     }
 
-    gameOver() {
+   gameOver() {
         if (this.fields[3][15].locked || this.fields[4][15].locked)
             return true
         else
@@ -671,14 +681,15 @@ class Field extends HTMLElement {
         this.setStyles()
     }
 
+    
 
-	
-	
-	
     setStyles() {
         this.style.left = this.x * this.board.fieldSize + "px"
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
+	
+	
+	
     clearAnimated() {
     let isVirus = false;
     let color = this.color; // Use the field's color since shapePiece might be null.
@@ -850,8 +861,6 @@ setColor(color = this.color) {
     }
 }
 
-
-
 customElements.define("game-board-field", Field)
 
 
@@ -889,9 +898,9 @@ class ThrowingBoard extends Board {
 		
 		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p1damage', (data) => {
-				console.log(`Damage received: ${data.p1damage}`);
-				realdamage = Math.floor(data.p1damage / 4);
+            socket.on('p2damage', (data) => {
+				console.log(`Damage received: ${data.p2damage}`);
+				realdamage = Math.floor(data.p2damage / 4);
 				
 			});
         this.isDamageListenerAdded = true;
@@ -917,7 +926,7 @@ class ThrowingBoard extends Board {
 					pilly = 15;
 					pilly2 = 15;
 
-					socket.emit('updatePoints2', { player1points: localpoints });
+					socket.emit('updatePoints1', { player2points: localpoints });
 					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {
@@ -1088,18 +1097,9 @@ class ThrowingBoard extends Board {
                 break
         }
     }
-
-
-
-
-	
-	
-	
-	
-	
-	
     
 
+   
     nextFrame() {
 		
 		

@@ -9,6 +9,53 @@ var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
 var player = 2;
+
+var falling = 0;
+
+var spawn = 0;
+
+
+
+var pillx1 = 3;
+var pillx2 = 4;
+
+
+var hurting1 = 0;
+var hurting2 = 0;
+var hurting3 = 0;
+var hurting4 = 0;
+
+
+var pilly = 15;
+var pilly2 = 15;
+var pilly3 = 15;
+var pilly4 = 15;
+
+var undery = 6;
+var undery2 = 6;
+var undery3 = 6;
+var undery4 = 6;
+
+var randy = 15;
+var randy2 = 15;
+var randy3 = 15;
+var randy4 = 15;
+
+var randx = 2;
+var randx2 = 2;
+var randx3 = 2;
+var randx4 = 2;
+
+var randcolor = 'bl';
+var randcolor2 = 'bl';
+var randcolor3 = 'bl';
+var randcolor4 = 'bl';
+
+
+
+
+
+
 //import { io } from 'socket.io-client';
 const socket = io('localhost:3000/');
 
@@ -19,7 +66,7 @@ function requestRandomNumber(max) {
         });
     });
 }
-
+//flawless exc
 function digitToImg(digit) {
     digit = parseInt(digit)
     const img = document.createElement("img")
@@ -242,19 +289,19 @@ export class PlayingBoard extends Board {
 
 
 	hurt() {
-        this.virusCount = 1
-        this.maxVirusHeight = 10
-        if (this.level >= 15) this.maxVirusHeight++
-        if (this.level >= 17) this.maxVirusHeight++
-        if (this.level >= 19) this.maxVirusHeight++
-        let color
-        for (let i = 0; i < this.virusCount; i++) {
-            if (this.lastColor == Color.FIRST) color = Color.SECOND
-            else if (this.lastColor == Color.SECOND) color = Color.THIRD
-            else color = Color.FIRST
-            this.spawnVirus(color)
-            this.lastColor = color
-        }
+		
+
+		//alert("spawning pill");
+			this.spawnRandomDot();
+			spawn = 1;
+			
+			
+			hurting1 = 1;
+			hurting2 = 1;
+			hurting3 = 1;
+			hurting4 = 1;
+	
+
     }
 
     spawnVirus(color) {
@@ -292,6 +339,10 @@ export class PlayingBoard extends Board {
             const position = this.virusPositions[i];
             if (position) {
                 const { x, y } = position;
+				
+				if(x == randx){
+					alert("hey");
+				}
                 //const color = this.lastColor === Color.FIRST ? Color.SECOND : (this.lastColor === Color.SECOND ? Color.THIRD : Color.FIRST);
                 this.virusList.push(new Virus(this, x, y, color));
             }
@@ -300,13 +351,6 @@ export class PlayingBoard extends Board {
 	
 	
 	
-		
-		
-	
-	
-	
-	
-	
 	
 	
 	
@@ -322,30 +366,168 @@ export class PlayingBoard extends Board {
 	
 	
 
-	
-	
 
-    movementFromKey(key) {
-        if (this.blockInput)
+   movementFromKey(key) {
+        if (this.blockInput){
             return
-        if (!this.currentPill || this.currentPill.placed)
+		}
+		
+        if (!this.currentPill || this.currentPill.placed){
             return
-        if (key == "ArrowLeft" || key == 'a')
+		}
+		
+        if (key == "ArrowLeft" || key == 'a'){
             this.currentPill.move(Direction.LEFT)
-        if (key == "ArrowRight" || key == 'd')
+			pillx1 -= pillx1
+			pillx2 -= pillx2
+		}	
+			
+        if (key == "ArrowRight" || key == 'd'){
             this.currentPill.move(Direction.RIGHT)
-        if (key == "ArrowDown" || key == 's')
+			pillx1 += pillx1
+			pillx2 += pillx2
+		}
+		
+        if (key == "ArrowDown" || key == 's'){
             this.currentPill.moveUntilStopped(Direction.DOWN)
-        if (key == "ArrowUp" || key == 'w')
+			pilly -= pilly
+			pilly2 -= pilly2
+		}
+		
+        if (key == "ArrowUp" || key == 'w'){
             this.currentPill.rotate(Direction.LEFT)
-        if (key == "Shift")
+			
+		}
+		
+        if (key == "Shift"){
             this.currentPill.rotate(Direction.RIGHT)
+		}
+    }
+	
+	
+	
+	spawnRandomDot() {  
+    let colors = ['yl', 'bl', 'br'];
+    let availableX = [1, 2, 3, 4, 5, 6, 7];
+    
+    function getRandomX() {
+        let randomIndex = Math.floor(Math.random() * availableX.length);
+        return availableX.splice(randomIndex, 1)[0];
+    }
+    
+    randx = getRandomX();
+    randcolor = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx][randy].setColor(randcolor);
+    
+    randx2 = getRandomX();
+    randcolor2 = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx2][randy2].setColor(randcolor2);
+    
+    randx3 = getRandomX();
+    randcolor3 = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx3][randy3].setColor(randcolor3);
+    
+    randx4 = getRandomX();
+    randcolor4 = colors[Math.floor(Math.random() * colors.length)];
+    this.fields[randx4][randy4].setColor(randcolor4);
+}
+ nextFrame() {
+		
+		//where the magic happens
+		
+		if (randy != 0 && hurting1 == 1) {
+			if((this.fields[randx][(undery)].color) == Color.NONE){
+			this.fields[randx][(randy)].setColor(Color.NONE);
+			this.fields[randx][(randy-1)].setColor(randcolor);	
+			randy = randy - 1;
+			undery = randy - 1;
+			}
+			
+			if(undery == -1){
+			hurting1 = 0;
+			this.virusList.push(new Virus(this, randx, randy, randcolor))
+			
+			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
+			this.virusList.push(new Virus(this, randx, randy, randcolor))
+			hurting1 = 0;
+			}
+			
+        } 
+		
+		
+		if (randy2 != 0 && hurting2 == 1) {
+			if((this.fields[randx2][(undery2)].color) == Color.NONE){
+			this.fields[randx2][(randy2)].setColor(Color.NONE);
+			this.fields[randx2][(randy2-1)].setColor(randcolor2);	
+			randy2 = randy2 - 1;
+			undery2 = randy2 - 1;
+			}
+			
+			if(undery2 == -1){
+			hurting2 = 0;
+			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
+			
+			} else if((this.fields[randx2][(undery2)].color) != Color.NONE) {
+			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
+			hurting2 = 0;
+			}
+			
+        } 
+		
+		
+		
+		if (randy3 != 0 && hurting3 == 1) {
+    if((this.fields[randx3][(undery3)].color) == Color.NONE){
+        this.fields[randx3][(randy3)].setColor(Color.NONE);
+        this.fields[randx3][(randy3-1)].setColor(randcolor3);    
+        randy3 = randy3 - 1;
+        undery3 = randy3 - 1;
     }
 
-    nextFrame() {
+    if(undery3 == -1){
+        hurting3 = 0;
+        this.virusList.push(new Virus(this, randx3, randy3, randcolor3));
+    } else if((this.fields[randx3][(undery3)].color) != Color.NONE) {
+        this.virusList.push(new Virus(this, randx3, randy3, randcolor3));
+        hurting3 = 0;
+    }
+}
+
+if (randy4 != 0 && hurting4 == 1) {
+    if((this.fields[randx4][(undery4)].color) == Color.NONE){
+        this.fields[randx4][(randy4)].setColor(Color.NONE);
+        this.fields[randx4][(randy4-1)].setColor(randcolor4);    
+        randy4 = randy4 - 1;
+        undery4 = randy4 - 1;
+    }
+
+    if(undery4 == -1){
+        hurting4 = 0;
+        this.virusList.push(new Virus(this, randx4, randy4, randcolor4));
+    } else if((this.fields[randx4][(undery4)].color) != Color.NONE) {
+        this.virusList.push(new Virus(this, randx4, randy4, randcolor4));
+        hurting4 = 0;
+    }
+}
+		
+		
+		
+		 
+		
         if (this.currentPill) {
+			
+			
+			//console.log('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
             let moved = this.currentPill.move(Direction.DOWN)
+			if(moved){
+			pilly = pilly - 1;
+			pilly2 = pilly2 - 1;
+			}
+				
             if (!moved) {
+				pilly = pilly - 1;
+				pilly2 = pilly2 - 1;
+				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
                 this.blockInput = true
                 this.currentPill.place()
                 this.clearIfNeeded()
@@ -353,7 +535,16 @@ export class PlayingBoard extends Board {
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
             }
+			
         }
+		
+		
+		
+		
+		
+		
+		
+		
     }
 
     stageCompleted() {
@@ -380,7 +571,7 @@ export class PlayingBoard extends Board {
         }
     }
 
-    gameOver() {
+   gameOver() {
         if (this.fields[3][15].locked || this.fields[4][15].locked)
             return true
         else
@@ -401,48 +592,49 @@ export class PlayingBoard extends Board {
                 field.clearAnimated()
     }
 
-    useGravitation() {
-        if (this.gravitationInterval) return
-        this.gravitationInterval = setInterval(() => {
-            let moved = false
-            for (let y = 0; y < this.height; y++) {
-                for (let x = 0; x < this.width; x++) {
-                    const field = this.fields[x][y]
-                    if (field.isTaken()) {
-                        if (field.locked) {
-                            let shape = field.shapePiece.shape
-                            if (shape instanceof Pill) {
-                                for (let piece of shape.pieces) {
-                                    piece.field.locked = false
-                                    piece.field.setColor(Color.NONE)
-                                }
-                                if (shape.move(Direction.DOWN)) {
-                                    moved = true
-                                }
-                                for (let piece of shape.pieces) {
-                                    piece.field.locked = true
-                                    piece.field.setColor(piece.color)
-                                }
-                            }
+     useGravitation() {
+    if (this.gravitationInterval) return;
+    this.gravitationInterval = setInterval(() => {
+        let moved = false;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const field = this.fields[x][y];
+                if (field.isTaken() && field.locked) {
+                    let shape = field.shapePiece.shape;
+                    if (shape instanceof Pill) {
+                        // Temporarily unlock the pieces to move them
+                        for (let piece of shape.pieces) {
+                            piece.field.locked = false;
+                            piece.field.setColor(Color.NONE);
+                        }
+                        // Move the shape down if possible
+                        if (shape.move(Direction.DOWN)) {
+                            moved = true;
+                        }
+                        // Relock the pieces
+                        for (let piece of shape.pieces) {
+                            piece.field.locked = true;
+                            piece.field.setColor(piece.color);
                         }
                     }
                 }
             }
+        }
 
-            if (!moved) {
-                this.clearIfNeeded()
-                clearInterval(this.gravitationInterval)
-                this.gravitationInterval = null
-                for (let line of this.fields)
-                    for (let field of line)
-                        if (field.shouldBeCleared())
-                            return
-                this.spawnPill()
-				
-            }
-        }, DELAY.gravitation)
-    }
+        if (!moved) {
+            this.clearIfNeeded();
+            clearInterval(this.gravitationInterval);
+            this.gravitationInterval = null;
+            for (let line of this.fields)
+                for (let field of line)
+                    if (field.shouldBeCleared())
+                        return;
+            this.spawnPill();
+        }
+    }, DELAY.gravitation);
 }
+}
+
 customElements.define("game-board", PlayingBoard)
 
 class Field extends HTMLElement {
@@ -461,7 +653,8 @@ class Field extends HTMLElement {
         if (this.y == 16 && this.x != 3 && this.x != 4) this.locked = true
     }
 
-    isTaken() {
+
+     isTaken() {
         return this.shapePiece != null
     }
 
@@ -469,11 +662,19 @@ class Field extends HTMLElement {
         this.setStyles()
     }
 
+    
+
     setStyles() {
         this.style.left = this.x * this.board.fieldSize + "px"
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
+	
+	
+	
     clearAnimated() {
+		
+		
+	
     const x = this.shapePiece.shape instanceof Virus;
     const o = this.shapePiece.shape instanceof Pill;
     const color = this.shapePiece.color; // Assuming this.shapePiece.color contains values like Color.FIRST, etc.
@@ -488,6 +689,16 @@ class Field extends HTMLElement {
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 

@@ -1,6 +1,6 @@
 "use strict"
-import { Pill, Virus } from "./Shape.js"
-import { Color, Direction, Rotation, DELAY } from "./components.js"
+import { Pill, Virus } from "./Shape2.js"
+import { Color, Direction, Rotation, DELAY } from "./components2.js"
 
 
 var pillnum = 1;
@@ -8,53 +8,7 @@ var second = 0;
 var realdamage = 0;
 var localpoints = 0;
 var enemy = 0;
-var player = 1;
-
-
-
-
-var falling = 0;
-
-var spawn = 0;
-
-
-
-var pillx1 = 3;
-var pillx2 = 4;
-
-
-var hurting1 = 0;
-var hurting2 = 0;
-var hurting3 = 0;
-var hurting4 = 0;
-
-
-var pilly = 15;
-var pilly2 = 15;
-var pilly3 = 15;
-var pilly4 = 15;
-
-var undery = 6;
-var undery2 = 6;
-var undery3 = 6;
-var undery4 = 6;
-
-var randy = 15;
-var randy2 = 15;
-var randy3 = 15;
-var randy4 = 15;
-
-var randx = 2;
-var randx2 = 2;
-var randx3 = 2;
-var randx4 = 2;
-
-var randcolor = 'bl';
-var randcolor2 = 'bl';
-var randcolor3 = 'bl';
-var randcolor4 = 'bl';
-
-
+var player = 2;
 //import { io } from 'socket.io-client';
 const socket = io('localhost:3000/');
 
@@ -65,7 +19,7 @@ function requestRandomNumber(max) {
         });
     });
 }
-//flawless exc
+
 function digitToImg(digit) {
     digit = parseInt(digit)
     const img = document.createElement("img")
@@ -288,19 +242,19 @@ export class PlayingBoard extends Board {
 
 
 	hurt() {
-		
-
-		//alert("spawning pill");
-			this.spawnRandomDot();
-			spawn = 1;
-			
-			
-			hurting1 = 1;
-			hurting2 = 1;
-			hurting3 = 1;
-			hurting4 = 1;
-	
-
+        this.virusCount = 1
+        this.maxVirusHeight = 10
+        if (this.level >= 15) this.maxVirusHeight++
+        if (this.level >= 17) this.maxVirusHeight++
+        if (this.level >= 19) this.maxVirusHeight++
+        let color
+        for (let i = 0; i < this.virusCount; i++) {
+            if (this.lastColor == Color.FIRST) color = Color.SECOND
+            else if (this.lastColor == Color.SECOND) color = Color.THIRD
+            else color = Color.FIRST
+            this.spawnVirus(color)
+            this.lastColor = color
+        }
     }
 
     spawnVirus(color) {
@@ -338,10 +292,6 @@ export class PlayingBoard extends Board {
             const position = this.virusPositions[i];
             if (position) {
                 const { x, y } = position;
-				
-				if(x == randx){
-					alert("hey");
-				}
                 //const color = this.lastColor === Color.FIRST ? Color.SECOND : (this.lastColor === Color.SECOND ? Color.THIRD : Color.FIRST);
                 this.virusList.push(new Virus(this, x, y, color));
             }
@@ -376,169 +326,26 @@ export class PlayingBoard extends Board {
 	
 
     movementFromKey(key) {
-        if (this.blockInput){
+        if (this.blockInput)
             return
-		}
-		
-        if (!this.currentPill || this.currentPill.placed){
+        if (!this.currentPill || this.currentPill.placed)
             return
-		}
-		
-        if (key == "ArrowLeft" || key == 'a'){
+        if (key == "ArrowLeft" || key == 'a')
             this.currentPill.move(Direction.LEFT)
-			pillx1 -= pillx1
-			pillx2 -= pillx2
-		}	
-			
-        if (key == "ArrowRight" || key == 'd'){
+        if (key == "ArrowRight" || key == 'd')
             this.currentPill.move(Direction.RIGHT)
-			pillx1 += pillx1
-			pillx2 += pillx2
-		}
-		
-        if (key == "ArrowDown" || key == 's'){
+        if (key == "ArrowDown" || key == 's')
             this.currentPill.moveUntilStopped(Direction.DOWN)
-			pilly -= pilly
-			pilly2 -= pilly2
-		}
-		
-        if (key == "ArrowUp" || key == 'w'){
+        if (key == "ArrowUp" || key == 'w')
             this.currentPill.rotate(Direction.LEFT)
-			
-		}
-		
-        if (key == "Shift"){
+        if (key == "Shift")
             this.currentPill.rotate(Direction.RIGHT)
-		}
     }
-	
-	
-	
-	spawnRandomDot() {  
-    let colors = ['yl', 'bl', 'br'];
-    let availableX = [1, 2, 3, 4, 5, 6, 7];
-    
-    function getRandomX() {
-        let randomIndex = Math.floor(Math.random() * availableX.length);
-        return availableX.splice(randomIndex, 1)[0];
-    }
-    
-    randx = getRandomX();
-    randcolor = colors[Math.floor(Math.random() * colors.length)];
-    this.fields[randx][randy].setColor(randcolor);
-    
-    randx2 = getRandomX();
-    randcolor2 = colors[Math.floor(Math.random() * colors.length)];
-    this.fields[randx2][randy2].setColor(randcolor2);
-    
-    randx3 = getRandomX();
-    randcolor3 = colors[Math.floor(Math.random() * colors.length)];
-    this.fields[randx3][randy3].setColor(randcolor3);
-    
-    randx4 = getRandomX();
-    randcolor4 = colors[Math.floor(Math.random() * colors.length)];
-    this.fields[randx4][randy4].setColor(randcolor4);
-}
-
-	
 
     nextFrame() {
-		
-		//where the magic happens
-		
-		if (randy != 0 && hurting1 == 1) {
-			if((this.fields[randx][(undery)].color) == Color.NONE){
-			this.fields[randx][(randy)].setColor(Color.NONE);
-			this.fields[randx][(randy-1)].setColor(randcolor);	
-			randy = randy - 1;
-			undery = randy - 1;
-			}
-			
-			if(undery == -1){
-			hurting1 = 0;
-			this.virusList.push(new Virus(this, randx, randy, randcolor))
-			
-			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
-			this.virusList.push(new Virus(this, randx, randy, randcolor))
-			hurting1 = 0;
-			}
-			
-        } 
-		
-		
-		if (randy2 != 0 && hurting2 == 1) {
-			if((this.fields[randx2][(undery2)].color) == Color.NONE){
-			this.fields[randx2][(randy2)].setColor(Color.NONE);
-			this.fields[randx2][(randy2-1)].setColor(randcolor2);	
-			randy2 = randy2 - 1;
-			undery2 = randy2 - 1;
-			}
-			
-			if(undery2 == -1){
-			hurting2 = 0;
-			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
-			
-			} else if((this.fields[randx2][(undery2)].color) != Color.NONE) {
-			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
-			hurting2 = 0;
-			}
-			
-        } 
-		
-		
-		
-		if (randy3 != 0 && hurting3 == 1) {
-    if((this.fields[randx3][(undery3)].color) == Color.NONE){
-        this.fields[randx3][(randy3)].setColor(Color.NONE);
-        this.fields[randx3][(randy3-1)].setColor(randcolor3);    
-        randy3 = randy3 - 1;
-        undery3 = randy3 - 1;
-    }
-
-    if(undery3 == -1){
-        hurting3 = 0;
-        this.virusList.push(new Virus(this, randx3, randy3, randcolor3));
-    } else if((this.fields[randx3][(undery3)].color) != Color.NONE) {
-        this.virusList.push(new Virus(this, randx3, randy3, randcolor3));
-        hurting3 = 0;
-    }
-}
-
-if (randy4 != 0 && hurting4 == 1) {
-    if((this.fields[randx4][(undery4)].color) == Color.NONE){
-        this.fields[randx4][(randy4)].setColor(Color.NONE);
-        this.fields[randx4][(randy4-1)].setColor(randcolor4);    
-        randy4 = randy4 - 1;
-        undery4 = randy4 - 1;
-    }
-
-    if(undery4 == -1){
-        hurting4 = 0;
-        this.virusList.push(new Virus(this, randx4, randy4, randcolor4));
-    } else if((this.fields[randx4][(undery4)].color) != Color.NONE) {
-        this.virusList.push(new Virus(this, randx4, randy4, randcolor4));
-        hurting4 = 0;
-    }
-}
-		
-		
-		
-		 
-		
         if (this.currentPill) {
-			
-			
-			//console.log('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
             let moved = this.currentPill.move(Direction.DOWN)
-			if(moved){
-			pilly = pilly - 1;
-			pilly2 = pilly2 - 1;
-			}
-				
             if (!moved) {
-				pilly = pilly - 1;
-				pilly2 = pilly2 - 1;
-				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
                 this.blockInput = true
                 this.currentPill.place()
                 this.clearIfNeeded()
@@ -546,16 +353,7 @@ if (randy4 != 0 && hurting4 == 1) {
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
             }
-			
         }
-		
-		
-		
-		
-		
-		
-		
-		
     }
 
     stageCompleted() {
@@ -604,46 +402,46 @@ if (randy4 != 0 && hurting4 == 1) {
     }
 
     useGravitation() {
-    if (this.gravitationInterval) return;
-    this.gravitationInterval = setInterval(() => {
-        let moved = false;
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
-                const field = this.fields[x][y];
-                if (field.isTaken() && field.locked) {
-                    let shape = field.shapePiece.shape;
-                    if (shape instanceof Pill) {
-                        // Temporarily unlock the pieces to move them
-                        for (let piece of shape.pieces) {
-                            piece.field.locked = false;
-                            piece.field.setColor(Color.NONE);
-                        }
-                        // Move the shape down if possible
-                        if (shape.move(Direction.DOWN)) {
-                            moved = true;
-                        }
-                        // Relock the pieces
-                        for (let piece of shape.pieces) {
-                            piece.field.locked = true;
-                            piece.field.setColor(piece.color);
+        if (this.gravitationInterval) return
+        this.gravitationInterval = setInterval(() => {
+            let moved = false
+            for (let y = 0; y < this.height; y++) {
+                for (let x = 0; x < this.width; x++) {
+                    const field = this.fields[x][y]
+                    if (field.isTaken()) {
+                        if (field.locked) {
+                            let shape = field.shapePiece.shape
+                            if (shape instanceof Pill) {
+                                for (let piece of shape.pieces) {
+                                    piece.field.locked = false
+                                    piece.field.setColor(Color.NONE)
+                                }
+                                if (shape.move(Direction.DOWN)) {
+                                    moved = true
+                                }
+                                for (let piece of shape.pieces) {
+                                    piece.field.locked = true
+                                    piece.field.setColor(piece.color)
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (!moved) {
-            this.clearIfNeeded();
-            clearInterval(this.gravitationInterval);
-            this.gravitationInterval = null;
-            for (let line of this.fields)
-                for (let field of line)
-                    if (field.shouldBeCleared())
-                        return;
-            this.spawnPill();
-        }
-    }, DELAY.gravitation);
-}
+            if (!moved) {
+                this.clearIfNeeded()
+                clearInterval(this.gravitationInterval)
+                this.gravitationInterval = null
+                for (let line of this.fields)
+                    for (let field of line)
+                        if (field.shouldBeCleared())
+                            return
+                this.spawnPill()
+				
+            }
+        }, DELAY.gravitation)
+    }
 }
 customElements.define("game-board", PlayingBoard)
 
@@ -671,171 +469,123 @@ class Field extends HTMLElement {
         this.setStyles()
     }
 
-
-	
-	
-	
     setStyles() {
         this.style.left = this.x * this.board.fieldSize + "px"
         this.style.top = this.board.fieldSize * (this.board.height - 1 - this.y) + 'px'
     }
     clearAnimated() {
-    let isVirus = false;
-    let color = this.color; // Use the field's color since shapePiece might be null.
-
-    // If shapePiece exists and is a Virus, handle it accordingly.
-    if (this.shapePiece) {
-        isVirus = this.shapePiece.shape instanceof Virus;
-        // Continue with your existing code for a non-null shapePiece.
-        this.clear(); // This will handle clearing and score updating for shapes.
-    } else {
-        // Handle the case where shapePiece is null (e.g., for dots).
-        console.log('Clearing a dot as if it was a virus.');
-        // Assume dots are treated similarly to viruses for scoring and clearing.
-        isVirus = true; // Treat the dot as a virus for this context.
-        this.setColor(Color.NONE); // Clear the dot visually.
-        // Directly manipulate score and virus count as needed.
-        // For example, increase score and decrease virus count:
-        // Note: Adjust these as necessary to fit how your game tracks score and virus count.
-         // Example of increasing points.
-        this.board.decreaseVirusCount(); // Example of decreasing the virus count.
-    }
-
-    // Visual feedback for clearing, adjust as necessary.
-    if (isVirus) {
-		
-
-		
-		if(this.x == randx && this.y == randy 
-		|| this.x == randx2 && this.y == randy2){
-			//alert("hey");
-		} else {
-		localpoints += 4;	
-		alert("points");
+    const x = this.shapePiece.shape instanceof Virus;
+    const o = this.shapePiece.shape instanceof Pill;
+    const color = this.shapePiece.color; // Assuming this.shapePiece.color contains values like Color.FIRST, etc.
+    this.clear();
+    if (x)
         this.style.backgroundImage = "url('./img/" + color + "_x.png')";
-		}
+    if (o)
 		
-    } else {
         this.style.backgroundImage = "url('./img/" + color + "_o.png')";
-    }
-
-    // Set a timeout to remove the visual feedback.
+		console.log('point aquired');
+		localpoints = localpoints + 1;
     setTimeout(() => {
         this.setColor(Color.NONE);
     }, DELAY.oxDisappear);
 }
 
 
-clear() {
-    // Unlock the field and reset its color.
-    this.locked = false;
-    this.setColor(Color.NONE);
-    // Remove this shape from its shape group.
-    this.shapePiece.shape.pieces = this.shapePiece.shape.pieces.filter(piece => piece != this.shapePiece);
-    // Reset the color of remaining pieces in the group.
-    for (let piece of this.shapePiece.shape.pieces) piece.field.setColor();
-    // If the shape is a Virus, trigger score increase and decrease the virus count.
-    if (this.shapePiece.shape instanceof Virus) {
-        this.board.game.dancingViruses.lay(this.shapePiece.color);
-        this.board.increaseScore();
-        this.board.decreaseVirusCount();
+    clear() {
+        this.locked = false
+        this.setColor(Color.NONE)
+        this.shapePiece.shape.pieces = this.shapePiece.shape.pieces.filter(piece => piece != this.shapePiece)
+        for (let piece of this.shapePiece.shape.pieces)
+            piece.field.setColor()
+        if (this.shapePiece.shape instanceof Virus) {
+            this.board.game.dancingViruses.lay(this.shapePiece.color)
+            this.board.increaseScore()
+            this.board.decreaseVirusCount()
+        }
+        this.shapePiece.destroyed = true
+        this.shapePiece.field = true
+        this.shapePiece = null
     }
-    // Mark the shape as destroyed and nullify it.
-    this.shapePiece.destroyed = true;
-    this.shapePiece.field = true;
-    this.shapePiece = null;
-}
 
-shouldBeCleared(selfColor = this.getColor()) {
-    // Check horizontally and vertically if there are enough same-colored shapes to clear.
-    let horizontal = 0, vertical = 0;
-    // Count same-colored shapes to the right.
-    for (let i = 1; i <= 7; i++) {
-        if (this.x + i >= this.board.width || selfColor != this.board.fields[this.x + i][this.y].getColor()) break;
-        horizontal++;
+    shouldBeCleared(selfColor = this.getColor()) {
+        let horizontal = 0
+        let vertical = 0
+        for (let i = 1; i <= 7; i++) {
+            if (this.x + i >= this.board.width) break
+            if (selfColor != this.board.fields[this.x + i][this.y].getColor()) break
+            horizontal++
+        }
+        for (let i = 1; i <= 7; i++) {
+            if (this.x - i < 0) break
+            if (selfColor != this.board.fields[this.x - i][this.y].getColor()) break
+            horizontal++
+        }
+        for (let i = 1; i <= 15; i++) {
+            if (this.y + i >= this.board.height) break
+            if (selfColor != this.board.fields[this.x][this.y + i].getColor()) break
+            vertical++
+        }
+        for (let i = 1; i <= 15; i++) {
+            if (this.y - i < 0) break
+            if (selfColor != this.board.fields[this.x][this.y - i].getColor()) break
+            vertical++
+        }
+        if (selfColor == Color.NONE)
+            return false
+        else if (vertical >= 3 || horizontal >= 3)
+            return true
+        else
+            return false
     }
-    // Count same-colored shapes to the left.
-    for (let i = 1; i <= 7; i++) {
-        if (this.x - i < 0 || selfColor != this.board.fields[this.x - i][this.y].getColor()) break;
-        horizontal++;
-    }
-    // Count same-colored shapes upwards.
-    for (let i = 1; i <= 15; i++) {
-        if (this.y + i >= this.board.height || selfColor != this.board.fields[this.x][this.y + i].getColor()) break;
-        vertical++;
-    }
-    // Count same-colored shapes downwards.
-    for (let i = 1; i <= 15; i++) {
-        if (this.y - i < 0 || selfColor != this.board.fields[this.x][this.y - i].getColor()) break;
-        vertical++;
-    }
-    // Determine if the shapes should be cleared based on count.
-    return selfColor != Color.NONE && (vertical >= 3 || horizontal >= 3);
-}
 
-setColor(color = this.color) {
-    // Set the color of the current field.
-    this.color = color;
-    // If the color is NONE, make the field appear empty.
-    if (color == Color.NONE) this.style.backgroundImage = "";
-    else {
-        // Otherwise, set the appropriate image based on the color and shape.
-        this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
-        if (this.shapePiece && !(this.shapePiece.shape instanceof Virus)) {
-            const shape = this.shapePiece.shape;
-            // Adjust the image based on the pill's orientation.
-            if (shape.pieces && shape.pieces.length == 2) {
-                switch (shape.rotation) {
-                    case Rotation.HORIZONTAL:
-                        shape.pieces[0].field.setPillElement('left');
-                        shape.pieces[1].field.setPillElement('right');
-                        break;
-                    case Rotation.VERTICAL:
-                        shape.pieces[0].field.setPillElement('down');
-                        shape.pieces[1].field.setPillElement('up');
-                        break;
-                    case Rotation.HORIZONTAL_REVERSED:
-                        shape.pieces[1].field.setPillElement('left');
-                        shape.pieces[0].field.setPillElement('right');
-                        break;
-                    case Rotation.VERTICAL_REVERSED:
-                        shape.pieces[1].field.setPillElement('down');
-                        shape.pieces[0].field.setPillElement('up');
-                        break;
+    setColor(color = this.color) {
+        this.color = color
+        if (color == Color.NONE)
+            this.style.backgroundImage = ""
+        else {
+            this.style.backgroundImage = "url('./img/" + color + "_dot.png')"
+            if (this.shapePiece && !(this.shapePiece.shape instanceof Virus)) {
+                const shape = this.shapePiece.shape
+                if (shape.pieces && shape.pieces.length == 2) {
+                    switch (shape.rotation) {
+                        case Rotation.HORIZONTAL:
+                            shape.pieces[0].field.setPillElement('left')
+                            shape.pieces[1].field.setPillElement('right')
+                            break
+                        case Rotation.VERTICAL:
+                            shape.pieces[0].field.setPillElement('down')
+                            shape.pieces[1].field.setPillElement('up')
+                            break
+                        case Rotation.HORIZONTAL_REVERSED:
+                            shape.pieces[1].field.setPillElement('left')
+                            shape.pieces[0].field.setPillElement('right')
+                            break
+                        case Rotation.VERTICAL_REVERSED:
+                            shape.pieces[1].field.setPillElement('down')
+                            shape.pieces[0].field.setPillElement('up')
+                            break
+                    }
                 }
             }
-        }
-        // If the shape is a Virus, use a specific image.
-        if (this.shapePiece && this.shapePiece.shape instanceof Virus) {			
-			
-			//turns fallen pills into pills instead of viruses
-			if(this.x == randx && this.y == randy){
-			console.log("x position of virus: " + this.x);
-			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
-			//alert("got the first");
-			} else if(this.x == randx2 && this.y == randy2){
-			console.log("x position of virus: " + this.x);
-			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
-			//alert("got the second");
-			} else {
-            this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
-			}
-			
-			
-			
-			
+            if (this.shapePiece) {
+                if (this.shapePiece.shape instanceof Virus)
+                    this.style.backgroundImage = "url('./img/" + color + "_covid.png')"
+            }
         }
     }
-}
-
 	
 	
 	
 	
 
     setPillElement(element) {
-	
+		
+		
+		//this.color = "yl"
 		this.style.backgroundImage = "url('./img/" + this.color + "_" + element + ".png')"
+		
+		//console.log(this.color)
+		//console.log(element)
 		
 		
     }
@@ -885,23 +635,23 @@ class ThrowingBoard extends Board {
         this.createGrid()
         this.setStyles()
         this.spawnPill()
-		
+		console.log('hey there');
 		
 		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p1damage', (data) => {
-				console.log(`Damage received: ${data.p1damage}`);
-				realdamage = Math.floor(data.p1damage / 4);
-				
+            socket.on('p2damage', (data) => {
+				console.log(`Damage received: ${data.p2damage}`);
+				realdamage = Math.floor(data.p2damage / 4);
+				//console.log(realdamage);
 			});
         this.isDamageListenerAdded = true;
 
         }
 		
     }
-	//hurt drops
 	
-	//balls drop
+	
+	
 	
     setFrames() {
         this.currentFrame = 0
@@ -911,22 +661,14 @@ class ThrowingBoard extends Board {
                 action: (pill) => {
                     pill.rotate(Direction.LEFT)
 					console.log('new pill');
-					
-					pillx1 = 3;
-					pillx2 = 4;
-					pilly = 15;
-					pilly2 = 15;
-
-					socket.emit('updatePoints2', { player1points: localpoints });
+					socket.emit('updatePoints1', { player2points: localpoints });
 					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {
 						console.log('hurt');
-						console.log('i = ' + i);
 						this.playingBoard.hurt();
 					}
 					realdamage = 0
-					console.log('reset real damage');
 					}
 					
                 }
@@ -1097,14 +839,12 @@ class ThrowingBoard extends Board {
 	
 	
 	
-	
+	//finally dude
     
 
     nextFrame() {
 		
-		
-		
-
+	
         if (this.currentFrame >= this.frames.length - 1) {
             this.game.board.movePillFromThrowingBoard()
             this.game.board.blockInput = false

@@ -488,19 +488,10 @@ export class PlayingBoard extends Board {
 		
 		
 		
-		
+		 
 		
         if (this.currentPill) {
-			if(pilly == randy + 1 && hurting1 == 0 
-			|| pilly2 == randy2 + 1 && hurting2 == 0){
-				//alert('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
-                this.blockInput = true
-                this.currentPill.place()
-                this.clearIfNeeded()
-                if (this.gameOver()) return
-                if (this.stageCompleted()) return
-				this.spawnPill()
-			} else {
+			
 			
 			//console.log('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
             let moved = this.currentPill.move(Direction.DOWN)
@@ -520,7 +511,7 @@ export class PlayingBoard extends Board {
                 if (this.gameOver()) return
                 if (this.stageCompleted()) return
             }
-			}
+			
         }
 		
 		
@@ -578,63 +569,46 @@ export class PlayingBoard extends Board {
     }
 
     useGravitation() {
-        if (this.gravitationInterval) return
-        this.gravitationInterval = setInterval(() => {
-            let moved = false
-            for (let y = 0; y < this.height; y++) {
-                for (let x = 0; x < this.width; x++) {
-                    const field = this.fields[x][y]
-					
-					/*
-					console.log('------------------ ');
-					console.log('x: ' + x);
-					console.log('randx: ' + randx);
-					console.log('------------------ ');
-					console.log('y: ' + y);
-					console.log('randy: ' + randy);
-					console.log('------------------ ');
-					*/
-					
-					
-					
-                    if (field.isTaken()) {
-						
-						
-                        if (field.locked) {
-                            let shape = field.shapePiece.shape
-                            if (shape instanceof Pill) {
-                                for (let piece of shape.pieces) {
-                                    piece.field.locked = false
-                                    piece.field.setColor(Color.NONE)
-                                }
-                                if (shape.move(Direction.DOWN)) {
-                                    moved = true
-                                }
-                                for (let piece of shape.pieces) {
-                                    piece.field.locked = true
-                                    piece.field.setColor(piece.color)
-                                }
-                            }
+    if (this.gravitationInterval) return;
+    this.gravitationInterval = setInterval(() => {
+        let moved = false;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const field = this.fields[x][y];
+                if (field.isTaken() && field.locked) {
+                    let shape = field.shapePiece.shape;
+                    if (shape instanceof Pill) {
+                        // Temporarily unlock the pieces to move them
+                        for (let piece of shape.pieces) {
+                            piece.field.locked = false;
+                            piece.field.setColor(Color.NONE);
+                        }
+                        // Move the shape down if possible
+                        if (shape.move(Direction.DOWN)) {
+                            moved = true;
+                        }
+                        // Relock the pieces
+                        for (let piece of shape.pieces) {
+                            piece.field.locked = true;
+                            piece.field.setColor(piece.color);
                         }
                     }
                 }
             }
+        }
 
-            if (!moved) {
-				
-				
-                this.clearIfNeeded()
-                clearInterval(this.gravitationInterval)
-                this.gravitationInterval = null
-                for (let line of this.fields)
-                    for (let field of line)
-                        if (field.shouldBeCleared())
-                            return
-                this.spawnPill()
-				
-            }
-        }, DELAY.gravitation)
-    }
+        if (!moved) {
+            this.clearIfNeeded();
+            clearInterval(this.gravitationInterval);
+            this.gravitationInterval = null;
+            for (let line of this.fields)
+                for (let field of line)
+                    if (field.shouldBeCleared())
+                        return;
+            this.spawnPill();
+        }
+    }, DELAY.gravitation);
+}
 }
 customElements.define("game-board", PlayingBoard)
 

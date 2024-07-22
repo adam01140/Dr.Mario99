@@ -56,7 +56,7 @@ var randcolor4 = 'bl';
 
 
 //import { io } from 'socket.io-client';
-const socket = io('localhost:3000/');
+const socket = io('https://dr-mario99.onrender.com/');
 
 function requestRandomNumber(max) {
     return new Promise((resolve) => {
@@ -269,8 +269,8 @@ export class PlayingBoard extends Board {
         this.intervals = []
         document.addEventListener("keydown", e => {
             e.preventDefault()
-            if (this.blockInput)
-                return
+           // if (this.blockInput)
+               // return
             if (!this.currentPill || this.currentPill.placed)
                 return
             if (this.intervals[e.key])
@@ -318,8 +318,10 @@ export class PlayingBoard extends Board {
 	
 	
 	spawnViruses() {
-        this.virusCount = this.level * 4 + 4;
-        this.maxVirusHeight = 10
+		
+		//number of viruses
+        this.virusCount = 5;
+        this.maxVirusHeight = 5
         if (this.level >= 15) this.maxVirusHeight++
         if (this.level >= 17) this.maxVirusHeight++
         if (this.level >= 19) this.maxVirusHeight++
@@ -341,9 +343,7 @@ export class PlayingBoard extends Board {
             if (position) {
                 const { x, y } = position;
 				
-				if(x == randx){
-					alert("hey");
-				}
+				
                 //const color = this.lastColor === Color.FIRST ? Color.SECOND : (this.lastColor === Color.SECOND ? Color.THIRD : Color.FIRST);
                 this.virusList.push(new Virus(this, x, y, color));
             }
@@ -378,9 +378,9 @@ export class PlayingBoard extends Board {
 	
 
     movementFromKey(key) {
-        if (this.blockInput){
-            return
-		}
+        //if (this.blockInput){
+           // return
+		//}
 		
         if (!this.currentPill || this.currentPill.placed){
             return
@@ -443,6 +443,8 @@ export class PlayingBoard extends Board {
     randcolor = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx][randy].setColor(randcolor);
     
+	
+	/*
     randx2 = getRandomX();
     randcolor2 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx2][randy2].setColor(randcolor2);
@@ -454,6 +456,8 @@ export class PlayingBoard extends Board {
     randx4 = getRandomX();
     randcolor4 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx4][randy4].setColor(randcolor4);
+	
+	*/
 }
 
 	
@@ -467,8 +471,18 @@ export class PlayingBoard extends Board {
 		
 		if (randy != 0 && hurting1 == 1) {
 			if((this.fields[randx][(undery)].color) == Color.NONE){
+				
+			//this.virusList.pop(new Virus(this, randx, randy, randcolor))
+			
 			this.fields[randx][(randy)].setColor(Color.NONE);
+			
+			//this.virusList.push(new Virus(this, randx, randy-1, randcolor))
+			//this.virusList.pop(new Virus(this, randx, randy-1, randcolor))
+			
+			
+			
 			this.fields[randx][(randy-1)].setColor(randcolor);	
+			
 			randy = randy - 1;
 			undery = randy - 1;
 			}
@@ -477,15 +491,18 @@ export class PlayingBoard extends Board {
 			hurting1 = 0;
 			
 			this.virusList.push(new Virus(this, randx, randy, randcolor))
+			this.virusCount = this.virusCount + 1;
 			
 			} else if((this.fields[randx][(undery)].color) != Color.NONE) {
 			this.virusList.push(new Virus(this, randx, randy, randcolor))
 			hurting1 = 0;
+			
+			this.virusCount = this.virusCount + 1;
 			}
 			
         } 
 		
-		
+		/*
 		if (randy2 != 0 && hurting2 == 1) {
 			if((this.fields[randx2][(undery2)].color) == Color.NONE){
 			this.fields[randx2][(randy2)].setColor(Color.NONE);
@@ -541,7 +558,7 @@ if (randy4 != 0 && hurting4 == 1) {
     }
 }
 		
-		
+	*/	
 		
 		 
 		
@@ -550,16 +567,10 @@ if (randy4 != 0 && hurting4 == 1) {
 			
 			//console.log('pilly: '+ pilly + ' randy: ' + randy + " hurting: " + hurting);
             let moved = this.currentPill.move(Direction.DOWN)
-			if(moved){
-			pilly = pilly - 1;
-			pilly2 = pilly2 - 1;
-			}
+			
 				
             if (!moved) {
-				pilly = pilly - 1;
-				pilly2 = pilly2 - 1;
-				console.log('pilly: '+ pilly + ' randy: ' + randy);(pilly + " not moved");
-                this.blockInput = true
+				
                 this.currentPill.place()
                 this.clearIfNeeded()
                 this.useGravitation()
@@ -811,9 +822,14 @@ setColor(color = this.color) {
                 }
             }
         }
+		
+		
+		
         // If the shape is a Virus, use a specific image.
         if (this.shapePiece && this.shapePiece.shape instanceof Virus) {			
 			
+			
+			/*
 			//turns fallen pills into pills instead of viruses
 			if(this.x == randx && this.y == randy){
 			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
@@ -824,13 +840,18 @@ setColor(color = this.color) {
 			} else if(this.x == randx4 && this.y == randy4){
 			this.style.backgroundImage = "url('./img/" + color + "_dot.png')";
 			} else {
-            this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
+				this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
 			}
+			*/
+			
+            this.style.backgroundImage = "url('./img/" + color + "_covid.png')";
 			
 			
 			
+		
 			
         }
+		
     }
 }
 
@@ -1113,7 +1134,7 @@ class ThrowingBoard extends Board {
 
         if (this.currentFrame >= this.frames.length - 1) {
             this.game.board.movePillFromThrowingBoard()
-            this.game.board.blockInput = false
+            //this.game.board.blockInput = false
             return
         }
         const data = this.frames[this.currentFrame++]

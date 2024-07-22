@@ -7,7 +7,7 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "localhost:3000" },
+    cors: { origin: "https://dr-mario99.onrender.com" },
 });
 
 // Serve static files from the 'public' directory
@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Enable CORS
 app.use(cors({
-    origin: 'localhost:3000'
+    origin: 'https://dr-mario99.onrender.com'
 }));
 
 // Function to generate random virus positions
@@ -23,8 +23,8 @@ function generateVirusPositions() {
     const positions = [];
     for (let i = 0; i < 10; i++) {
         positions.push({
-            x: Math.floor(Math.random() * 1),
-            y: Math.floor(Math.random() * 1)
+            x: Math.floor(Math.random() * 7),
+            y: Math.floor(Math.random() * 5)
         });
     }
     return positions;

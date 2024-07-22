@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./styles/style.css">
     
 	<center>
-	<img src="img/logo.png" alt="Puppy" style="width:15%; display:block;">
+	<img src="img/logo.png" alt="Puppy" style="width:300px; display:block;">
 	
 	
 </head>
@@ -15,10 +15,43 @@
 <head>
     <!-- ... other head elements ... -->
     <style>
+	
+	
+	#roomCodeDisplay {
+    font-size: 20px; /* or any size that fits your design */
+    font-weight: bold; /* optional, for making the text bolder */
+}
+
         .room-code-container {
             text-align: center;
             font-size: 10em;
         }
+		
+		
+		button {
+    font-size: 20px;
+    background-color: #0044cc; /* Retro blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+    margin: 10px;
+    cursor: pointer;
+    box-shadow: 3px 3px #000000; /* Adds a slight shadow for a 3D effect */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #002288; /* A darker blue on hover */
+    transform: translateY(-2px); /* Slight lift when hovered */
+}
+
+button:active {
+    transform: translateY(1px); /* Pushes the button down when clicked */
+}
+
+
+
     </style>
 </head>
 
@@ -39,7 +72,7 @@
 <script>
     const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     
-	const socket = io('localhost:3000/');
+	const socket = io('https://dr-mario99.onrender.com/');
 
 	
     let player = 0; // Default player number
@@ -71,12 +104,12 @@
             alert('Error copying room code to clipboard. Please copy manually.');
         });
 		
-		
+		/*
 			const script = document.createElement('script');
             script.src = './scripts/script.js'; // Or dynamically choose script based on player number
             script.type = 'module';
             document.head.appendChild(script);
-			
+		*/
 		const roomCodeDisplay = document.getElementById('roomCodeDisplay');
             roomCodeDisplay.textContent = 'Waiting for Player 2, room code is: \n' + roomCode;
 			
@@ -93,7 +126,10 @@
             // This event indicates that the room join was successful
             
 			if(who == 2){
-			alert('Joined room ' + roomCode);
+			//alert('Joined room ' + roomCode);
+			
+			document.getElementById('createRoom').style.display = 'none'; // Hides the 'Create Room' button
+        document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
 			const script = document.createElement('script');
             script.src = './scripts/script2.js'; // Or dynamically choose script based on player number
             script.type = 'module';
@@ -103,7 +139,13 @@
 			
 			
 			if(who == 1){
-			alert('Player 2 joined room ' + roomCode);
+			
+			document.getElementById('createRoom').style.display = 'none'; // Hides the 'Create Room' button
+        document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
+			//alert('Player 2 joined room ' + roomCode);
+			const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+            roomCodeDisplay.textContent = '';
+			
 			const script = document.createElement('script');
             script.src = './scripts/script.js';
             script.type = 'module';

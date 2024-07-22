@@ -340,9 +340,7 @@ export class PlayingBoard extends Board {
             if (position) {
                 const { x, y } = position;
 				
-				if(x == randx){
-					alert("hey");
-				}
+				
                 //const color = this.lastColor === Color.FIRST ? Color.SECOND : (this.lastColor === Color.SECOND ? Color.THIRD : Color.FIRST);
                 this.virusList.push(new Virus(this, x, y, color));
             }

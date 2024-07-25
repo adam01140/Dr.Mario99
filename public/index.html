@@ -7,59 +7,69 @@
     <link rel="stylesheet" href="./styles/style.css">
     
 	<center>
-	<img src="img/logo.png" alt="Puppy" style="width:300px; display:block;">
+	<img src="img/logo.png" alt="Puppy" style="width:450px; height:230px;">
 	
 	
 </head>
 <body>
 <head>
-    <!-- ... other head elements ... -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     <style>
-	
-	
-	#roomCodeDisplay {
-    font-size: 20px; /* or any size that fits your design */
-    font-weight: bold; /* optional, for making the text bolder */
-}
+        
+
+        #roomCodeDisplay {
+            font-size: 20px; /* or any size that fits your design */
+            font-weight: bold; /* optional, for making the text bolder */
+        }
 
         .room-code-container {
             text-align: center;
             font-size: 10em;
         }
-		
-		
-		button {
-    font-size: 20px;
-    background-color: #0044cc; /* Retro blue */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 15px 30px;
-    margin: 10px;
-    cursor: pointer;
-    box-shadow: 3px 3px #000000; /* Adds a slight shadow for a 3D effect */
-    transition: background-color 0.3s, transform 0.3s;
-}
 
-button:hover {
-    background-color: #002288; /* A darker blue on hover */
-    transform: translateY(-2px); /* Slight lift when hovered */
-}
+        button {
+            font-size: 20px;
+            font-family: 'Press Start 2P', cursive;
+            background-color: #0044cc; /* Retro blue */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 25px 30px;
+            margin: 10px;
+            cursor: pointer;
+            box-shadow: 3px 3px #000000; /* Adds a slight shadow for a 3D effect */
+            transition: background-color 0.3s, transform 0.3s;
+        }
 
-button:active {
-    transform: translateY(1px); /* Pushes the button down when clicked */
-}
+        button:hover {
+            background-color: #002288; /* A darker blue on hover */
+            transform: translateY(-2px); /* Slight lift when hovered */
+        }
 
+        button:active {
+            transform: translateY(1px); /* Pushes the button down when clicked */
+        }
 
-
+        .test {
+            font-size: 40px;
+            width: 440px;
+            height: 100px;
+        }
     </style>
-</head>
+	</head>
 
 <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 
+
+<div id="playbuttons" class="playbuttons">
+<br>
+<button id="freePlay" class="test">Free Play </button>
+
+<br>
 <button id="createRoom">Create Room</button>
 <button id="joinRoom">Join Room</button>
+</div>
 
 <div id="roomCodeContainer" class="room-code-container">
 
@@ -72,7 +82,7 @@ button:active {
 <script>
     const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     
-	const socket = io('localhost:3000/');
+	const socket = io('https://dr-mario99.onrender.com/');
 
 	
     let player = 0; // Default player number
@@ -84,6 +94,41 @@ button:active {
 
 
 	let roomCode = ''; // Variable to store the room code
+
+
+
+	 document.getElementById('freePlay').onclick = function() {
+            socket.emit('joinLobby');
+            document.getElementById('roomCodeDisplay').textContent = 'Waiting for players to join lobby...';
+        };
+		
+		
+	socket.on('assignPlayerNumber', (playerNumber) => {
+            player = playerNumber;
+        });
+
+        socket.on('startFreePlay', (data) => {
+            roomCode = data.roomCode;
+            if (data.player === 1) {
+				document.getElementById('roomCodeDisplay').style.display = 'none';
+				document.getElementById('playbuttons').style.display = 'none';
+                const script = document.createElement('script');
+                script.src = './scripts/script.js';
+                script.type = 'module';
+                document.head.appendChild(script);
+                console.log('Free Play: You are Player 1');
+            } else if (data.player === 2) {
+				document.getElementById('roomCodeDisplay').style.display = 'none';
+				document.getElementById('playbuttons').style.display = 'none';
+                const script = document.createElement('script');
+                script.src = './scripts/script2.js';
+                script.type = 'module';
+                document.head.appendChild(script);
+                console.log('Free Play: You are Player 2');
+            }
+        });
+
+
 
         document.getElementById('createRoom').onclick = function() {
             roomCode = generateRoomCode();
@@ -128,8 +173,10 @@ button:active {
 			if(who == 2){
 			//alert('Joined room ' + roomCode);
 			
+			document.getElementById('roomCodeDisplay').style.display = 'none';
+			document.getElementById('playbuttons').style.display = 'none';
 			document.getElementById('createRoom').style.display = 'none'; // Hides the 'Create Room' button
-        document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
+			document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
 			const script = document.createElement('script');
             script.src = './scripts/script2.js'; // Or dynamically choose script based on player number
             script.type = 'module';
@@ -140,8 +187,10 @@ button:active {
 			
 			if(who == 1){
 			
+			document.getElementById('roomCodeDisplay').style.display = 'none';
+			document.getElementById('playbuttons').style.display = 'none';
 			document.getElementById('createRoom').style.display = 'none'; // Hides the 'Create Room' button
-        document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
+			document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
 			//alert('Player 2 joined room ' + roomCode);
 			const roomCodeDisplay = document.getElementById('roomCodeDisplay');
             roomCodeDisplay.textContent = '';
@@ -163,7 +212,7 @@ button:active {
 		
 		
 
-        document.getElementById('joinRoom').onclick = function() {
+			document.getElementById('joinRoom').onclick = function() {
             roomCode = prompt('Enter the 4 letter room code:');
             if (roomCode) {
                 // Emit an event to join the room with the specified code

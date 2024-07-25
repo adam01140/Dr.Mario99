@@ -56,10 +56,10 @@ var randcolor4 = 'bl';
 
 
 //import { io } from 'socket.io-client';
-const socket = io('localhost:3000/');
+const socket = io('https://dr-mario99.onrender.com/');
 
 
-alert(roomCode);
+//alert(roomCode);
 
 
 //flawless exc

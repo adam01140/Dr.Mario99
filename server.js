@@ -7,16 +7,17 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "localhost:3000" },
+    cors: { origin: "http://https://dr-mario99.onrender.com" },
 });
 
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Enable CORS
 app.use(cors({
-    origin: 'localhost:3000'
+    origin: 'http://https://dr-mario99.onrender.com'
 }));
+
+const activeRooms = {};
+const lobby = [];
 
 // Function to generate random virus positions
 function generateVirusPositions() {
@@ -35,11 +36,8 @@ function generateRandomList() {
     return Array.from({ length: 20 }, () => Math.floor(Math.random() * 3));
 }
 
+// Generate initial virus positions
 const virusPositions = generateVirusPositions();
-const randomList = generateRandomList();
-
-const playersInLobby = { count: 0 };
-const activeRooms = {};
 
 io.on('connection', (socket) => {
     socket.on('createRoom', (roomCode) => {
@@ -59,9 +57,22 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('joinLobby', () => {
+        lobby.push(socket.id);
+        if (lobby.length >= 2) {
+            const roomCode = generateRoomCode();
+            const player1 = lobby.shift();
+            const player2 = lobby.shift();
 
-	
-    socket.on('updatePoints1', (data) => {
+            activeRooms[roomCode] = { players: [player1, player2] };
+            io.to(player1).emit('startFreePlay', { player: 1, roomCode });
+            io.to(player2).emit('startFreePlay', { player: 2, roomCode });
+        }
+    });
+
+
+
+	socket.on('updatePoints1', (data) => {
 		
         io.emit('p1damage', { p1damage: data.player2points, roomCode: data.roomCode });
     });
@@ -69,22 +80,36 @@ io.on('connection', (socket) => {
     socket.on('updatePoints2', (data) => {
         io.emit('p2damage', { p2damage: data.player1points, roomCode: data.roomCode });
     });
+	
+	
 
     socket.on('requestRandomList', () => {
-        socket.emit('receiveRandomList', randomList);
+        socket.emit('receiveRandomList', generateRandomList());
     });
 
+    // Send virus positions to the client
     socket.emit('virusPositions', virusPositions);
-
-    playersInLobby.count += 1;
-    const playerNumber = playersInLobby.count;
-    socket.emit('assignPlayerNumber', playerNumber);
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
-        playersInLobby.count -= 1;
+        // Remove from lobby if in lobby
+        const lobbyIndex = lobby.indexOf(socket.id);
+        if (lobbyIndex !== -1) {
+            lobby.splice(lobbyIndex, 1);
+        }
+        // Handle room cleanup if needed
     });
 });
+
+function generateRoomCode() {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let charactersLength = characters.length;
+    for (let i = 0; i < 4; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

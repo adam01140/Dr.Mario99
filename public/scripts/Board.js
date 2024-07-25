@@ -56,15 +56,12 @@ var randcolor4 = 'bl';
 
 
 //import { io } from 'socket.io-client';
-const socket = io('https://dr-mario99.onrender.com/');
+const socket = io('localhost:3000/');
 
-function requestRandomNumber(max) {
-    return new Promise((resolve) => {
-        socket.emit('requestRandomNumber', max, (randomNumber) => {
-            resolve(Math.floor(randomNumber * max));
-        });
-    });
-}
+
+alert(roomCode);
+
+
 //flawless exc
 function digitToImg(digit) {
     digit = parseInt(digit)
@@ -916,11 +913,17 @@ class ThrowingBoard extends Board {
 		
 		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p1damage', (data) => {
+			
+			socket.on('p1damage', (data) => {
+				
+				//alert("data recived");
+				
+				if (data.roomCode === roomCode) {  // Verify the room code
 				console.log(`Damage received: ${data.p1damage}`);
 				realdamage = Math.floor(data.p1damage / 4);
-				
+			}
 			});
+			
         this.isDamageListenerAdded = true;
 
         }
@@ -944,7 +947,10 @@ class ThrowingBoard extends Board {
 					pilly = 15;
 					pilly2 = 15;
 
-					socket.emit('updatePoints2', { player1points: localpoints });
+
+					// When sending points update
+					socket.emit('updatePoints2', { player1points: localpoints, roomCode: roomCode });
+
 					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {

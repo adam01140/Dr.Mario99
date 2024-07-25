@@ -57,7 +57,12 @@ var randcolor4 = 'bl';
 
 
 //import { io } from 'socket.io-client';
-const socket = io('https://dr-mario99.onrender.com/');
+const socket = io('localhost:3000/');
+
+
+
+alert(roomCode);
+
 
 function requestRandomNumber(max) {
     return new Promise((resolve) => {
@@ -894,15 +899,21 @@ class ThrowingBoard extends Board {
 		
 		
 		
+		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p2damage', (data) => {
-				console.log(`Damage received: ${data.p2damage}`);
-				realdamage = Math.floor(data.p2damage / 4);
-				
-			});
-        this.isDamageListenerAdded = true;
-
+    socket.on('p2damage', (data) => {
+        console.log('p2damage data received:', data); // Log received data
+        console.log("p2damage data received " + data.roomCode);
+        if (data.roomCode === roomCode) {  // Verify the room code
+            console.log(`Damage received: ${data.p2damage}`);
+            realdamage = Math.floor(data.p2damage / 4);
         }
+    });
+
+    this.isDamageListenerAdded = true;
+}
+
+		
 		
     }
 	//hurt drops
@@ -922,8 +933,8 @@ class ThrowingBoard extends Board {
 					pillx2 = 4;
 					pilly = 15;
 					pilly2 = 15;
-
-					socket.emit('updatePoints1', { player2points: localpoints });
+					
+					socket.emit('updatePoints1', { player2points: localpoints, roomCode: roomCode });	
 					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {

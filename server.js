@@ -7,7 +7,7 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "https://dr-mario99.onrender.com" },
+    cors: { origin: "localhost:3000" },
 });
 
 // Serve static files from the 'public' directory
@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Enable CORS
 app.use(cors({
-    origin: 'https://dr-mario99.onrender.com'
+    origin: 'localhost:3000'
 }));
 
 // Function to generate random virus positions
@@ -59,12 +59,15 @@ io.on('connection', (socket) => {
         }
     });
 
+
+	
     socket.on('updatePoints1', (data) => {
-        io.emit('p1damage', { p1damage: data.player2points });
+		
+        io.emit('p1damage', { p1damage: data.player2points, roomCode: data.roomCode });
     });
 
     socket.on('updatePoints2', (data) => {
-        io.emit('p2damage', { p2damage: data.player1points });
+        io.emit('p2damage', { p2damage: data.player1points, roomCode: data.roomCode });
     });
 
     socket.on('requestRandomList', () => {

@@ -7,13 +7,13 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "http://https://dr-mario99.onrender.com" },
+    cors: { origin: "https://dr-mario99.onrender.com/" },
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
-    origin: 'http://https://dr-mario99.onrender.com'
+    origin: 'https://dr-mario99.onrender.com/'
 }));
 
 const activeRooms = {};
@@ -57,6 +57,13 @@ io.on('connection', (socket) => {
         }
     });
 
+  
+  
+  socket.on('single', () => {
+        console.log("somebody is playing single player");
+    });
+  
+  
     socket.on('joinLobby', () => {
         lobby.push(socket.id);
         if (lobby.length >= 2) {

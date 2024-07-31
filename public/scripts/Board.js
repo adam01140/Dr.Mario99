@@ -921,6 +921,10 @@ class ThrowingBoard extends Board {
 				if (data.roomCode === roomCode) {  // Verify the room code
 				console.log(`Damage received: ${data.p1damage}`);
 				realdamage = Math.floor(data.p1damage / 4);
+        if(realdamage > 1){
+          realdamage = 1
+        }
+        
 			}
 			});
 			

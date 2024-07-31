@@ -5,32 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr. Mario</title>
     <link rel="stylesheet" href="./styles/style.css">
-    
-	<center>
-	<img src="img/logo.png" alt="Puppy" style="width:450px; height:230px;">
-	
-	
-</head>
-<body>
-<head>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     <style>
-        
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Press Start 2P', cursive;
+            
+        }
 
         #roomCodeDisplay {
             font-size: 20px; /* or any size that fits your design */
             font-weight: bold; /* optional, for making the text bolder */
+			font-family: 'Press Start 2P', cursive;
         }
 
         .room-code-container {
             text-align: center;
             font-size: 10em;
+			font-family: 'Press Start 2P', cursive;
         }
 
         button {
             font-size: 20px;
-            font-family: 'Press Start 2P', cursive;
             background-color: #0044cc; /* Retro blue */
+			font-family: 'Press Start 2P', cursive;
             color: white;
             border: none;
             border-radius: 5px;
@@ -55,71 +58,100 @@
             width: 440px;
             height: 100px;
         }
+      
+        .single {
+            font-size: 30px;
+            width: 540px;
+            height: 100px;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
     </style>
-	</head>
-
-<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-
-
-<div id="playbuttons" class="playbuttons">
-<br>
-<button id="freePlay" class="test">Free Play </button>
-
-<br>
-<button id="createRoom">Create Room</button>
-<button id="joinRoom">Join Room</button>
-</div>
-
-<div id="roomCodeContainer" class="room-code-container">
-
-       <h1> <p id="roomCodeDisplay"></p>
+</head>
+<body>
+  <img src="img/logo.png" alt="Puppy" style="width:450px; height:230px;">
+    <div id="playbuttons" class="playbuttons">
+        <center>
+            
+          
+          
+            <button id="freePlay" class="test">Free Play</button>
+            <br>
+            <button id="single" class="single">Single Player</button>
+            <br>
+            <button id="createRoom">Create Room</button>
+            <button id="joinRoom">Join Room</button>
+        </center>
     </div>
-	
-	
-<center>	
 
-<script>
-    const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-    
-	const socket = io('https://dr-mario99.onrender.com/');
+    <div id="roomCodeContainer" class="room-code-container">
+        <h1><p id="roomCodeDisplay"></p></h1>
+    </div>
 
-	
-    let player = 0; // Default player number
+    <div class="game-container" id="game1">
+        <div id="top-player1"></div>
+        <div id="score-player1"></div>
+        <div id="virusCount-player1"></div>
+        <!-- Add other necessary elements for Player 1 -->
+    </div>
 
+    <div class="game-container" id="game2">
+        <div id="top-player2"></div>
+        <div id="score-player2"></div>
+        <div id="virusCount-player2"></div>
+        <!-- Add other necessary elements for Player 2 -->
+    </div>
 
-	
-	var who = 0;
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        const socket = io('https://dr-mario99.onrender.com/');
 
+        let player = 0; // Default player number
+        let who = 0;
+        let roomCode = ''; // Variable to store the room code
 
-
-	let roomCode = ''; // Variable to store the room code
-
-
-
-	 document.getElementById('freePlay').onclick = function() {
+      
+        document.getElementById('single').onclick = function() {
+                socket.emit('single');
+                document.getElementById('roomCodeDisplay').style.display = 'none';
+                document.getElementById('playbuttons').style.display = 'none';
+                const script = document.createElement('script');
+                script.src = './scripts/script.js';
+                script.type = 'module';
+                document.head.appendChild(script);
+                console.log('Free Play: You are Player 1');
+        };
+      
+      
+        document.getElementById('freePlay').onclick = function() {
             socket.emit('joinLobby');
             document.getElementById('roomCodeDisplay').textContent = 'Waiting for players to join lobby...';
         };
-		
-		
-	socket.on('assignPlayerNumber', (playerNumber) => {
+
+        socket.on('assignPlayerNumber', (playerNumber) => {
             player = playerNumber;
         });
 
         socket.on('startFreePlay', (data) => {
             roomCode = data.roomCode;
             if (data.player === 1) {
-				document.getElementById('roomCodeDisplay').style.display = 'none';
-				document.getElementById('playbuttons').style.display = 'none';
+                document.getElementById('roomCodeDisplay').style.display = 'none';
+                document.getElementById('playbuttons').style.display = 'none';
                 const script = document.createElement('script');
                 script.src = './scripts/script.js';
                 script.type = 'module';
                 document.head.appendChild(script);
                 console.log('Free Play: You are Player 1');
             } else if (data.player === 2) {
-				document.getElementById('roomCodeDisplay').style.display = 'none';
-				document.getElementById('playbuttons').style.display = 'none';
+                document.getElementById('roomCodeDisplay').style.display = 'none';
+                document.getElementById('playbuttons').style.display = 'none';
                 const script = document.createElement('script');
                 script.src = './scripts/script2.js';
                 script.type = 'module';
@@ -128,97 +160,64 @@
             }
         });
 
-
-
         document.getElementById('createRoom').onclick = function() {
             roomCode = generateRoomCode();
             alert('Your room code is: ' + roomCode);
-            // Emit an event to create a room with the generated code
             socket.emit('createRoom', roomCode);
-			who = 1;
-			
-			
-			navigator.clipboard.writeText(roomCode)
-        .then(() => {
-            // Success message
-            //console.log('Room code copied to clipboard: ' + roomCode);
-        })
-        .catch(err => {
-            // Error handling
-            console.error('Failed to copy room code to clipboard', err);
-            alert('Error copying room code to clipboard. Please copy manually.');
-        });
-		
-		/*
-			const script = document.createElement('script');
-            script.src = './scripts/script.js'; // Or dynamically choose script based on player number
-            script.type = 'module';
-            document.head.appendChild(script);
-		*/
-		const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+            who = 1;
+
+            navigator.clipboard.writeText(roomCode)
+                .then(() => {
+                    // Success message
+                })
+                .catch(err => {
+                    console.error('Failed to copy room code to clipboard', err);
+                    alert('Error copying room code to clipboard. Please copy manually.');
+                });
+
+            const roomCodeDisplay = document.getElementById('roomCodeDisplay');
             roomCodeDisplay.textContent = 'Waiting for Player 2, room code is: \n' + roomCode;
-			
-			
         };
-		
-		
-		
-		
-		
-		
-		
-		socket.on('roomJoined', (roomCode) => {
-            // This event indicates that the room join was successful
-            
-			if(who == 2){
-			//alert('Joined room ' + roomCode);
-			
-			document.getElementById('roomCodeDisplay').style.display = 'none';
-			document.getElementById('playbuttons').style.display = 'none';
-			document.getElementById('createRoom').style.display = 'none'; // Hides the 'Create Room' button
-			document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
-			const script = document.createElement('script');
-            script.src = './scripts/script2.js'; // Or dynamically choose script based on player number
-            script.type = 'module';
-            document.head.appendChild(script);
-			console.log('Room Joined ');
-			}
-			
-			
-			if(who == 1){
-			
-			document.getElementById('roomCodeDisplay').style.display = 'none';
-			document.getElementById('playbuttons').style.display = 'none';
-			document.getElementById('createRoom').style.display = 'none'; // Hides the 'Create Room' button
-			document.getElementById('joinRoom').style.display = 'none'; // Hides the 'Join Room' button
-			//alert('Player 2 joined room ' + roomCode);
-			const roomCodeDisplay = document.getElementById('roomCodeDisplay');
-            roomCodeDisplay.textContent = '';
-			
-			const script = document.createElement('script');
-            script.src = './scripts/script.js';
-            script.type = 'module';
-            document.head.appendChild(script);
-			console.log('You are Player 1');
-			}
-			
-			
+
+        socket.on('roomJoined', (roomCode) => {
+            if (who == 2) {
+                document.getElementById('roomCodeDisplay').style.display = 'none';
+                document.getElementById('playbuttons').style.display = 'none';
+                document.getElementById('createRoom').style.display = 'none';
+                document.getElementById('joinRoom').style.display = 'none';
+                const script = document.createElement('script');
+                script.src = './scripts/script2.js';
+                script.type = 'module';
+                document.head.appendChild(script);
+                console.log('Room Joined ');
+            }
+
+            if (who == 1) {
+                document.getElementById('roomCodeDisplay').style.display = 'none';
+                document.getElementById('playbuttons').style.display = 'none';
+                document.getElementById('createRoom').style.display = 'none';
+                document.getElementById('joinRoom').style.display = 'none';
+                const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+                roomCodeDisplay.textContent = '';
+
+                const script = document.createElement('script');
+                script.src = './scripts/script.js';
+                script.type = 'module';
+                document.head.appendChild(script);
+                console.log('You are Player 1');
+            }
         });
 
         socket.on('error', (message) => {
-            alert(message); // Alert the user if the room does not exist
+            alert(message);
         });
-		
-		
-		
 
-			document.getElementById('joinRoom').onclick = function() {
+        document.getElementById('joinRoom').onclick = function() {
             roomCode = prompt('Enter the 4 letter room code:');
             if (roomCode) {
-                // Emit an event to join the room with the specified code
                 socket.emit('joinRoom', roomCode);
-			who = 2;
-			console.log('You are Player 2 ');
+                who = 2;
+                console.log('You are Player 2 ');
             }
         };
 
@@ -231,58 +230,6 @@
             }
             return result;
         }
-		
-		
-		
-		
-		
-    socket.on('assignPlayerNumber', (playerNumber) => {
-        player = playerNumber;
-        
-
-        // Depending on the player number, load the corresponding script
-        if (player === 1) {
-            
-        } else if (player == 3) {
-            
-        } else if (player > 3) {
-            //alert('Game lobby already has 2 players')
-        }
-    });
-	
-	
-var puppy = 100
-</script>
-
-
-
-
-<!--
-<style>
-body {
-    background-image: url('img/tiles.png');
-    background-repeat: repeat;
-    background-size: 6% 4%; /* Adjust the percentage as needed */
-}
-</style>
--->
-
-	
-	<center>
-	
-    <div class="game-container-player1" id="game1">
-        <div id="top-player1"></div>
-        <div id="score-player1"></div>
-        <div id="virusCount-player1"></div>
-        <!-- Add other necessary elements for Player 1 -->
-    </div>
-	
-	<br><br>
-    <div class="game-container-player2" id="game2">
-        <div id="top-player2"></div>
-        <div id="score-player2"></div>
-        <div id="virusCount-player2"></div>
-        <!-- Add other necessary elements for Player 2 -->
-    </div>
+    </script>
 </body>
 </html>

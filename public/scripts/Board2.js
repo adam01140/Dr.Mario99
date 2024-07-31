@@ -59,6 +59,11 @@ var randcolor4 = 'bl';
 //import { io } from 'socket.io-client';
 const socket = io('https://dr-mario99.onrender.com/');
 
+
+
+//alert(roomCode);
+
+
 function requestRandomNumber(max) {
     return new Promise((resolve) => {
         socket.emit('requestRandomNumber', max, (randomNumber) => {
@@ -293,13 +298,20 @@ export class PlayingBoard extends Board {
 
 		//alert("spawning pill");
 			this.spawnRandomDot();
-			spawn = 1;
 			
 			
 			hurting1 = 1;
+			if (spawn > 1){
 			hurting2 = 1;
+			}
+			
+			if (spawn > 2){
 			hurting3 = 1;
+			}
+			
+			if (spawn > 3){
 			hurting4 = 1;
+			}
 	
 
     }
@@ -340,9 +352,7 @@ export class PlayingBoard extends Board {
             if (position) {
                 const { x, y } = position;
 				
-				if(x == randx){
-					alert("hey");
-				}
+				
                 //const color = this.lastColor === Color.FIRST ? Color.SECOND : (this.lastColor === Color.SECOND ? Color.THIRD : Color.FIRST);
                 this.virusList.push(new Virus(this, x, y, color));
             }
@@ -433,19 +443,23 @@ export class PlayingBoard extends Board {
     randcolor = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx][randy].setColor(randcolor);
     
-	/*
+	if(hurting2 == 1){
     randx2 = getRandomX();
     randcolor2 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx2][randy2].setColor(randcolor2);
-    
+    }
+	
+	if(hurting3 == 1){
     randx3 = getRandomX();
     randcolor3 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx3][randy3].setColor(randcolor3);
-    
+    }
+	
+	if(hurting4 == 1){
     randx4 = getRandomX();
     randcolor4 = colors[Math.floor(Math.random() * colors.length)];
     this.fields[randx4][randy4].setColor(randcolor4);
-	*/
+	}
 }
  nextFrame() {
 		
@@ -484,7 +498,6 @@ export class PlayingBoard extends Board {
 			
         } 
 		
-		/*
 		if (randy2 != 0 && hurting2 == 1) {
 			if((this.fields[randx2][(undery2)].color) == Color.NONE){
 			this.fields[randx2][(randy2)].setColor(Color.NONE);
@@ -495,11 +508,13 @@ export class PlayingBoard extends Board {
 			
 			if(undery2 == -1){
 			hurting2 = 0;
+			spawn = spawn - 1;
 			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
 			
 			} else if((this.fields[randx2][(undery2)].color) != Color.NONE) {
 			this.virusList.push(new Virus(this, randx2, randy2, randcolor2))
 			hurting2 = 0;
+			spawn = spawn - 1;
 			}
 			
         } 
@@ -516,10 +531,12 @@ export class PlayingBoard extends Board {
 
     if(undery3 == -1){
         hurting3 = 0;
+		spawn = spawn - 1;
         this.virusList.push(new Virus(this, randx3, randy3, randcolor3));
     } else if((this.fields[randx3][(undery3)].color) != Color.NONE) {
         this.virusList.push(new Virus(this, randx3, randy3, randcolor3));
         hurting3 = 0;
+		spawn = spawn - 1;
     }
 }
 
@@ -533,14 +550,14 @@ if (randy4 != 0 && hurting4 == 1) {
 
     if(undery4 == -1){
         hurting4 = 0;
+		spawn = spawn - 1;
         this.virusList.push(new Virus(this, randx4, randy4, randcolor4));
     } else if((this.fields[randx4][(undery4)].color) != Color.NONE) {
         this.virusList.push(new Virus(this, randx4, randy4, randcolor4));
         hurting4 = 0;
+		spawn = spawn - 1;
     }
 }
-		
-	*/	
 		
 		 
 		
@@ -896,15 +913,21 @@ class ThrowingBoard extends Board {
 		
 		
 		
+		
 		if (!this.isDamageListenerAdded) {
-            socket.on('p2damage', (data) => {
-				console.log(`Damage received: ${data.p2damage}`);
-				realdamage = Math.floor(data.p2damage / 4);
-				
-			});
-        this.isDamageListenerAdded = true;
-
+    socket.on('p2damage', (data) => {
+        console.log('p2damage data received:', data); // Log received data
+        console.log("p2damage data received " + data.roomCode);
+        if (data.roomCode === roomCode) {  // Verify the room code
+            console.log(`Damage received: ${data.p2damage}`);
+            realdamage = Math.floor(data.p2damage / 4);
         }
+    });
+
+    this.isDamageListenerAdded = true;
+}
+
+		
 		
     }
 	//hurt drops
@@ -924,14 +947,15 @@ class ThrowingBoard extends Board {
 					pillx2 = 4;
 					pilly = 15;
 					pilly2 = 15;
-
-					socket.emit('updatePoints1', { player2points: localpoints });
+					
+					socket.emit('updatePoints1', { player2points: localpoints, roomCode: roomCode });	
 					localpoints = 0;
 					if(realdamage > 0){
 					for (let i = 0; i < realdamage; i++) {
 						console.log('hurt');
 						console.log('i = ' + i);
 						this.playingBoard.hurt();
+						spawn = spawn + 1;
 					}
 					realdamage = 0
 					console.log('reset real damage');
